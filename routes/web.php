@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\MasterUnitController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Models\Master_unit;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,4 +30,5 @@ Route::middleware(['auth','verified'])->group(function (){
     })->name('profile.edit');
 
     Route::resource('user', UserController::class);
+    Route::resource('unit', MasterUnitController::class);
 });

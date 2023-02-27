@@ -26,7 +26,7 @@ class UserController extends Controller
                 ->orWhere('email','LIKE','%'.$search.'%');
         })
         ->paginate(5);
-        return view('pages.index',compact('user'),['type_menu' => '']);
+        return view('pages.user-list',compact('user'),['type_menu' => '']);
     }
 
     /**

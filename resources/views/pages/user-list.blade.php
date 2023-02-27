@@ -12,8 +12,8 @@
         <div class="section-header">
             <h1>User List</h1>
                 <div class="section-header-button">
-                    <a href="features-post-create.html"
-                        class="btn btn-primary">Add New</a>
+                    <a href="#" data-toggle="modal" data-target="#ModalCreate"
+                        class="btn btn-primary">{{ __('Add New') }}</a>
                 </div>
         </div>
 
@@ -75,7 +75,7 @@
                                     </tr>    
                                 @empty
                                     <tr>
-                                        <td colspan="5" align="center" class="bg-danger text-white">No Data Found</td>
+                                        <td colspan="5" class="bg-danger text-white text-center">No Data Found</td>
                                     </tr>    
                                 @endforelse
                             </table>
@@ -90,11 +90,11 @@
                     </div>
                     </div>
                 </div>
-                </div>
             </div>
         </div>
     </section>
 </div>
+@include('modal.create-user')
 @endsection
 
 @push('scripts')
