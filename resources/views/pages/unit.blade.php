@@ -12,12 +12,16 @@
     <section class="section">
         <div class="section-header">
             <h1>Units</h1>
-                <div class="section-header-button">
-                    <a href="#" data-toggle="modal" data-target="#ModalCreateUnit"
-                        class="btn btn-primary">{{ __('Add New') }}</a>
-                </div>
+            <div class="section-header-button">
+                <a href="#" data-toggle="modal" data-target="#ModalCreateUnit"
+                    class="btn btn-primary" onclick="create()" >{{ __('Add New') }}</a>
+            </div>
         </div>
-
+        @if (Session::has('status'))
+                <div class="alert alert-success text-center" role="alert">
+                    {{ Session::get('message') }}
+                </div>
+        @endif
         <div class="section-body">
             <h2 class="section-title">Unit Pelayanan</h2>
             <p class="section-lead">
@@ -46,14 +50,15 @@
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <tr>
-                                    <th>No</th>
+                                    <th class="col-sm-1">No</th>
                                     <th>Nama Unit</th>
-                                    <th>Status</th>
+                                    <th class="col-4">Status</th>
                                 </tr>
-                                {{-- @forelse ($unit as $index => $data)
+                                @forelse ($unitList as $index => $data)
                                     <tr>
-                                        <td>{{ $index + $unit -> firstItem() }}</td>
-                                        <td>{{ $data->name }}
+                                        {{-- <td>{{ $index + $unitList -> firstItem() }}</td> --}}
+                                        <td class="col-sm-1">{{ $loop->iteration }}</td>
+                                        <td>{{ $data->unit }}
                                             <div class="table-links">
                                                 <a href="#">View</a>
                                                 <div class="bullet"></div>
@@ -62,8 +67,8 @@
                                                 <a href="#" class="text-danger">Delete</a>
                                             </div>
                                         </td>
-                                        <td>
-                                            @if ($data->email_verified_at != null)
+                                        <td class="col-4">
+                                            @if ($data->status == "Active")
                                                 <div class="badge badge-success">Active</div>
                                             @else
                                                 <div class="badge badge-warning">Non Active</div>
@@ -74,10 +79,7 @@
                                     <tr>
                                         <td colspan="5" class="bg-danger text-justify text-white">No Data Found</td>
                                     </tr>    
-                                @endforelse --}}
-                                    <tr>
-                                        <td colspan="5" class="bg-danger text-white text-center">No Data Found</td>
-                                    </tr>
+                                @endforelse
                             </table>
                         </div>
                         <div class="float-right">

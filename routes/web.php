@@ -31,4 +31,6 @@ Route::middleware(['auth','verified'])->group(function (){
 
     Route::resource('user', UserController::class);
     Route::resource('unit', MasterUnitController::class);
+    Route::get('/unit-create', [MasterUnitController::class, 'create']);
+    Route::post('/unit-store', [MasterUnitController::class, 'store']);
 });
