@@ -4,6 +4,7 @@
 
 @push('style')
     <!-- CSS Libraries -->
+    <link rel="stylesheet" href="{{ asset('library/selectric/public/selectric.css') }}">
 @endpush
 
 @section('main')
@@ -12,7 +13,7 @@
         <div class="section-header">
             <h1>Units</h1>
                 <div class="section-header-button">
-                    <a href="#" data-toggle="modal" data-target="#ModalCreate"
+                    <a href="#" data-toggle="modal" data-target="#ModalCreateUnit"
                         class="btn btn-primary">{{ __('Add New') }}</a>
                 </div>
         </div>
@@ -93,10 +94,11 @@
             </div>
     </section>
 </div>
+@include('modal.create-unit')
 @endsection
-
 @push('scripts')
     <!-- JS Libraies -->
-
+    <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
     <!-- Page Specific JS File -->
+    <script src="{{ asset('js/page/forms-advanced-forms.js') }}"></script>
 @endpush
