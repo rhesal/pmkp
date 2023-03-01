@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"
         name="viewport">
+
+    @stack('meta')
+
     <title>@yield('title') &mdash; Stisla</title>
 
     <!-- General CSS Files -->
@@ -42,6 +45,7 @@
 </head>
 
 <body>
+    @include('sweetalert::alert')
     <div id="app">
         <div class="main-wrapper">
             <div class="navbar-bg"></div>

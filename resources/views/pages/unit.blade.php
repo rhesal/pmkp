@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('title', 'Unit RS')
-
+@push('meta')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endpush
 @push('style')
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('library/selectric/public/selectric.css') }}">
@@ -56,15 +58,15 @@
                                 </tr>
                                 @forelse ($unitList as $index => $data)
                                     <tr>
-                                        {{-- <td>{{ $index + $unitList -> firstItem() }}</td> --}}
-                                        <td class="col-sm-1">{{ $loop->iteration }}</td>
+                                        <td class="col-sm-1">{{ $index + $unitList -> firstItem() }}</td>
+                                        {{-- <td class="col-sm-1">{{ $loop->iteration }}</td> --}}
                                         <td>{{ $data->unit }}
                                             <div class="table-links">
                                                 <a href="#">View</a>
                                                 <div class="bullet"></div>
                                                 <a href="#">Edit</a>
                                                 <div class="bullet"></div>
-                                                <a href="#" class="text-danger">Delete</a>
+                                                <a href="/unit-destroy/{{ $data->id }}" type="button" class="text-danger">Delete</a>
                                             </div>
                                         </td>
                                         <td class="col-4">
@@ -83,11 +85,11 @@
                             </table>
                         </div>
                         <div class="float-right">
-                            {{-- <nav>
+                            <nav>
                                 <ul class="pagination">
-                                    {{ $user->withQueryString()->links() }}
+                                    {{ $unitList->withQueryString()->links() }}
                                 </ul>
-                            </nav> --}}
+                            </nav>
                         </div>
                     </div>
                     </div>
@@ -103,4 +105,35 @@
     <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/forms-advanced-forms.js') }}"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        
+            /*------------------------------------------
+            --------------------------------------------
+            When click user on Show Button
+            --------------------------------------------
+            --------------------------------------------*/
+            $('body').on('click', '#delete-unit', function () {
+                var userURL = $(this).data('url');
+                var trObj = $(this);
+                if(confirm("Are you sure you want to remove this unit ?") == true){
+                    $.ajax({
+                        url: userURL,
+                        type: 'DELETE',
+                        dataType: 'json',
+                        success: function(data) {
+                            alert(data.success);
+                            trObj.parents("tr").remove();
+                        }
+                    });
+                }
+            });   
+        });      
+    </script>
 @endpush

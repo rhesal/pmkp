@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Master_indikator;
 use Illuminate\Http\Request;
 
 class MasterIndikatorController extends Controller
@@ -11,7 +12,8 @@ class MasterIndikatorController extends Controller
      */
     public function index()
     {
-        return view('pages.indikator',['type_menu' => '']);
+        $indikator = Master_indikator::with('master_unit');
+        return view('pages.indikator',['indikatorList' => $indikator],['type_menu' => '']);
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Models\Master_unit;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class MasterUnitController extends Controller
 {
@@ -14,7 +15,7 @@ class MasterUnitController extends Controller
      */
     public function index()
     {
-        $unit = Master_unit::all();
+        $unit = Master_unit::paginate(10);
         return view('pages.unit',['unitList' => $unit],['type_menu' => '']);
     }
 
@@ -33,10 +34,11 @@ class MasterUnitController extends Controller
     {
         //dd($request->all());
         $unit = Master_unit::create($request->all());
+        Alert::success('Berhasil','Data berhasil ditambahkan');
         if ($unit) {
             Session::flash('status','success');
             Session::flash('message','Add new unit success !!');
-        }
+        }   
         return redirect('unit');
     }
 
@@ -69,6 +71,13 @@ class MasterUnitController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $deleteUnit = Master_unit::findOrFail($id);
+        $deleteUnit->delete();
+        Alert::success('Berhasil','Data berhasil dihapus');
+        if($deleteUnit){
+            Session::flash('status','success');
+            Session::flash('message','Delete unit success!');
+        }      
+        return redirect('unit');
     }
 }

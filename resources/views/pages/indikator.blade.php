@@ -13,7 +13,7 @@
         <div class="section-header">
             <h1>Daftar Indikator <br> RSUD Karsa Husada Batu</h1>
             <div class="section-header-button">
-                <a href="#" data-toggle="modal" data-target="#ModalCreateUnit"
+                <a href="#" data-toggle="modal" data-target="#ModalCreateIndikator"
                     class="btn btn-primary" onclick="create()" >{{ __('Add New') }}</a>
             </div>
         </div>
@@ -77,7 +77,7 @@
             </div>
     </section>
 </div>
-{{-- @include('modal.create-unit') --}}
+@include('modal.create-indikator')
 @endsection
 @push('scripts')
     <!-- JS Libraies -->
