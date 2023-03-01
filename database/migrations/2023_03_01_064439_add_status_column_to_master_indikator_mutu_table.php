@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('master_unit', function (Blueprint $table) {
-            $table->enum('status',['Active','Non Active'])->after('unit')->required();
+        Schema::table('master_indikator_mutu', function (Blueprint $table) {
+            $table->enum('status',['Active','Non Active'])->after('penyajian_data')->required();
         });
     }
 
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('master_unit', function (Blueprint $table) {
+        Schema::table('master_indikator_mutu', function (Blueprint $table) {
             $table->dropColumn('status');
         });
     }

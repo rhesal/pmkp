@@ -29,7 +29,7 @@
         <li class="menu-header">Data Master</li>
         <li class="nav-item">
             <a href="{{ route('unit.index') }}" class="nav-link"><i class="fas fa-boxes-stacked"></i> <span>Units</span></a>
-            <a href="#" class="nav-link"><i class="fas fa-clipboard-list"></i> <span>Indikator</span></a>         
+            <a href="{{ route('indikator.index') }}" class="nav-link"><i class="fas fa-clipboard-list"></i> <span>Indikator</span></a>         
         </li>
     </ul>
 </aside>

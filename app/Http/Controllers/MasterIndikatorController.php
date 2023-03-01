@@ -2,20 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Master_unit;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Session;
 
-class MasterUnitController extends Controller
+class MasterIndikatorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $unit = Master_unit::all();
-        return view('pages.unit',['unitList' => $unit],['type_menu' => '']);
+        return view('pages.indikator',['type_menu' => '']);
     }
 
     /**
@@ -23,7 +19,7 @@ class MasterUnitController extends Controller
      */
     public function create()
     {
-        return view('create-unit');
+        //
     }
 
     /**
@@ -31,13 +27,7 @@ class MasterUnitController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
-        $unit = Master_unit::create($request->all());
-        if ($unit) {
-            Session::flash('status','success');
-            Session::flash('message','Add new unit success !!');
-        }
-        return redirect('unit');
+        //
     }
 
     /**

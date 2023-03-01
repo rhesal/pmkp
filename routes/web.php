@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MasterIndikatorController;
 use App\Http\Controllers\MasterUnitController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -33,4 +34,6 @@ Route::middleware(['auth','verified'])->group(function (){
     Route::resource('unit', MasterUnitController::class);
     Route::get('/unit-create', [MasterUnitController::class, 'create']);
     Route::post('/unit-store', [MasterUnitController::class, 'store']);
+
+    Route::resource('indikator', MasterIndikatorController::class);
 });
