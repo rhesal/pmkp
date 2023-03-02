@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Master_unit;
 use App\Models\Master_indikator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class MasterIndikatorController extends Controller
 {
@@ -12,8 +15,9 @@ class MasterIndikatorController extends Controller
      */
     public function index()
     {
-        $indikator = Master_indikator::with('master_unit');
-        return view('pages.indikator',['indikatorList' => $indikator],['type_menu' => '']);
+        $indikator = Master_indikator::with('unit')->paginate(10);
+        $unit = Master_unit::select('id','unit')->get();
+        return view('pages.indikator',['indikatorList' => $indikator, 'unitList' => $unit],['type_menu' => '']);
     }
 
     /**
@@ -21,7 +25,7 @@ class MasterIndikatorController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -29,7 +33,13 @@ class MasterIndikatorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $indikator = Master_indikator::create($request->all());
+        Alert::success('Berhasil','Data berhasil ditambahkan');
+        if ($indikator) {
+            Session::flash('status','success');
+            Session::flash('message','Add new indikator success !!');
+        }   
+        return redirect('indikator');
     }
 
     /**

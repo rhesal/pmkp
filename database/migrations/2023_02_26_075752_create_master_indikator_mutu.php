@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->text('indikator')->required();
             $table->unsignedBigInteger('unit_id')->required();
-            $table->string('jenis_indikator');
+            $table->string('jenis_indikator')->nullable();
             $table->enum('satuan_pengukuran',['%','menit','']);
             $table->string('nilai_standar');
-            $table->enum('penyajian_data',['tabel','line']);
+            $table->enum('penyajian_data',['tabel','line'])->nullable();
             $table->timestamps();
             $table->foreign('unit_id')->references('id')->on('master_unit')->onDelete('restrict');
         });

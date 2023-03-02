@@ -13,7 +13,7 @@
         <div class="section-header">
             <h1>Daftar Indikator <br> RSUD Karsa Husada Batu</h1>
             <div class="section-header-button">
-                <a href="#" data-toggle="modal" data-target="#ModalCreateIndikator"
+                <a href="{{ route('indikator.create') }}" data-toggle="modal" data-target="#ModalCreateIndikator"
                     class="btn btn-primary" onclick="create()" >{{ __('Add New') }}</a>
             </div>
         </div>
@@ -22,6 +22,7 @@
                     {{ Session::get('message') }}
                 </div>
         @endif
+
         <div class="section-body">
             <h2 class="section-title">List Indikator</h2>
             <p class="section-lead">
@@ -54,21 +55,52 @@
                                     <th>Unit</th>
                                     <th>Indikator</th>
                                     <th>Jenis Indikator</th>
-                                    <th>Satuan Pengukuran</th>
                                     <th>Nilai Standar</th>
+                                    <th>Satuan Pengukuran</th>
                                     <th>Status</th>
                                 </tr>
-                                <tr>
-                                    <td colspan="7" class="bg-danger text-center text-white">No Data Found</td>
-                                </tr>    
+                                @forelse ($indikatorList as $index => $data)
+                                    <tr class="text-center">
+                                        <td>{{ $index + $indikatorList -> firstItem() }}</td>
+                                        {{-- <td>{{ $loop->iteration }}</td> --}}
+                                        <td class="col-1">{{ $data->unit->unit }}</td>
+                                        <td class="col-5 text-left">{{ $data->indikator }}
+                                            <div class="table-links">
+                                                <a href="#">View</a>
+                                                <div class="bullet"></div>
+                                                <a href="#">Edit</a>
+                                                <div class="bullet"></div>
+                                                <a href="/unit-destroy/{{ $data->id }}" type="button" class="text-danger">Delete</a>
+                                            </div>
+                                        </td>
+                                        <td>-</td>                               
+                                        <td>{{ $data->nilai_standar }}</td>
+                                        <td>
+                                            @if ($data->satuan_pengukuran == "%")
+                                                Persentase (%)
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($data->status == "Active")
+                                                <div class="badge badge-success">Active</div>
+                                            @else
+                                                <div class="badge badge-warning">Non Active</div>
+                                            @endif
+                                        </td>    
+                                    </tr>    
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="bg-danger text-center text-white">No Data Found</td>
+                                    </tr>       
+                                @endforelse
                             </table>
                         </div>
                         <div class="float-right">
-                            {{-- <nav>
+                            <nav>
                                 <ul class="pagination">
-                                    {{ $user->withQueryString()->links() }}
+                                    {{ $indikatorList->withQueryString()->links() }}
                                 </ul>
-                            </nav> --}}
+                            </nav>
                         </div>
                     </div>
                     </div>

@@ -21,15 +21,20 @@
                 </li>
             </ul>
         </li>
-        @can('index-user')
-            <li class="nav-item">
-                <a href="{{ route('user.index') }}" class="nav-link"><i class="fas fa-users"></i><span>User List</span></a>
-            </li>
-        @endcan 
-        <li class="menu-header">Data Master</li>
-        <li class="nav-item">
-            <a href="{{ route('unit.index') }}" class="nav-link"><i class="fas fa-boxes-stacked"></i> <span>Units</span></a>
-            <a href="{{ route('indikator.index') }}" class="nav-link"><i class="fas fa-clipboard-list"></i> <span>Indikator</span></a>         
+        <li class="">
+            <a href="" class="nav-link"><i class="fas fa-clipboard-check"></i> <span>Indikator Mutu</span></a> 
         </li>
+        @can('index-user')
+        <li class="menu-header">Data Master</li>       
+        <li class="{{ Request::route('indikator.index') ? 'active' : '' }}">
+            <a href="{{ route('indikator.index') }}" class="nav-link"><i class="fas fa-clipboard-list"></i> <span>Indikator</span></a> 
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('unit.index') }}" class="nav-link"><i class="fas fa-boxes-stacked"></i> <span>Units</span></a>                 
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('user.index') }}" class="nav-link"><i class="fas fa-users"></i><span>User List</span></a>
+        </li>
+        @endcan 
     </ul>
 </aside>

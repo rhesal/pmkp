@@ -4,7 +4,6 @@ use App\Http\Controllers\MasterIndikatorController;
 use App\Http\Controllers\MasterUnitController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Models\Master_unit;
 
 /*
 |--------------------------------------------------------------------------

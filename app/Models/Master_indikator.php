@@ -12,7 +12,15 @@ class Master_indikator extends Model
     protected $table = 'master_indikator_mutu';
 
     protected $fillable = [
-        //'unit',
-        //'status'
+        'indikator',
+        'unit_id',
+        'nilai_standar',
+        'satuan_pengukuran',
+        'status'
     ];
+
+    public function unit()
+    {
+        return $this->belongsTo(Master_unit::class);
+    }
 }
