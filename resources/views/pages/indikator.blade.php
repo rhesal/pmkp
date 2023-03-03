@@ -13,7 +13,7 @@
         <div class="section-header">
             <h1>Daftar Indikator <br> RSUD Karsa Husada Batu</h1>
             <div class="section-header-button">
-                <a href="{{ route('indikator.create') }}" data-toggle="modal" data-target="#ModalCreateIndikator"
+                <a href="" data-toggle="modal" data-target="#ModalCreateIndikator"
                     class="btn btn-primary" onclick="create()" >{{ __('Add New') }}</a>
             </div>
         </div>
@@ -66,14 +66,15 @@
                                         <td class="col-1">{{ $data->unit->unit }}</td>
                                         <td class="col-5 text-left">{{ $data->indikator }}
                                             <div class="table-links">
-                                                <a href="#">View</a>
+                                                <a href="javascript:void(0)" id="show-unit" data-url="{{ route('indikator.show', $data->id) }}" data-toggle="modal" data-target="#ModalCreatePengisian">View</a>
+                                                {{-- <a href="javascript:void(0)" id="show-unit" onclick="fung_data({{ $data->id }})" data-toggle="modal" data-target="#ModalCreatePengisian">View</a> --}}
                                                 <div class="bullet"></div>
                                                 <a href="#">Edit</a>
                                                 <div class="bullet"></div>
                                                 <a href="/unit-destroy/{{ $data->id }}" type="button" class="text-danger">Delete</a>
                                             </div>
                                         </td>
-                                        <td>-</td>                               
+                                        <td>{{ $data->jenis_indikator }}</td>                               
                                         <td>{{ $data->nilai_standar }}</td>
                                         <td>
                                             @if ($data->satuan_pengukuran == "%")
@@ -110,10 +111,29 @@
     </section>
 </div>
 @include('modal.create-indikator')
+@include('modal.create-pengisian-mutu')
 @endsection
 @push('scripts')
     <!-- JS Libraies -->
     <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/forms-advanced-forms.js') }}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function (){
+            $('body').on('click','#show-unit', function () {
+                var unitURL = $(this).data('url');
+                console.log(unitURL);
+                $.get(unitURL, function (data) {
+                    $('#ModalCreatePengisian').modal('show');
+                    $('#unit-name').text(data.unit.unit)
+                    $('#unit-indikator').text(data.indikator)
+                })
+            });
+        });
+
+        // function fung_data(id){
+        //     $('#unit-id').text(id)
+        // }
+    </script>
 @endpush

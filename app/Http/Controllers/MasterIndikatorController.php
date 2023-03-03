@@ -16,8 +16,9 @@ class MasterIndikatorController extends Controller
     public function index()
     {
         $indikator = Master_indikator::with('unit')->paginate(10);
+        $indikatorGet = Master_indikator::with('unit')->get();
         $unit = Master_unit::select('id','unit')->get();
-        return view('pages.indikator',['indikatorList' => $indikator, 'unitList' => $unit],['type_menu' => '']);
+        return view('pages.indikator',['indikatorList' => $indikator, 'unitList' => $unit, 'indikatorGet' => $indikatorGet],['type_menu' => '']);
     }
 
     /**
@@ -45,9 +46,10 @@ class MasterIndikatorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $unit = Master_indikator::with(['unit'])->findOrFail($id);
+        return response()->json($unit);
     }
 
     /**

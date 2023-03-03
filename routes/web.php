@@ -37,4 +37,5 @@ Route::middleware(['auth','verified'])->group(function (){
     //Route::delete('/unit-destroy/{id}', [MasterUnitController::class, 'destroy'])->name('unit.delete');
 
     Route::resource('indikator', MasterIndikatorController::class);
+    //Route::get('indikator/{id}', [MasterIndikatorController::class, 'show'])->name('indikator.show');
 });
