@@ -8,6 +8,8 @@
         href="{{ asset('library/summernote/dist/summernote-bs4.css') }}">
     <link rel="stylesheet"
         href="{{ asset('library/bootstrap-social/assets/css/bootstrap.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('library/bootstrap-social/assets/css/font-awesome.css') }}">
 @endpush
 
 @section('main')

@@ -4,7 +4,18 @@
 
 @push('style')
     <!-- CSS Libraries -->
-    <link rel="stylesheet" href="{{ asset('library/selectric/public/selectric.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('library/bootstrap-daterangepicker/daterangepicker.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('library/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('library/select2/dist/css/select2.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('library/selectric/public/selectric.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('library/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('library/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}">
 @endpush
 
 @section('main')
@@ -66,7 +77,7 @@
                                         <td class="col-1">{{ $data->unit->unit }}</td>
                                         <td class="col-5 text-left">{{ $data->indikator }}
                                             <div class="table-links">
-                                                <a href="javascript:void(0)" id="show-unit" data-url="{{ route('indikator.show', $data->id) }}" data-toggle="modal" data-target="#ModalCreatePengisian">View</a>
+                                                <a href="javascript:void(0)" id="show-unit" data-url="{{ route('indikator.show', $data->id) }}" data-toggle="modal" data-target="#ModalCreatePengisian" data-backdrop="static">View</a>
                                                 {{-- <a href="javascript:void(0)" id="show-unit" onclick="fung_data({{ $data->id }})" data-toggle="modal" data-target="#ModalCreatePengisian">View</a> --}}
                                                 <div class="bullet"></div>
                                                 <a href="#">Edit</a>
@@ -115,6 +126,13 @@
 @endsection
 @push('scripts')
     <!-- JS Libraies -->
+    <script src="{{ asset('library/cleave.js/dist/cleave.min.js') }}"></script>
+    <script src="{{ asset('library/cleave.js/dist/addons/cleave-phone.us.js') }}"></script>
+    <script src="{{ asset('library/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+    <script src="{{ asset('library/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js') }}"></script>
+    <script src="{{ asset('library/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
+    <script src="{{ asset('library/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') }}"></script>
+    <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/forms-advanced-forms.js') }}"></script>
@@ -128,6 +146,12 @@
                     $('#ModalCreatePengisian').modal('show');
                     $('#unit-name').text(data.unit.unit)
                     $('#unit-indikator').text(data.indikator)
+                    $('#jenis-indikator').text(data.jenis_indikator)
+                    $('#nilai-standar').text(data.nilai_standar)
+                    $('#satuan-pengukuran').text(data.satuan_pengukuran)
+                    $('#penanggung-jawab').text(data.penanggung_jawab)
+                    $('#numerator').text(data.numerator)
+                    $('#denumerator').text(data.denumerator)
                 })
             });
         });
