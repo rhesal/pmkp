@@ -82,7 +82,7 @@
                                                 <div class="bullet"></div>
                                                 <a href="#">Edit</a>
                                                 <div class="bullet"></div>
-                                                <a href="/unit-destroy/{{ $data->id }}" type="button" class="text-danger">Delete</a>
+                                                <a href="/indikator-destroy/{{ $data->id }}" type="button" class="text-danger">Delete</a>
                                             </div>
                                         </td>
                                         <td>{{ $data->jenis_indikator }}</td>                               
@@ -90,6 +90,8 @@
                                         <td>
                                             @if ($data->satuan_pengukuran == "%")
                                                 Persentase (%)
+                                            @else
+                                                <span class="text-capitalize">{{ $data->satuan_pengukuran }}</span>
                                             @endif
                                         </td>
                                         <td>
@@ -159,5 +161,19 @@
         // function fung_data(id){
         //     $('#unit-id').text(id)
         // }
+
+        var num = document.penilaian.numerator.value;
+        document.Penilaian.hasil.value = num;
+
+        var denum = document.penilaian.denumerator.value;
+        document.penilaian.hasil.value = denum;
+        function OnChange(value){
+            var num = parseFloat(document.penilaian.numerator.value);
+            var denum = parseFloat(document.penilaian.denumerator.value);
+
+            var total = (num / denum) * (100) ;
+            console.log(parseFloat(total).toFixed(2) + "%");
+            return document.penilaian.hasil.value = parseFloat(total).toFixed(2) + "%";
+        }
     </script>
 @endpush

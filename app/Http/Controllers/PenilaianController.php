@@ -2,23 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Master_unit;
-use App\Models\Master_indikator;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use RealRashid\SweetAlert\Facades\Alert;
 
-class MasterIndikatorController extends Controller
+class PenilaianController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $indikator = Master_indikator::with('unit')->paginate(10);
-        $indikatorGet = Master_indikator::with('unit')->get();
-        $unit = Master_unit::select('id','unit')->get();
-        return view('pages.indikator',['indikatorList' => $indikator, 'unitList' => $unit, 'indikatorGet' => $indikatorGet],['type_menu' => '']);
+        //
     }
 
     /**
@@ -26,7 +22,7 @@ class MasterIndikatorController extends Controller
      */
     public function create()
     {
-
+        //
     }
 
     /**
@@ -34,7 +30,7 @@ class MasterIndikatorController extends Controller
      */
     public function store(Request $request)
     {
-        $indikator = Master_indikator::create($request->all());
+        $indikator = PenilaianController::create($request->all());
         Alert::success('Berhasil','Data berhasil ditambahkan');
         if ($indikator) {
             Session::flash('status','success');
@@ -46,10 +42,9 @@ class MasterIndikatorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(string $id)
     {
-        $unit = Master_indikator::with(['unit'])->findOrFail($id);
-        return response()->json($unit);
+        //
     }
 
     /**
@@ -71,15 +66,8 @@ class MasterIndikatorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(string $id)
     {
-        $deleteIndikator = Master_indikator::findOrFail($id);
-        $deleteIndikator->delete();
-        Alert::success('Berhasil','Data berhasil dihapus');
-        if($deleteIndikator){
-            Session::flash('status','success');
-            Session::flash('message','Delete unit success!');
-        }      
-        return redirect('indikator');
+        //
     }
 }

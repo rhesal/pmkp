@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class ModelPenilaian extends Model
+{
+    use HasFactory;
+
+    protected $table = 'nilai_mutu';
+
+    protected $fillable = [
+        'indikator_id',
+        'tanggal',
+        'numerator',
+        'denumerator',
+        'hasil'
+    ];
+
+    public function indikator()
+    {
+        return $this->belongsTo(Master_indikator::class);
+    }
+}

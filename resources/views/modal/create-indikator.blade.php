@@ -1,4 +1,4 @@
-<form action="" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="">
+<form action="indikator-store" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="">
     @csrf
     <div class="modal fade text-left" id="ModalCreateIndikator" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">

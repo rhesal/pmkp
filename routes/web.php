@@ -37,5 +37,10 @@ Route::middleware(['auth','verified'])->group(function (){
     //Route::delete('/unit-destroy/{id}', [MasterUnitController::class, 'destroy'])->name('unit.delete');
 
     Route::resource('indikator', MasterIndikatorController::class);
+    Route::post('/indikator-store', [MasterIndikatorController::class, 'store']);
+    Route::get('/indikator-destroy/{id}', [MasterIndikatorController::class, 'destroy']);
     //Route::get('indikator/{id}', [MasterIndikatorController::class, 'show'])->name('indikator.show');
+
+    Route::resource('penilaian', PenilaianController::class);
+    Route::post('/penilaian-store', [PenilaianController::class, 'store']);
 });
