@@ -42,5 +42,6 @@ Route::middleware(['auth','verified'])->group(function (){
     //Route::get('indikator/{id}', [MasterIndikatorController::class, 'show'])->name('indikator.show');
 
     Route::resource('penilaian', PenilaianController::class);
-    Route::post('/penilaian-store', [PenilaianController::class, 'store']);
+    //Route::post('/penilaian-store', [PenilaianController::class, 'store']);
+    Route::post('/penilaian-store', 'App\Http\Controllers\PenilaianController@store');
 });

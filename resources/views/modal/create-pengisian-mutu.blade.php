@@ -1,4 +1,4 @@
-<form action="penilaian-store" name="penilaian" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="">
+<form action="penilaian-store" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="">
     @csrf
     <div class="modal fade px-4"
         tabindex="-1"
@@ -83,7 +83,7 @@
                                 </div>
                                 <div class="form-group col-9 mb-0">
                                     <label class="align-top font-weight-bold"><span id="numerator"></span></label>
-                                    <input name="numerator" type="text" class="form-control" placeholder="Nilai Numerator" onkeyup="OnChange(this.value)" onKeyPress="return isNumberKey(event)">
+                                    <input name="numerator" id="num" type="number" class="form-control" placeholder="Nilai Numerator" onkeyup="percentage()">
                                 </div>
                             </div>
                             <div class="form-row mx-0" style="max-width: 100%">
@@ -95,7 +95,7 @@
                                 </div>
                                 <div class="form-group col-9 mb-0">
                                     <label class="align-top font-weight-bold"><span id="denumerator"></span></label>
-                                    <input name="denumerator" type="text" class="form-control" placeholder="Nilai denumerator" onkeyup="OnChange(this.value)" onKeyPress="return isNumberKey(event)">
+                                    <input name="denumerator" id="denum" type="number" class="form-control" placeholder="Nilai denumerator" onkeyup="percentage()">
                                 </div>
                             </div>
                             <div class="form-row mx-0" style="max-width: 100%">
@@ -106,7 +106,8 @@
                                     <label class="align-top">:</label>
                                 </div>
                                 <div class="form-group col-9 mb-0">
-                                    <input name="hasil" type="text" class="form-control" placeholder="" disabled="" value="">
+                                    <input name="indikator_id" id="indikator-id" type="text" class="form-control">
+                                    <input name="hasil" id="hasil" type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="form-row mx-0" style="max-width: 100%">

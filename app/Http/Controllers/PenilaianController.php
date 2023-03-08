@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\Penilaian;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -30,7 +31,7 @@ class PenilaianController extends Controller
      */
     public function store(Request $request)
     {
-        $indikator = PenilaianController::create($request->all());
+        $indikator = Penilaian::create($request->all());
         Alert::success('Berhasil','Data berhasil ditambahkan');
         if ($indikator) {
             Session::flash('status','success');

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ModelPenilaian extends Model
+class Penilaian extends Model
 {
     use HasFactory;
 
@@ -16,11 +16,11 @@ class ModelPenilaian extends Model
         'tanggal',
         'numerator',
         'denumerator',
-        'hasil'
+        'hasil',
     ];
 
     public function indikator()
     {
-        return $this->belongsTo(Master_indikator::class);
+        //return $this->belongsTo(Master_indikator::class);
     }
 }

@@ -154,6 +154,8 @@
                     $('#penanggung-jawab').text(data.penanggung_jawab)
                     $('#numerator').text(data.numerator)
                     $('#denumerator').text(data.denumerator)
+
+                    document.getElementById('indikator-id').value = data.id
                 })
             });
         });
@@ -162,18 +164,27 @@
         //     $('#unit-id').text(id)
         // }
 
-        var num = document.penilaian.numerator.value;
-        document.Penilaian.hasil.value = num;
+        // var num = document.penilaian.numerator.value;
+        // document.Penilaian.hasil.value = num;
 
-        var denum = document.penilaian.denumerator.value;
-        document.penilaian.hasil.value = denum;
-        function OnChange(value){
-            var num = parseFloat(document.penilaian.numerator.value);
-            var denum = parseFloat(document.penilaian.denumerator.value);
+        // var denum = document.penilaian.denumerator.value;
+        // document.penilaian.hasil.value = denum;
+        // function OnChange(value){
+        //     var num = parseFloat(document.penilaian.numerator.value);
+        //     var denum = parseFloat(document.penilaian.denumerator.value);
 
-            var total = (num / denum) * (100) ;
-            console.log(parseFloat(total).toFixed(2) + "%");
-            return document.penilaian.hasil.value = parseFloat(total).toFixed(2) + "%";
+        //     var total = (num / denum) * (100) ;
+        //     console.log(parseFloat(total).toFixed(2) + "%");
+        //     return document.penilaian.hasil.value = parseFloat(total).toFixed(2) + "%";
+        // }
+
+        function percentage(){
+            var txtNumValue = document.getElementById('num').value;
+            var txtDenumValue = document.getElementById('denum').value;
+            var result = (parseInt(txtNumValue) / parseInt(txtDenumValue)) * 100/100;
+            if(!isNaN(result)){
+                document.getElementById('hasil').value = result.toFixed(2) + "%";
+            }
         }
     </script>
 @endpush
