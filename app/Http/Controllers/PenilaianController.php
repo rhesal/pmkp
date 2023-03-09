@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Penilaian;
+use App\Models\Master_unit;
+use App\Models\Master_indikator;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -15,7 +17,9 @@ class PenilaianController extends Controller
      */
     public function index()
     {
-        //
+        $penilaian = Penilaian::with('master_indikator_mutu')->inMonth(2023, 3)->get();
+        $unit = Master_unit::select('id','unit')->get();
+        return view('pages.hasil-penilaian-mutu',['penilaianList' => $penilaian, 'unitList' => $unit],['type_menu' => '']);
     }
 
     /**

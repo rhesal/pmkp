@@ -22,7 +22,7 @@
             </ul>
         </li>
         <li class="">
-            <a href="" class="nav-link"><i class="fas fa-clipboard-check"></i> <span>Indikator Mutu</span></a> 
+            <a href="{{ route('penilaian.index') }}" class="nav-link"><i class="fas fa-clipboard-check"></i> <span>Penilaian Mutu</span></a> 
         </li>
         @can('index-user')
         <li class="menu-header">Data Master</li>       

@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\MasterIndikatorController;
-use App\Http\Controllers\MasterUnitController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PenilaianController;
+use App\Http\Controllers\MasterUnitController;
+use App\Http\Controllers\MasterIndikatorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,6 @@ Route::middleware(['auth','verified'])->group(function (){
     //Route::get('indikator/{id}', [MasterIndikatorController::class, 'show'])->name('indikator.show');
 
     Route::resource('penilaian', PenilaianController::class);
-    //Route::post('/penilaian-store', [PenilaianController::class, 'store']);
-    Route::post('/penilaian-store', 'App\Http\Controllers\PenilaianController@store');
+    Route::post('/penilaian-store', [PenilaianController::class, 'store']);
+    //Route::post('/penilaian-store', 'App\Http\Controllers\PenilaianController@store');
 });

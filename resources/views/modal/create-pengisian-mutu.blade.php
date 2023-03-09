@@ -122,55 +122,64 @@
                             </div>
                         </div>
                         <div class="form-group col-6 ">
-                            <table class="table table-striped">
-                                <tr>
-                                    <th>Tanggal</th>
-                                    <th>Numerator</th>
-                                    <th>Denumerator</th>
-                                    <th>Hasil</th>
-                                    <th>Keterangan</th>
-                                    <th></th>  
-                                </tr>
-                                <tr class="text-center">
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>
-                                        <div class="form-group">
-                                            <a href="" type="button" class="btn btn-info fa fa-pen"></a>
-                                            <a href="" type="button" class="btn btn-danger fa fa-trash"></a>
-                                        </div>                                    
-                                    </td>
-                                </tr>
-                                <tr class="text-center">
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>
-                                        <div class="form-group">
-                                            <a href="" type="button" class="btn btn-info fa fa-pen"></a>
-                                            <a href="" type="button" class="btn btn-danger fa fa-trash"></a>
-                                        </div>                                    
-                                    </td>
-                                </tr>
-                                <tr class="text-center">
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>
-                                        <div class="form-group">
-                                            <a href="" type="button" class="btn btn-info fa fa-pen"></a>
-                                            <a href="" type="button" class="btn btn-danger fa fa-trash"></a>
-                                        </div>                                    
-                                    </td>
-                                </tr>
-                            </table>
+                            <div class="form-row">
+                                <h5><Label for="start">Periode Penilaian</Label></h5>
+                            </div>
+                            <div class="form-row">
+                                <input type="month" class="form-control col-md-3" id="start" name="start">
+                            </div>
+                            <div class="form-row my-2">
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>Numerator</th>
+                                        <th>Denumerator</th>
+                                        <th>Hasil</th>
+                                        <th>Keterangan</th>
+                                        <th></th>  
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>
+                                            <div class="form-group">
+                                                <a href="" type="button" class="btn btn-info fa fa-pen"></a>
+                                                <a href="" type="button" class="btn btn-danger fa fa-trash"></a>
+                                            </div>                                    
+                                        </td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>
+                                            <div class="form-group">
+                                                <a href="" type="button" class="btn btn-info fa fa-pen"></a>
+                                                <a href="" type="button" class="btn btn-danger fa fa-trash"></a>
+                                            </div>                                    
+                                        </td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>
+                                            <div class="form-group">
+                                                <a href="" type="button" class="btn btn-info fa fa-pen"></a>
+                                                <a href="" type="button" class="btn btn-danger fa fa-trash"></a>
+                                            </div>                                    
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
