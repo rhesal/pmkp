@@ -34,7 +34,8 @@
             </h2>
             <p class="section-lead">
                 Periode :  
-                <input type="month" style="border: none; border-color: transparent; background: transparent;" id="start" name="start">
+                <input type="month" style="border: none; border-color: transparent; background: transparent;" id="bulan" name="bulan">
+                {{-- <a href="" type="button" id="my-button" class="btn btn-primary">Klik saya</a> --}}
             </p>
             <div class="row mt-4">
                 <div class="col-12">
@@ -71,7 +72,7 @@
                                     @endforeach
                                 </tr>
                                 <tr>
-
+                                        
                                 </tr>
                             </table>
                         </div>
@@ -96,4 +97,21 @@
     <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/forms-advanced-forms.js') }}"></script>
+
+    <script>
+        document.getElementById('my-button').addEventListener('click', function() {
+        // Get the data you want to send to the controller
+            var myData = { name: 'John', email: 'john@example.com' };
+            console.log(myData);
+            // Send an AJAX request to the controller
+            $.ajax({
+                type: 'POST',
+                url: 'penilaian.myMethod',
+                data: myData,
+                success: function(response) {
+                    // Tangani respons dari kontroler
+                }
+            });
+        });
+    </script>
 @endpush

@@ -24,7 +24,7 @@ Route::get('/', function () {
 Route::middleware(['auth','verified'])->group(function (){
     Route::get('home', function (){
         return view('pages.home',['type_menu' => '']);
-    })->name('home')->middleware('can:pages');
+    })->name('home')->middleware(['can:pages','can:home']);
 
     Route::get('edit-profile', function(){
         return view('pages.profile',['type_menu' => '']);
@@ -43,6 +43,7 @@ Route::middleware(['auth','verified'])->group(function (){
     //Route::get('indikator/{id}', [MasterIndikatorController::class, 'show'])->name('indikator.show');
 
     Route::resource('penilaian', PenilaianController::class);
+    //Route::post('/my-controller-method', [PenilaianController::class, 'myMethod']);
     Route::post('/penilaian-store', [PenilaianController::class, 'store']);
     //Route::post('/penilaian-store', 'App\Http\Controllers\PenilaianController@store');
 });

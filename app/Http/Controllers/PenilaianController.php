@@ -17,7 +17,7 @@ class PenilaianController extends Controller
      */
     public function index()
     {
-        $penilaian = Penilaian::with('master_indikator_mutu')->inMonth(2023, 3)->get();
+        $penilaian = Penilaian::with('indikatorMutu')->get();
         $unit = Master_unit::select('id','unit')->get();
         return view('pages.hasil-penilaian-mutu',['penilaianList' => $penilaian, 'unitList' => $unit],['type_menu' => '']);
     }
@@ -27,7 +27,7 @@ class PenilaianController extends Controller
      */
     public function create()
     {
-        //
+        dd();
     }
 
     /**
@@ -42,6 +42,19 @@ class PenilaianController extends Controller
             Session::flash('message','Add new indikator success !!');
         }   
         return redirect('indikator');
+    }
+
+    public function myMethod(Request $request)
+    {
+        dd($request);
+        $name = $request->input('name');
+        $email = $request->input('email');
+        
+        // Lakukan sesuatu dengan data
+
+        Alert::success('Berhasil','Data berhasil dihapus');
+        //return response()->json(['success' => true]);
+        //return redirect('penilaian');
     }
 
     /**

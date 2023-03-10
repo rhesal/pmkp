@@ -64,7 +64,7 @@
 
             <footer class="main-footer">
                 <!-- Footer -->
-                @include('components.footer')
+                {{-- @include('components.footer') --}}
             </footer>
         </div>
     </div>

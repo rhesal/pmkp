@@ -1,26 +1,17 @@
 <aside id="sidebar-wrapper">
     <div class="sidebar-brand">
-        <a href="{{ route('home') }}">PMKP</a>
+        <a href="{{ route('home') }}">SI-IMUT</a>
     </div>
     <div class="sidebar-brand sidebar-brand-sm">
-        <a href="index.html">St</a>
+        <a href="index.html">SI</a>
     </div>
     <ul class="sidebar-menu">
+        @can('pages')         
         <li class="menu-header">Dashboard</li>
         <li class="nav-item dropdown {{ $type_menu === 'dashboard' ? 'active' : '' }}">
-            <a href="#"
-                class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Dashboard</span></a>
-            <ul class="dropdown-menu">
-                <li class='{{ Request::is('dashboard-general-dashboard') ? 'active' : '' }}'>
-                    <a class="nav-link"
-                        href="{{ url('dashboard-general-dashboard') }}">General Dashboard</a>
-                </li>
-                <li class="{{ Request::is('dashboard-ecommerce-dashboard') ? 'active' : '' }}">
-                    <a class="nav-link"
-                        href="{{ url('dashboard-ecommerce-dashboard') }}">Ecommerce Dashboard</a>
-                </li>
-            </ul>
+            <a href="{{ route('home') }}" class="nav-link"><i class="fas fa-fire"></i><span>Dashboard</span></a>
         </li>
+        @endcan
         <li class="">
             <a href="{{ route('penilaian.index') }}" class="nav-link"><i class="fas fa-clipboard-check"></i> <span>Penilaian Mutu</span></a> 
         </li>
