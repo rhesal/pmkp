@@ -77,7 +77,7 @@
                                         <td class="col-1">{{ $data->unit->unit }}</td>
                                         <td class="col-5 text-left">{{ $data->indikator }}
                                             <div class="table-links">
-                                                <a href="javascript:void(0)" id="show-unit" data-url="{{ route('indikator.show', $data->id) }}" data-toggle="modal" data-target="#ModalCreatePengisian" data-backdrop="static">View</a>
+                                                <a href="javascript:void(0)" id="show-unit" data-url1="{{ route('indikator.show', $data->id) }}" data-url2="{{ route('penilaian.show', $data->id) }}" data-toggle="modal" data-target="#ModalCreatePengisian" data-backdrop="static">Penilaian</a>
                                                 {{-- <a href="javascript:void(0)" id="show-unit" onclick="fung_data({{ $data->id }})" data-toggle="modal" data-target="#ModalCreatePengisian">View</a> --}}
                                                 <div class="bullet"></div>
                                                 <a href="#">Edit</a>
@@ -85,7 +85,7 @@
                                                 <a href="/indikator-destroy/{{ $data->id }}" type="button" class="text-danger">Delete</a>
                                             </div>
                                         </td>
-                                        <td>{{ $data->jenis_indikator }}</td>                               
+                                        <td>{{ $data->jenis_indikator }}</td>
                                         <td>{{ $data->nilai_standar }}</td>
                                         <td>
                                             @if ($data->satuan_pengukuran == "%")
@@ -100,12 +100,12 @@
                                             @else
                                                 <div class="badge badge-warning">Non Active</div>
                                             @endif
-                                        </td>    
-                                    </tr>    
+                                        </td>
+                                    </tr>
                                 @empty
                                     <tr>
                                         <td colspan="7" class="bg-danger text-center text-white">No Data Found</td>
-                                    </tr>       
+                                    </tr>
                                 @endforelse
                             </table>
                         </div>
@@ -142,8 +142,11 @@
     <script type="text/javascript">
         $(document).ready(function (){
             $('body').on('click','#show-unit', function () {
-                var unitURL = $(this).data('url');
+                var unitURL = $(this).data('url1');
+                var penilaianURL = $(this).data('url2');
+
                 console.log(unitURL);
+                console.log(penilaianURL);
                 $.get(unitURL, function (data) {
                     $('#ModalCreatePengisian').modal('show');
                     $('#unit-name').text(data.unit.unit)
@@ -157,26 +160,65 @@
 
                     document.getElementById('indikator-id').value = data.id
                 })
+
+                $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+                });
+
+                $.ajax({
+                    type: "GET",
+                    url: penilaianURL,
+                    dataType: "JSON",
+                    success: function(data) {
+                        var table = document.getElementById("mytab1");
+                        var html1 = "";
+                        for(let i=0;i<data.length;i++){
+                            html1 += `<tr>
+                                        <td>${data[i].tanggal}</td>
+                                        <td>${data[i].numerator}</td>
+                                        <td>${data[i].denumerator}</td>
+                                        <td>${data[i].hasil}</td>
+                                        <td>-</td>
+                                        <td>
+                                            <div class="form-group">
+                                                <a href="" type="button" class="btn btn-info fa fa-pen"></a>
+                                                <a href="" type="button" class="btn btn-danger fa fa-trash"></a>
+                                            </div>
+                                        </td>
+                                    </tr>`;
+                        }
+                        table.getElementsByTagName('tbody')[0].innerHTML = html1;
+                    }
+                });
+
+                // $.get(penilaianURL, function (penilaian) {
+                //     var table = document.getElementById("mytab1");
+                //     var html1 = "";
+                //     $.getJSON('/penilaian-show/{id}', function(penilaian) {
+                //         // Loop through the data and display it on the web page
+                //         // console.log("prm");
+                //         $.each(penilaian, function(key, value) {
+                //             // Display the data however you want
+                //             console.log(value[0]);
+                //             //tableRows +=
+                //             console.log(
+                                // '<tr>' +
+                                // '<td>' + value.tanggal + '</td>' +
+                                // '<td>' + value.numerator + '</td>' +
+                                // '<td>' + value.denumerator + '</td>' +
+                                // '<td>' + value.hasil + '</td>' +
+                                // '</tr>');
+
+
+                //         });
+                //         //table.html = tableRows ;
+                //         //console.log(value);
+                //     });
+                // })
             });
         });
-
-        // function fung_data(id){
-        //     $('#unit-id').text(id)
-        // }
-
-        // var num = document.penilaian.numerator.value;
-        // document.Penilaian.hasil.value = num;
-
-        // var denum = document.penilaian.denumerator.value;
-        // document.penilaian.hasil.value = denum;
-        // function OnChange(value){
-        //     var num = parseFloat(document.penilaian.numerator.value);
-        //     var denum = parseFloat(document.penilaian.denumerator.value);
-
-        //     var total = (num / denum) * (100) ;
-        //     console.log(parseFloat(total).toFixed(2) + "%");
-        //     return document.penilaian.hasil.value = parseFloat(total).toFixed(2) + "%";
-        // }
 
         function percentage(){
             var txtNumValue = document.getElementById('num').value;

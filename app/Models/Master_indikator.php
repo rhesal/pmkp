@@ -23,4 +23,9 @@ class Master_indikator extends Model
     {
         return $this->belongsTo(Master_unit::class);
     }
+
+    public function nilai_mutu()
+    {
+        return $this->hasMany(Penilaian::class);
+    }
 }

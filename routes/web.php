@@ -43,6 +43,8 @@ Route::middleware(['auth','verified'])->group(function (){
     //Route::get('indikator/{id}', [MasterIndikatorController::class, 'show'])->name('indikator.show');
 
     Route::resource('penilaian', PenilaianController::class);
+    Route::get('/penilaian-show/{id}', [PenilaianController::class, 'show'])->name('penilaian.show');
+    //Route::get('/penilaian-show/{id}', 'App\Http\Controllers\PenilaianController@show')->name('penilaian.show');
     //Route::post('/my-controller-method', [PenilaianController::class, 'myMethod']);
     Route::post('/penilaian-store', [PenilaianController::class, 'store']);
     //Route::post('/penilaian-store', 'App\Http\Controllers\PenilaianController@store');

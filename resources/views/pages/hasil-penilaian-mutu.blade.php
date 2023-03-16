@@ -24,16 +24,16 @@
 
         <div class="section-body">
             <h2 class="section-title">
-                Penilaian Mutu Unit 
+                Penilaian Mutu Unit
                 <select name="unit_id" id="unit_id" class="@error('unit_id') is-invalid @enderror" style="width: 15%; border: none; border-color: transparent; background: transparent;">
                     <option value="">....</option>
-                    @foreach ($unitList as $item)
+                    {{-- @foreach ($unitList as $item)
                     <option value="{{ $item->id }}">{{ $item->unit }}</option>
-                    @endforeach
+                    @endforeach --}}
                 </select>
             </h2>
             <p class="section-lead">
-                Periode :  
+                Periode :
                 <input type="month" style="border: none; border-color: transparent; background: transparent;" id="bulan" name="bulan">
                 {{-- <a href="" type="button" id="my-button" class="btn btn-primary">Klik saya</a> --}}
             </p>
@@ -60,7 +60,7 @@
                                     <th class="col-sm-1">No</th>
                                     <th>Indikator</th>
                                     <th>Jenis</th>
-                                    <th>Standar</th> 
+                                    <th>Standar</th>
                                     @php
                                         $start_date = new DateTime('2023-03-01');
                                         $end_date = new DateTime('2023-04-01');
@@ -71,9 +71,22 @@
                                     <th>{{ $date->format('d') }}</th>
                                     @endforeach
                                 </tr>
+                                {{-- @forelse ($penilaianList as $data)
                                 <tr>
-                                        
+                                    <td class="col-sm-1">{{ $loop->iteration }}</td>
+                                    <td>{{ $data->indikator }}</td>
+                                    <td>{{ $data->jenis_indikator }}</td>
+                                    <td>{{ $data->nilai_standar }}{{ $data->satuan_pengukuran }}</td>
+                                    {{-- @foreach ($data->hasil as $item)
+                                        <td>{{ $item }}</td>
+                                    @endforeach --}}
                                 </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="5" class="bg-danger text-center text-white">No Data Found</td>
+                                </tr>
+                                @endforelse --}}
+
                             </table>
                         </div>
                         <div class="float-right">

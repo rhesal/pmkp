@@ -19,7 +19,7 @@ class Penilaian extends Model
         'hasil',
     ];
 
-    public function indikatorMutu()
+    public function indikator()
     {
         return $this->belongsTo(Master_indikator::class);
     }

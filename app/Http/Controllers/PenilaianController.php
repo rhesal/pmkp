@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Penilaian;
 use App\Models\Master_unit;
-use App\Models\Master_indikator;
 
 use Illuminate\Http\Request;
+use App\Models\Master_indikator;
 use Illuminate\Support\Facades\Session;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -17,7 +18,8 @@ class PenilaianController extends Controller
      */
     public function index()
     {
-        $penilaian = Penilaian::with('indikatorMutu')->get();
+        //$penilaian = Penilaian::with('indikator')->get();
+        $penilaian = Master_indikator::with('nilai_mutu','nilai_mutu.tanggal')->get();
         $unit = Master_unit::select('id','unit')->get();
         return view('pages.hasil-penilaian-mutu',['penilaianList' => $penilaian, 'unitList' => $unit],['type_menu' => '']);
     }
@@ -40,7 +42,7 @@ class PenilaianController extends Controller
         if ($indikator) {
             Session::flash('status','success');
             Session::flash('message','Add new indikator success !!');
-        }   
+        }
         return redirect('indikator');
     }
 
@@ -49,7 +51,7 @@ class PenilaianController extends Controller
         dd($request);
         $name = $request->input('name');
         $email = $request->input('email');
-        
+
         // Lakukan sesuatu dengan data
 
         Alert::success('Berhasil','Data berhasil dihapus');
@@ -62,7 +64,12 @@ class PenilaianController extends Controller
      */
     public function show(string $id)
     {
-        //
+        //dd($id);
+        $penilaian = Penilaian::where('indikator_id', $id)->whereMonth('tanggal', Carbon::now()->month)->get();
+        //$penilaian = Penilaian::all();
+        // dd($penilaian);
+        return response()->json($penilaian);
+        //return view('pages.hasil-penilaian-mutu',['penilaianList' => $penilaian],['type_menu' => '']);
     }
 
     /**

@@ -98,7 +98,7 @@
                                     <input name="denumerator" id="denum" type="number" class="form-control" placeholder="Nilai denumerator" onkeyup="percentage()">
                                 </div>
                             </div>
-                            <div class="form-row mx-0" style="max-width: 100%">
+                            <div class="form-row mx-0" style="max-width: 100%" hidden>
                                 <div class="form-group col-md-2 mb-0">
                                     <label class="align-top font-weight-bold">Hasil</label>
                                 </div>
@@ -126,19 +126,21 @@
                                 <h5><Label for="start">Periode Penilaian</Label></h5>
                             </div>
                             <div class="form-row">
-                                <input type="month" class="form-control col-md-3" id="start" name="start">
+                                <input type="month" onchange="get_bulan()" class="form-control col-md-3" id="start" name="start">
                             </div>
+                            {{-- {{ $hasilList }} --}}
                             <div class="form-row my-2">
-                                <table class="table table-striped">
-                                    <tr>
+                                <table class="table table-striped" id="mytab1">
+                                    <thead>
                                         <th>Tanggal</th>
                                         <th>Numerator</th>
                                         <th>Denumerator</th>
                                         <th>Hasil</th>
                                         <th>Keterangan</th>
-                                        <th></th>  
-                                    </tr>
-                                    <tr class="text-center">
+                                        <th></th>
+                                    </thead>
+                                    <tbody></tbody>
+                                    {{-- <tr class="text-center">
                                         <td>-</td>
                                         <td>-</td>
                                         <td>-</td>
@@ -148,38 +150,12 @@
                                             <div class="form-group">
                                                 <a href="" type="button" class="btn btn-info fa fa-pen"></a>
                                                 <a href="" type="button" class="btn btn-danger fa fa-trash"></a>
-                                            </div>                                    
+                                            </div>
                                         </td>
-                                    </tr>
-                                    <tr class="text-center">
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>
-                                            <div class="form-group">
-                                                <a href="" type="button" class="btn btn-info fa fa-pen"></a>
-                                                <a href="" type="button" class="btn btn-danger fa fa-trash"></a>
-                                            </div>                                    
-                                        </td>
-                                    </tr>
-                                    <tr class="text-center">
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>
-                                            <div class="form-group">
-                                                <a href="" type="button" class="btn btn-info fa fa-pen"></a>
-                                                <a href="" type="button" class="btn btn-danger fa fa-trash"></a>
-                                            </div>                                    
-                                        </td>
-                                    </tr>
+                                    </tr> --}}
                                 </table>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
