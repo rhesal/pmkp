@@ -4,12 +4,12 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="ModalLabel">{{ __("Create New Unit") }}</h4>
+                    <h4 class="modal-title" id="ModalLabel">{{ __("Create New Indikator") }}</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                
+
                 <div class="modal-body">
                     <div class="card-body" id="page">
                         <form action="" method="POST">
@@ -64,7 +64,7 @@
                                             {{ $message }}
                                         </div>
                                     @enderror
-                                </div>                              
+                                </div>
                             </div>
 
                             <div class="row">
@@ -78,11 +78,11 @@
                                         @error('status')
                                         <div class="invalid-feedback">
                                             {{ $message }}
-                                        </div>    
+                                        </div>
                                         @enderror
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary btn-lg btn-block" onclick="">
                                     Save
@@ -90,7 +90,7 @@
                             </div>
                         </form>
                     </div>
-                </div>     
+                </div>
             </div>
         </div>
     </div>

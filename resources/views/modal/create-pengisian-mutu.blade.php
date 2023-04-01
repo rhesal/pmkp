@@ -129,31 +129,39 @@
                                 <input type="month" onchange="get_bulan()" class="form-control col-md-3" id="start" name="start">
                             </div>
                             {{-- {{ $hasilList }} --}}
-                            <div class="form-row my-2">
-                                <table class="table table-striped" id="mytab1">
-                                    <thead>
-                                        <th>Tanggal</th>
-                                        <th>Numerator</th>
-                                        <th>Denumerator</th>
-                                        <th>Hasil</th>
-                                        <th>Keterangan</th>
-                                        <th></th>
-                                    </thead>
-                                    <tbody></tbody>
-                                    {{-- <tr class="text-center">
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>
-                                            <div class="form-group">
-                                                <a href="" type="button" class="btn btn-info fa fa-pen"></a>
-                                                <a href="" type="button" class="btn btn-danger fa fa-trash"></a>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table-striped table" id="mytab1">
+                                                <thead>
+                                                    <th>Tanggal</th>
+                                                    <th>Numerator</th>
+                                                    <th>Denumerator</th>
+                                                    <th>Hasil</th>
+                                                    <th>Keterangan</th>
+                                                    <th></th>
+                                                </thead>
+                                                <tbody></tbody>
+                                                </table>
+                                                {{-- <table class="table table-bordered data-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Tanggal</th>
+                                                            <th>Numerator</th>
+                                                            <th>Denumerator</th>
+                                                            <th>Hasil</th>
+                                                            <th>Keterangan</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table> --}}
                                             </div>
-                                        </td>
-                                    </tr> --}}
-                                </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>

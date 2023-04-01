@@ -21,6 +21,6 @@ class Penilaian extends Model
 
     public function indikator()
     {
-        return $this->belongsTo(Master_indikator::class);
+        // return $this->belongsTo(Master_indikator::class);
     }
 }

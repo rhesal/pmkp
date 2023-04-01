@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\Master_indikator;
 use Illuminate\Support\Facades\Session;
 use RealRashid\SweetAlert\Facades\Alert;
+use Yajra\DataTables\Facades\DataTables;
 
 class PenilaianController extends Controller
 {
@@ -62,14 +63,18 @@ class PenilaianController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request,string $id)
     {
         //dd($id);
         $penilaian = Penilaian::where('indikator_id', $id)->whereMonth('tanggal', Carbon::now()->month)->get();
-        //$penilaian = Penilaian::all();
         // dd($penilaian);
         return response()->json($penilaian);
-        //return view('pages.hasil-penilaian-mutu',['penilaianList' => $penilaian],['type_menu' => '']);
+
+        // if ($request->ajax()) {
+        //     $model = Penilaian::where('indikator_id', $id)->whereMonth('tanggal', Carbon::now()->month)->get();
+        //         return DataTables::eloquent($model)->toJson();
+        // }
+        // return view('indikator');
     }
 
     /**
