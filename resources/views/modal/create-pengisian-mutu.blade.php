@@ -126,39 +126,24 @@
                                 <h5><Label for="start">Periode Penilaian</Label></h5>
                             </div>
                             <div class="form-row">
-                                <input type="month" onchange="get_bulan()" class="form-control col-md-3" id="start" name="start">
+                                <input type="month" class="form-control col-md-3" id="sel-bln" name="sel-bln">
                             </div>
                             {{-- {{ $hasilList }} --}}
                             <div class="row">
                                 <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table-striped table" id="mytab1">
-                                                <thead>
-                                                    <th>Tanggal</th>
-                                                    <th>Numerator</th>
-                                                    <th>Denumerator</th>
-                                                    <th>Hasil</th>
-                                                    <th>Keterangan</th>
-                                                    <th></th>
-                                                </thead>
-                                                <tbody></tbody>
-                                                </table>
-                                                {{-- <table class="table table-bordered data-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Tanggal</th>
-                                                            <th>Numerator</th>
-                                                            <th>Denumerator</th>
-                                                            <th>Hasil</th>
-                                                            <th>Keterangan</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    </tbody>
-                                                </table> --}}
-                                            </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table-striped table" id="mytab1">
+                                            <thead>
+                                                <th>Tanggal</th>
+                                                <th>Numerator</th>
+                                                <th>Denumerator</th>
+                                                <th>Hasil</th>
+                                                <th>Keterangan</th>
+                                                <th></th>
+                                            </thead>
+                                            <tbody></tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>

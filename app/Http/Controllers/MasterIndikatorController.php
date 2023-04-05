@@ -39,7 +39,7 @@ class MasterIndikatorController extends Controller
         if ($indikator) {
             Session::flash('status','success');
             Session::flash('message','Add new indikator success !!');
-        }   
+        }
         return redirect('indikator');
     }
 
@@ -50,6 +50,13 @@ class MasterIndikatorController extends Controller
     {
         $unit = Master_indikator::with(['unit'])->findOrFail($id);
         return response()->json($unit);
+    }
+
+    public function indikatorByUnit($id)
+    {
+        $indikator = Master_indikator::where('unit_id', $id)->get();
+        //dd($indikator);
+        return response()->json($indikator);
     }
 
     /**
@@ -79,7 +86,7 @@ class MasterIndikatorController extends Controller
         if($deleteIndikator){
             Session::flash('status','success');
             Session::flash('message','Delete unit success!');
-        }      
+        }
         return redirect('indikator');
     }
 }

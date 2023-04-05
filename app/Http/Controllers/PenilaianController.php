@@ -63,11 +63,17 @@ class PenilaianController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request,string $id)
+    public function show(Request $request)
     {
-        //dd($id);
-        $penilaian = Penilaian::where('indikator_id', $id)->whereMonth('tanggal', Carbon::now()->month)->get();
-        // dd($penilaian);
+        //dd('tess');
+        $id = $request->input('data1');
+        $periode = explode("-",$request->input('data2'));
+        $thn = $periode[0];
+        $bln = $periode[1];
+
+        //$penilaian = Penilaian::where('indikator_id', $id)->whereMonth('tanggal', Carbon::now()->month)->get();
+        $penilaian = Penilaian::where('indikator_id', $id)->whereYear('tanggal', $thn)->whereMonth('tanggal', $bln)->get();
+        //dd($penilaian);
         return response()->json($penilaian);
 
         // if ($request->ajax()) {

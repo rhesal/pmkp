@@ -38,7 +38,12 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>All Indikator</h4>
+                                <h4>Indikator</h4>
+                                <select name="sel-unit" id="sel-unit">
+                                @foreach ($unitList as $item)
+                                    <option value="{{ $item->id }}">{{ $item->unit }}</option>
+                                @endforeach
+                                </select>
                             </div>
                             <div class="card-body">
                                 <div class="float-right">
@@ -55,59 +60,16 @@
                                 <div class="clearfix mb-3"></div>
 
                                 <div class="table-responsive">
-                                    <table class="table table-striped">
-                                        <tr>
+                                    <table class="table table-striped" id="tabIndikator">
+                                        <thead>
                                             <th>No</th>
-                                            <th>Unit</th>
                                             <th>Indikator</th>
                                             <th>Jenis Indikator</th>
                                             <th>Nilai Standar</th>
                                             <th>Satuan Pengukuran</th>
                                             <th>Status</th>
-                                        </tr>
-                                        @forelse ($indikatorList as $index => $data)
-                                            <tr class="text-center">
-                                                <td>{{ $index + $indikatorList->firstItem() }}</td>
-                                                {{-- <td>{{ $loop->iteration }}</td> --}}
-                                                <td class="col-1">{{ $data->unit->unit }}</td>
-                                                <td class="col-5 text-left">{{ $data->indikator }}
-                                                    <div class="table-links">
-                                                        <a href="javascript:void(0)" id="show-unit"
-                                                            data-url1="{{ route('indikator.show', $data->id) }}"
-                                                            data-url2="{{ route('penilaian.show', $data->id) }}"
-                                                            data-toggle="modal" data-target="#ModalCreatePengisian"
-                                                            data-backdrop="static">Penilaian</a>
-                                                        {{-- <a href="javascript:void(0)" id="show-unit" onclick="fung_data({{ $data->id }})" data-toggle="modal" data-target="#ModalCreatePengisian">View</a> --}}
-                                                        <div class="bullet"></div>
-                                                        <a href="#">Edit</a>
-                                                        <div class="bullet"></div>
-                                                        <a href="/indikator-destroy/{{ $data->id }}" type="button"
-                                                            class="text-danger">Delete</a>
-                                                    </div>
-                                                </td>
-                                                <td>{{ $data->jenis_indikator }}</td>
-                                                <td>{{ $data->nilai_standar }}</td>
-                                                <td>
-                                                    @if ($data->satuan_pengukuran == '%')
-                                                        Persentase (%)
-                                                    @else
-                                                        <span class="text-capitalize">{{ $data->satuan_pengukuran }}</span>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($data->status == 'Active')
-                                                        <div class="badge badge-success">Active</div>
-                                                    @else
-                                                        <div class="badge badge-warning">Non Active</div>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="7" class="bg-danger text-center text-white">No Data Found
-                                                </td>
-                                            </tr>
-                                        @endforelse
+                                        </thead>
+                                        <tbody></tbody>
                                     </table>
                                 </div>
                                 <div class="float-right">
@@ -146,12 +108,57 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+            $('body').on('change', '#sel-unit', function() {
+                var id = $(this).val();
+                console.log(id);
+
+                $.ajax({
+                    url: 'indikatorbyunit/'+id,
+                    type: 'GET',
+                    dataType: 'JSON',
+                    success: function(data){
+                        console.log(data);
+                        var table = document.getElementById("tabIndikator");
+                        var html1 = "";
+                        for (let i = 0; i < data.length; i++) {
+                            html1 += `<tr>
+                                        <td>${i+1}</td>
+                                        <td>${data[i].indikator}
+                                            <div class="table-links">
+                                                <a href="javascript:void(0)" id="show-unit"
+                                                            data-url1="indikator-show/${data[i].id}"
+                                                            data-url2="penilaian-show/${data[i].id}"
+                                                            data-toggle="modal" data-target="#ModalCreatePengisian"
+                                                            data-backdrop="static">Penilaian</a>
+                                                <div class="bullet"></div>
+                                                <a href="${data[i].id}">Edit</a>
+                                                <div class="bullet"></div>
+                                                <a href="#" type="button" class="text-danger">Delete</a>
+                                            </div>
+                                        </td>
+                                        <td>${data[i].jenis_indikator}</td>
+                                        <td>${data[i].nilai_standar}</td>
+                                        <td>${data[i].satuan_pengukuran}</td>
+                                        <td>${data[i].status}</td>
+                                    </tr>`;
+                        }
+                        table.getElementsByTagName('tbody')[0].innerHTML = html1;
+                    }
+                });
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+            });
+
             $('body').on('click', '#show-unit', function() {
                 var unitURL = $(this).data('url1');
-                var penilaianURL = $(this).data('url2');
+                //var penilaianURL = $(this).data('url2');
 
                 console.log(unitURL);
-                console.log(penilaianURL);
+                //console.log(penilaianURL);
                 $.get(unitURL, function(data) {
                     $('#ModalCreatePengisian').modal('show');
                     $('#unit-name').text(data.unit.unit)
@@ -171,25 +178,21 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
+            });
 
-                // $('.data-table').DataTable({
-                // processing: true,
-                // serverSide: true,
-                // ajax: {
-                //             url: "{{ route('penilaian.show', $data->id) }}",
-                //             data: function (d) {
-                //                 d._token = "{{ csrf_token() }}";
-                //             }
-                //         },
-                // columns:[
-                //             {data: 'id', name: 'id'},
-                //             {data: 'title', name: 'title'},
-                //             {data: 'users', name: 'users.name'},
-                //         ]
+            $('body').on('change', '#sel-bln', function() {
+                var bln = $(this).val();
+                var id = document.getElementById('indikator-id').value;
+                console.log(bln);
+                console.log('penilaian-show/' + document.getElementById('indikator-id').value);
 
                 $.ajax({
                     type: "GET",
-                    url: penilaianURL,
+                    url: 'penilaian-show/',
+                    data:{
+                            data1: id,
+                            data2: bln
+                        },
                     dataType: "JSON",
                     success: function(data) {
                         var table = document.getElementById("mytab1");
@@ -212,6 +215,13 @@
                         table.getElementsByTagName('tbody')[0].innerHTML = html1;
                     }
                 });
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
             });
         });
 

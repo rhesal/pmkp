@@ -40,12 +40,15 @@ Route::middleware(['auth','verified'])->group(function (){
     Route::resource('indikator', MasterIndikatorController::class);
     Route::post('/indikator-store', [MasterIndikatorController::class, 'store']);
     Route::get('/indikator-destroy/{id}', [MasterIndikatorController::class, 'destroy']);
-    //Route::get('indikator/{id}', [MasterIndikatorController::class, 'show'])->name('indikator.show');
+    Route::get('indikator-show/{id}', [MasterIndikatorController::class, 'show']);
+    Route::get('indikatorbyunit/{id}', [MasterIndikatorController::class, 'indikatorByUnit']);
 
     Route::resource('penilaian', PenilaianController::class);
-    Route::get('/penilaian-show/{id}', [PenilaianController::class, 'show'])->name('penilaian.show');
-    //Route::get('/penilaian-show/{id}', 'App\Http\Controllers\PenilaianController@show')->name('penilaian.show');
+    Route::get('penilaian-show/{id}', [PenilaianController::class, 'show'])->name('penilaian.show');
+    Route::get('penilaian-show', [PenilaianController::class, 'show'])->name('penilaian.show');
     //Route::post('/my-controller-method', [PenilaianController::class, 'myMethod']);
     Route::post('/penilaian-store', [PenilaianController::class, 'store']);
     //Route::post('/penilaian-store', 'App\Http\Controllers\PenilaianController@store');
+
+
 });
