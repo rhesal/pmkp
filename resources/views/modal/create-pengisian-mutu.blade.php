@@ -133,7 +133,7 @@
                                 <div class="col-12">
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table-striped table" id="mytab1">
+                                            <table class="table-striped table" id="mytab1" width='100%' style='border-collapse: collapse;'>
                                             <thead>
                                                 <th>Tanggal</th>
                                                 <th>Numerator</th>
@@ -148,7 +148,18 @@
                                     </div>
                                 </div>
                             </div>
-
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-6 w-100 p-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Line Chart</h4>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="myChart"></canvas>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

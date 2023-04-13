@@ -30,8 +30,11 @@ Route::middleware(['auth','verified'])->group(function (){
         return view('pages.profile',['type_menu' => '']);
     })->name('profile.edit');
 
+    Route::get('/homes', [MasterUnitController::class, 'home']);
+
     Route::resource('user', UserController::class);
     Route::resource('unit', MasterUnitController::class);
+    Route::get('/getUnit', [MasterUnitController::class, 'getUnit'])->name('getUnit');
     Route::get('/unit-create', [MasterUnitController::class, 'create']);
     Route::post('/unit-store', [MasterUnitController::class, 'store']);
     Route::get('/unit-destroy/{id}', [MasterUnitController::class, 'destroy']);
@@ -44,7 +47,7 @@ Route::middleware(['auth','verified'])->group(function (){
     Route::get('indikatorbyunit/{id}', [MasterIndikatorController::class, 'indikatorByUnit']);
 
     Route::resource('penilaian', PenilaianController::class);
-    Route::get('penilaian-show/{id}', [PenilaianController::class, 'show'])->name('penilaian.show');
+    //Route::get('penilaian-show/{id}', [PenilaianController::class, 'show'])->name('penilaian.show');
     Route::get('penilaian-show', [PenilaianController::class, 'show'])->name('penilaian.show');
     //Route::post('/my-controller-method', [PenilaianController::class, 'myMethod']);
     Route::post('/penilaian-store', [PenilaianController::class, 'store']);

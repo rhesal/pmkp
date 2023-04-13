@@ -11,6 +11,7 @@ use App\Models\Master_indikator;
 use Illuminate\Support\Facades\Session;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\DB;
 
 class PenilaianController extends Controller
 {
@@ -20,9 +21,9 @@ class PenilaianController extends Controller
     public function index()
     {
         //$penilaian = Penilaian::with('indikator')->get();
-        $penilaian = Master_indikator::with('nilai_mutu','nilai_mutu.tanggal')->get();
-        $unit = Master_unit::select('id','unit')->get();
-        return view('pages.hasil-penilaian-mutu',['penilaianList' => $penilaian, 'unitList' => $unit],['type_menu' => '']);
+        // $penilaian = Master_indikator::with('nilai_mutu','nilai_mutu.tanggal')->get();
+        // $unit = Master_unit::select('id','unit')->get();
+        return view('pages.hasil-penilaian-mutu',/*['penilaianList' => $penilaian, 'unitList' => $unit],*/['type_menu' => '']);
     }
 
     /**
@@ -30,7 +31,7 @@ class PenilaianController extends Controller
      */
     public function create()
     {
-        dd();
+
     }
 
     /**
@@ -65,22 +66,110 @@ class PenilaianController extends Controller
      */
     public function show(Request $request)
     {
-        //dd('tess');
         $id = $request->input('data1');
         $periode = explode("-",$request->input('data2'));
         $thn = $periode[0];
         $bln = $periode[1];
 
-        //$penilaian = Penilaian::where('indikator_id', $id)->whereMonth('tanggal', Carbon::now()->month)->get();
-        $penilaian = Penilaian::where('indikator_id', $id)->whereYear('tanggal', $thn)->whereMonth('tanggal', $bln)->get();
-        //dd($penilaian);
-        return response()->json($penilaian);
+        //datatables
+        ## Read value
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // Rows display per page
 
-        // if ($request->ajax()) {
-        //     $model = Penilaian::where('indikator_id', $id)->whereMonth('tanggal', Carbon::now()->month)->get();
-        //         return DataTables::eloquent($model)->toJson();
-        // }
-        // return view('indikator');
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+
+        // Total records
+        $totalRecords = Penilaian::select('count(*) as allcount')
+                                    ->where('indikator_id', $id)->whereYear('tanggal', $thn)->whereMonth('tanggal', $bln)
+                                    ->count();
+        $totalRecordswithFilter = Penilaian::select('count(*) as allcount')
+                                            ->where('indikator_id', $id)->whereYear('tanggal', $thn)->whereMonth('tanggal', $bln)
+                                            ->where('tanggal', 'like', '%' .$searchValue . '%')
+                                            ->count();
+
+        // Fetch records
+        $records = Penilaian::orderBy($columnName,$columnSortOrder)
+                ->where('nilai_mutu.tanggal', 'like', '%' .$searchValue . '%')
+                ->where('indikator_id', $id)->whereYear('tanggal', $thn)->whereMonth('tanggal', $bln)
+                ->skip($start)
+                ->take($rowperpage)
+                ->get();
+
+        $compare = Master_indikator::where('id',$id)->get();
+
+        $data_arr = array();
+
+        $keterangan = "";
+        $standar = "";
+
+        foreach($records as $record){
+            $standar = $record->nilai_standar;
+        }
+
+        foreach($records as $record){
+            $id = $record->id;
+            $tanggal = $record->tanggal;
+            $numerator = $record->numerator;
+            $denumerator = $record->denumerator;
+            $hasil = $record->hasil;
+
+            $myStandar = (int) preg_replace('/[^0-9]/', '', $standar);
+            $myHasil = (int) preg_replace('/[^0-9]/', '', $hasil);
+
+            if ($myHasil < $myStandar) {
+                $keterangan = "TIDAK TERCAPAI";
+            } else {
+                $keterangan = "TERCAPAI";
+            }
+
+            $data_arr[] = array(
+                "tanggal" => $tanggal,
+                "numerator" => $numerator,
+                "denumerator" => $denumerator,
+                "hasil" => $hasil,
+                "keterangan" => $keterangan
+            );
+        }
+
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $data_arr
+        );
+
+        return response()->json($response);
+
+        // $penilaian = Penilaian::where('indikator_id', $id)->whereYear('tanggal', $thn)->whereMonth('tanggal', $bln)->get();
+        // return response()->json($penilaian);
+    }
+    public function chart(Request $request)
+    {
+        $id = $request->input('data1');
+        $periode = explode("-",$request->input('data2'));
+        $thn = $periode[0];
+        $bln = $periode[1];
+
+        $hasil = Penilaian::select(DB::raw("hasil as hasil"), DB::raw("DAYNAME(tanggal) as date_name"))
+                    ->where('indikator_id', $id)->whereYear('tanggal', $thn)->whereMonth('tanggal', $bln)
+                    ->groupBy(DB::raw("month_name"))
+                    ->orderBy('tanggal','ASC')
+                    ->pluck('hasil', 'date_name');
+
+        $labels = $hasil->keys();
+        $data = $hasil->values();
+
+        return view('pages.indikator', compact('labels', 'data'));
     }
 
     /**

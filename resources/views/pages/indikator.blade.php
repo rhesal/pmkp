@@ -6,11 +6,17 @@
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('library/bootstrap-daterangepicker/daterangepicker.css') }}">
     <link rel="stylesheet" href="{{ asset('library/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('library/select2/dist/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/selectric/public/selectric.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/select2/dist/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}">
     <link rel="stylesheet" href="{{ asset('library/datatables/media/css/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/prismjs/themes/prism.min.css') }}">
+    <style>
+        .dt-justify {
+            text-align: justify;
+        }
+    </style>
 @endpush
 
 @section('main')
@@ -38,8 +44,9 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Indikator</h4>
-                                <select name="sel-unit" id="sel-unit">
+                                <h4>Indikator Unit</h4>
+                                <select name="sel-unit" id="sel-unit" class="form-control" style="width: 300px; position: relative;
+                                cursor: pointer; !important;">
                                 @foreach ($unitList as $item)
                                     <option value="{{ $item->id }}">{{ $item->unit }}</option>
                                 @endforeach
@@ -61,7 +68,7 @@
 
                                 <div class="table-responsive">
                                     <table class="table table-striped" id="tabIndikator">
-                                        <thead>
+                                        <thead style="text-align:center">
                                             <th>No</th>
                                             <th>Indikator</th>
                                             <th>Jenis Indikator</th>
@@ -72,13 +79,13 @@
                                         <tbody></tbody>
                                     </table>
                                 </div>
-                                <div class="float-right">
+                                {{-- <div class="float-right">
                                     <nav>
                                         <ul class="pagination">
                                             {{ $indikatorList->withQueryString()->links() }}
                                         </ul>
                                     </nav>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -97,17 +104,22 @@
     <script src="{{ asset('library/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js') }}"></script>
     <script src="{{ asset('library/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
     <script src="{{ asset('library/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') }}"></script>
-    <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
+    <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('library/datatables/media/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('library/jquery-ui-dist/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('library/prismjs/prism.js') }}"></script>
+    <script src="{{ asset('library/chart.js/dist/Chart.min.js') }}"></script>
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/forms-advanced-forms.js') }}"></script>
+    <script src="{{ asset('js/page/bootstrap-modal.js') }}"></script>
     <script src="{{ asset('js/page/modules-datatables.js') }}"></script>
+    <script src="{{ asset('js/page/modules-chartjs.js') }}"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {
+            var table = '';
             $('body').on('change', '#sel-unit', function() {
                 var id = $(this).val();
                 console.log(id);
@@ -121,6 +133,12 @@
                         var table = document.getElementById("tabIndikator");
                         var html1 = "";
                         for (let i = 0; i < data.length; i++) {
+                            var pengukuran = "";
+                            if(data[i].satuan_pengukuran=="%"){
+                                pengukuran = "Persentase(%)";
+                            }else{
+                                pengukuran = data[i].satuan_pengukuran;
+                            }
                             html1 += `<tr>
                                         <td>${i+1}</td>
                                         <td>${data[i].indikator}
@@ -136,10 +154,10 @@
                                                 <a href="#" type="button" class="text-danger">Delete</a>
                                             </div>
                                         </td>
-                                        <td>${data[i].jenis_indikator}</td>
-                                        <td>${data[i].nilai_standar}</td>
-                                        <td>${data[i].satuan_pengukuran}</td>
-                                        <td>${data[i].status}</td>
+                                        <td style="text-align:center">${data[i].jenis_indikator}</td>
+                                        <td style="text-align:center">${data[i].nilai_standar}</td>
+                                        <td style="text-align:center">${pengukuran}</td>
+                                        <td style="text-align:center"><div class="badge badge-success">${data[i].status}</div></td>
                                     </tr>`;
                         }
                         table.getElementsByTagName('tbody')[0].innerHTML = html1;
@@ -160,6 +178,14 @@
                 console.log(unitURL);
                 //console.log(penilaianURL);
                 $.get(unitURL, function(data) {
+                    const date = new Date();
+
+                    let day = date.getDate();
+                    let month = ("0" + (date.getMonth() + 1)).slice(-2);
+                    let year = date.getFullYear();
+                    let currentDate = `${year}-${month}`;
+
+                    $('#sel-bln').val(currentDate)
                     $('#ModalCreatePengisian').modal('show');
                     $('#unit-name').text(data.unit.unit)
                     $('#unit-indikator').text(data.indikator)
@@ -171,6 +197,7 @@
                     $('#denumerator').text(data.denumerator)
 
                     document.getElementById('indikator-id').value = data.id
+                    gettabel(currentDate)
                 })
 
                 $.ajaxSetup({
@@ -182,47 +209,60 @@
 
             $('body').on('change', '#sel-bln', function() {
                 var bln = $(this).val();
+                // table.draw();
+                gettabel(bln)
+            });
+
+            function gettabel(bln){
+                // var bln = $(this).val();
                 var id = document.getElementById('indikator-id').value;
+                console.log(id);
                 console.log(bln);
                 console.log('penilaian-show/' + document.getElementById('indikator-id').value);
 
-                $.ajax({
-                    type: "GET",
-                    url: 'penilaian-show/',
-                    data:{
-                            data1: id,
-                            data2: bln
-                        },
-                    dataType: "JSON",
-                    success: function(data) {
-                        var table = document.getElementById("mytab1");
-                        var html1 = "";
-                        for (let i = 0; i < data.length; i++) {
-                            html1 += `<tr>
-                                        <td>${data[i].tanggal}</td>
-                                        <td>${data[i].numerator}</td>
-                                        <td>${data[i].denumerator}</td>
-                                        <td>${data[i].hasil}</td>
-                                        <td>-</td>
-                                        <td>
-                                            <div class="form-group">
-                                                <a href="" type="button" class="btn btn-info fa fa-pen"></a>
-                                                <a href="" type="button" class="btn btn-danger fa fa-trash"></a>
-                                            </div>
-                                        </td>
-                                    </tr>`;
-                        }
-                        table.getElementsByTagName('tbody')[0].innerHTML = html1;
-                    }
+                // DataTable
+                $('#mytab1').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    bDestroy: true,
+				    ordering: true,
+                    ajax:{
+                        type: "GET",
+                        url: "{{route('penilaian.show')}}",
+                        data:{
+                                data1: id,
+                                data2: bln
+                            },
+                    },
+                    deferRender: true,
+				    aLengthMenu: [
+                                    [5, 25, 50, 100],
+                                    [5, 25, 50, 100]
+				                ],
+                    columns: [
+                        { data: 'tanggal',width: '15%', className: "text-center"},
+                        { data: 'numerator',width: '15%', className: "text-center" },
+                        { data: 'denumerator',width: '15%', className: "text-center" },
+                        { data: 'hasil',width: '15%', className: "text-center" },
+                        { data: 'keterangan',width: '15%', className: "text-center" },
+                        { data: 'action', name: 'action', orderable: false, searchable: false, className: "text-center" },
+                    ],
+                    columnDefs: [{
+                                    targets: 5, // kolom ke-4 (kolom action)
+                                    render: function(data, type, row, meta) {
+                                        var html =
+                                            '<a href="url/to/edit/page/' + row.id + '" class="btn btn-info fa fa-pen"></a>' +
+                                            '<span>&nbsp;</span>'+
+                                            '<a href="url/to/delete/' + row.id + '" class="btn btn-danger fa fa-trash"></a>';
+                                    return html;
+                                    }
+                                }]
                 });
+            }
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-            });
+            function getChart(bln){
+                
+            }
         });
 
         function percentage() {

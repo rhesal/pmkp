@@ -75,12 +75,12 @@
                                             @else
                                                 <div class="badge badge-warning">Non Active</div>
                                             @endif
-                                        </td>    
+                                        </td>
                                     </tr>    
                                 @empty
                                     <tr>
                                         <td colspan="5" class="bg-danger text-center text-white">No Data Found</td>
-                                    </tr>    
+                                    </tr>
                                 @endforelse
                             </table>
                         </div>
@@ -113,7 +113,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-        
+
             /*------------------------------------------
             --------------------------------------------
             When click user on Show Button
@@ -133,7 +133,7 @@
                         }
                     });
                 }
-            });   
-        });      
+            });
+        });
     </script>
 @endpush

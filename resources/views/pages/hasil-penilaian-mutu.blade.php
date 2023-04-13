@@ -77,9 +77,9 @@
                                     <td>{{ $data->indikator }}</td>
                                     <td>{{ $data->jenis_indikator }}</td>
                                     <td>{{ $data->nilai_standar }}{{ $data->satuan_pengukuran }}</td>
-                                    {{-- @foreach ($data->hasil as $item)
+                                    @foreach ($data->hasil as $item)
                                         <td>{{ $item }}</td>
-                                    @endforeach --}}
+                                    @endforeach
                                 </tr>
                                 @empty
                                 <tr>
