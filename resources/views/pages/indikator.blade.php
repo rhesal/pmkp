@@ -12,11 +12,6 @@
     <link rel="stylesheet" href="{{ asset('library/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}">
     <link rel="stylesheet" href="{{ asset('library/datatables/media/css/jquery.dataTables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/prismjs/themes/prism.min.css') }}">
-    <style>
-        .dt-justify {
-            text-align: justify;
-        }
-    </style>
 @endpush
 
 @section('main')
@@ -104,18 +99,18 @@
     <script src="{{ asset('library/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js') }}"></script>
     <script src="{{ asset('library/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
     <script src="{{ asset('library/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') }}"></script>
-    <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
     <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
     <script src="{{ asset('library/datatables/media/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('library/jquery-ui-dist/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('library/prismjs/prism.js') }}"></script>
-    <script src="{{ asset('library/chart.js/dist/Chart.min.js') }}"></script>
+    {{-- <script src="{{ asset('library/jquery-ui-dist/jquery-ui.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('library/prismjs/prism.js') }}"></script> --}}
+    {{-- <script src="{{ asset('library/chart.js/dist/Chart.min.js') }}"></script> --}}
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/forms-advanced-forms.js') }}"></script>
     <script src="{{ asset('js/page/bootstrap-modal.js') }}"></script>
     <script src="{{ asset('js/page/modules-datatables.js') }}"></script>
-    <script src="{{ asset('js/page/modules-chartjs.js') }}"></script>
+    {{-- <script src="{{ asset('js/page/modules-chartjs.js') }}"></script> --}}
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -211,6 +206,7 @@
                 var bln = $(this).val();
                 // table.draw();
                 gettabel(bln)
+                getChart(bln)
             });
 
             function gettabel(bln){
@@ -261,7 +257,42 @@
             }
 
             function getChart(bln){
-                
+                var id = document.getElementById('indikator-id').value;
+                $.ajax({
+                    url: "{{route('chart')}}",
+                    type: 'GET',
+                    dataType: 'JSON',
+                    data:{
+                        data1: id,
+                        data2: bln
+                    },
+                    success: function(item){
+                        console.log(item)
+                        var labels =  item.labels;
+                        var users =  item.datas;
+                        console.log(labels)
+                        const hasil = {
+                            labels: labels,
+                            datasets: [{
+                                label: 'My First dataset',
+                                backgroundColor: 'rgb(255, 99, 132)',
+                                borderColor: 'rgb(255, 99, 132)',
+                                data: users,
+                            }]
+                        };
+
+                        const config = {
+                            type: 'line',
+                            data: hasil,
+                            options: {}
+                        };
+
+                        const myChart = new Chart(
+                            document.getElementById('myChart'),
+                            config
+                            );
+                    }
+                });
             }
         });
 

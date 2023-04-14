@@ -49,6 +49,7 @@ Route::middleware(['auth','verified'])->group(function (){
     Route::resource('penilaian', PenilaianController::class);
     //Route::get('penilaian-show/{id}', [PenilaianController::class, 'show'])->name('penilaian.show');
     Route::get('penilaian-show', [PenilaianController::class, 'show'])->name('penilaian.show');
+    Route::get('chart', [PenilaianController::class, 'chart'])->name('chart');
     //Route::post('/my-controller-method', [PenilaianController::class, 'myMethod']);
     Route::post('/penilaian-store', [PenilaianController::class, 'store']);
     //Route::post('/penilaian-store', 'App\Http\Controllers\PenilaianController@store');

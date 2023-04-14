@@ -70,7 +70,12 @@
                                 <div class="form-group mb-0">
                                     <label class="align-top">:</label>
                                 </div>
-                                <div class="form-group col-9 mb-0">
+                                <div class="form-group input-group col-9 mb-0">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-calendar"></i>
+                                        </div>
+                                    </div>
                                     <input name="tanggal" type="text" class="form-control datepicker align-top">
                                 </div>
                             </div>
@@ -98,7 +103,7 @@
                                     <input name="denumerator" id="denum" type="number" class="form-control" placeholder="Nilai denumerator" onkeyup="percentage()">
                                 </div>
                             </div>
-                            <div class="form-row mx-0" style="max-width: 100%" hidden>
+                            <div class="form-row mx-0" style="max-width: 100%">
                                 <div class="form-group col-md-2 mb-0">
                                     <label class="align-top font-weight-bold">Hasil</label>
                                 </div>
@@ -106,7 +111,7 @@
                                     <label class="align-top">:</label>
                                 </div>
                                 <div class="form-group col-9 mb-0">
-                                    <input name="indikator_id" id="indikator-id" type="text" class="form-control">
+                                    <input name="indikator_id" id="indikator-id" type="text" class="form-control" hidden>
                                     <input name="hasil" id="hasil" type="text" class="form-control">
                                 </div>
                             </div>
@@ -151,7 +156,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12 col-md-6 col-lg-6 w-100 p-3">
+                        <div class="col-12 col-md-12">
                             <div class="card">
                                 <div class="card-header">
                                     <h4>Line Chart</h4>
