@@ -160,11 +160,11 @@ class PenilaianController extends Controller
         $thn = $periode[0];
         $bln = $periode[1];
 
-        $hasil = Penilaian::select('hasil', DB::raw("DAY(tanggal) as tanggal"))
+        $hasil = Penilaian::select('tanggal')->selectRaw("REPLACE(hasil, '%', '') as hasil")
                     ->where('indikator_id', $id)->whereYear('tanggal', $thn)->whereMonth('tanggal', $bln)
                     ->orderBy('tanggal','ASC')
                     ->pluck('hasil', 'tanggal');
-        //dd($hasil);
+        
         $labels = $hasil->keys();
         $datas = $hasil->values();
 
@@ -173,7 +173,6 @@ class PenilaianController extends Controller
             "datas" => $datas
         );
 
-        // return view('pages.indikator', compact('labels', 'datas'));
         return response()->json($response);
     }
 

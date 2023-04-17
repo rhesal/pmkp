@@ -17,7 +17,7 @@ class MasterIndikatorController extends Controller
     {
         $indikator = Master_indikator::with('unit')->paginate(10);
         $indikatorGet = Master_indikator::with('unit')->get();
-        $unit = Master_unit::select('id','unit')->get();
+        $unit = Master_unit::select('id','unit')->orderBy('unit','ASC')->get();
         return view('pages.indikator',['indikatorList' => $indikator, 'unitList' => $unit, 'indikatorGet' => $indikatorGet],['type_menu' => '']);
     }
 

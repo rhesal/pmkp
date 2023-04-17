@@ -193,6 +193,7 @@
 
                     document.getElementById('indikator-id').value = data.id
                     gettabel(currentDate)
+                    getChart(currentDate)
                 })
 
                 $.ajaxSetup({
@@ -204,7 +205,6 @@
 
             $('body').on('change', '#sel-bln', function() {
                 var bln = $(this).val();
-                // table.draw();
                 gettabel(bln)
                 getChart(bln)
             });
@@ -258,9 +258,20 @@
 
             function getChart(bln){
                 var id = document.getElementById('indikator-id').value;
+
+                const date = new Date();
+                let day = date.getDate();
+                var bln1 = new Date(bln+'-'+day);
+                const nameBln = bln1.toLocaleString('id-ID', { month: 'long' });
+                console.log(nameBln);
+
                 $.ajax({
                     url: "{{route('chart')}}",
                     type: 'GET',
+                    processing: true,
+                    serverSide: true,
+                    bDestroy: true,
+                    ordering: true,
                     dataType: 'JSON',
                     data:{
                         data1: id,
@@ -268,40 +279,76 @@
                     },
                     success: function(item){
                         console.log(item)
-                        var labels =  item.labels;
-                        var users =  item.datas;
+                        const labels =  item.labels;
+                        const datas =  item.datas;
                         console.log(labels)
+
                         const hasil = {
                             labels: labels,
                             datasets: [{
-                                label: 'My First dataset',
+                                label: 'Hasil',
+                                data: datas,
                                 backgroundColor: 'rgb(255, 99, 132)',
                                 borderColor: 'rgb(255, 99, 132)',
-                                data: users,
                             }]
                         };
 
                         const config = {
                             type: 'line',
                             data: hasil,
-                            options: {}
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        position: 'top',
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'Grafik Penilaian Unit Bulan '+nameBln,
+                                    }
+                                }
+                            }
                         };
 
-                        const myChart = new Chart(
-                            document.getElementById('myChart'),
-                            config
-                            );
+                        var my_Chart = $('#myChart').get(0).getContext('2d');
+                        if (typeof myChartDraw != 'undefined') {
+                            myChartDraw.destroy();
+                        }
+                        myChartDraw = new Chart(my_Chart, config);
+
+
                     }
                 });
             }
         });
 
+        function clearInput() {
+            // Reset the value of the input field
+            document.getElementById("num").value = '';
+            document.getElementById("denum").value = '';
+            document.getElementById("indikator-id").value = '';
+            document.getElementById("hasil").value = '';
+        }
+
         function percentage() {
             var txtNumValue = document.getElementById('num').value;
             var txtDenumValue = document.getElementById('denum').value;
-            var result = (parseInt(txtNumValue) / parseInt(txtDenumValue)) * 100 / 100;
-            if (!isNaN(result)) {
-                document.getElementById('hasil').value = result.toFixed(2) + "%";
+
+            if(txtNumValue==null || txtDenumValue==null){
+                document.getElementById('hasil').value = "";
+            }else{
+                if(txtNumValue==0 && txtDenumValue==0){
+                    document.getElementById('hasil').value = "0%";
+                }else{
+                    var result = (parseInt(txtNumValue) / parseInt(txtDenumValue)) * 100 / 100;
+                    if (!isNaN(result)) {
+                        if(!isFinite(result)){
+                            document.getElementById('hasil').value = "0%";
+                        }else{
+                            document.getElementById('hasil').value = result.toFixed(2) + "%";
+                        }
+                    }
+                }
             }
         }
     </script>

@@ -31,6 +31,7 @@ Route::middleware(['auth','verified'])->group(function (){
     })->name('profile.edit');
 
     Route::get('/homes', [MasterUnitController::class, 'home']);
+    Route::get('/list-homes', [MasterUnitController::class, 'listHome'])->name('unit.listHome');
 
     Route::resource('user', UserController::class);
     Route::resource('unit', MasterUnitController::class);

@@ -9,10 +9,11 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Pengisian Numerator & Denumerator - Unit <span id="unit-name"></span></h5>
-                    <button type="button"
+                    <button id="close-btn"
+                        type="button"
                         class="close"
                         data-dismiss="modal"
-                        aria-label="Close">
+                        aria-label="Close" onclick="clearInput()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -103,7 +104,7 @@
                                     <input name="denumerator" id="denum" type="number" class="form-control" placeholder="Nilai denumerator" onkeyup="percentage()">
                                 </div>
                             </div>
-                            <div class="form-row mx-0" style="max-width: 100%">
+                            <div class="form-row mx-0" style="max-width: 100%" hidden>
                                 <div class="form-group col-md-2 mb-0">
                                     <label class="align-top font-weight-bold">Hasil</label>
                                 </div>
@@ -111,7 +112,7 @@
                                     <label class="align-top">:</label>
                                 </div>
                                 <div class="form-group col-9 mb-0">
-                                    <input name="indikator_id" id="indikator-id" type="text" class="form-control" hidden>
+                                    <input name="indikator_id" id="indikator-id" type="text" class="form-control">
                                     <input name="hasil" id="hasil" type="text" class="form-control">
                                 </div>
                             </div>
@@ -158,9 +159,6 @@
                     <div class="row">
                         <div class="col-12 col-md-12">
                             <div class="card">
-                                <div class="card-header">
-                                    <h4>Line Chart</h4>
-                                </div>
                                 <div class="card-body">
                                     <canvas id="myChart"></canvas>
                                 </div>
@@ -169,9 +167,10 @@
                     </div>
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
-                    <button type="button"
+                    <button id="close-btn"
+                        type="button"
                         class="btn btn-secondary"
-                        data-dismiss="modal">Close</button>
+                        data-dismiss="modal" onclick="clearInput()">Close</button>
                 </div>
             </div>
         </div>
