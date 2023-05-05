@@ -322,6 +322,35 @@
             }
         });
 
+        // function simpan_penilaian() {
+        //     var data = {
+        //                 tanggal: $('#tanggal').val(),
+        //                 id: $('#indikator-id').val(),
+        //                 num: $('#num').val(),
+        //                 denum: $('#denum').val(),
+        //                 hasil: $('#hasil').val(),
+        //     };
+        //     console.log(data);
+
+        //     $.ajaxSetup({
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         }
+        //     });
+
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: '/penilaian-store',
+        //         data: data,
+        //         success: function(response) {
+        //             console.log('Data berhasil disimpan');
+        //         },
+        //         error: function(xhr, status, error) {
+        //             console.log('Error:', error);
+        //         }
+        //     });
+        // }
+
         function clearInput() {
             // Reset the value of the input field
             document.getElementById("num").value = '';

@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Penilaian;
 use App\Models\Master_unit;
+use App\Models\Master_indikator;
 
 use Illuminate\Http\Request;
-use App\Models\Master_indikator;
 use Illuminate\Support\Facades\Session;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables;
@@ -22,8 +22,44 @@ class PenilaianController extends Controller
     {
         //$penilaian = Penilaian::with('indikator')->get();
         // $penilaian = Master_indikator::with('nilai_mutu','nilai_mutu.tanggal')->get();
-        // $unit = Master_unit::select('id','unit')->get();
-        return view('pages.hasil-penilaian-mutu',/*['penilaianList' => $penilaian, 'unitList' => $unit],*/['type_menu' => '']);
+        $unit = Master_unit::select('id','unit')->orderBy('unit','ASC')->get();
+        return view('pages.hasil-penilaian-mutu',['unitList' => $unit],['type_menu' => '']);
+    }
+
+    public function rekapitulasi(Request $request)
+    {
+        $id = $request->input('data1');
+        // $periode = explode("-",$request->input('data2'));
+        // $thn = $periode[0];
+        // $bln = $periode[1];
+        //dd($id);
+        //dd($id." | ".$bln."-".$thn);
+
+        //$unit = Master_indikator::with(['unit'])->findOrFail($id);
+        $records = Master_indikator::where('unit_id',$id)->get();
+        //dd($unit);
+
+        foreach($records as $record){
+            //$id = $record->id;
+            $indikator = $record->indikator;
+            $jenis = $record->jenis_indikator;
+            $standar = $record->nilai_standar;
+
+            $data_arr[] = array(
+                "indikator" => $indikator,
+                "jenis_indikator" => $jenis,
+                "nilai_standar" => $standar
+            );
+        }
+
+        $response = array(
+            // "draw" => intval($draw),
+            // "iTotalRecords" => $totalRecords,
+            // "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $data_arr
+        );
+
+        return response()->json($response);
     }
 
     /**
@@ -46,6 +82,27 @@ class PenilaianController extends Controller
             Session::flash('message','Add new indikator success !!');
         }
         return redirect('indikator');
+
+        // $validatedData = $request->validate([
+        //     'tanggal' => 'required',
+        //     'id' => 'required',
+        //     'num' => 'required',
+        //     'denum' => 'required',
+        //     'hasil' => 'required',
+        // ]);
+
+        // // Simpan data ke database
+        // $data = new Penilaian;
+        // $data->tanggal = $validatedData['tanggal'];
+        // $data->id = $validatedData['id'];
+        // $data->num = $validatedData['num'];
+        // $data->denum = $validatedData['denum'];
+        // $data->hasil = $validatedData['id'];
+
+        // $data->save();
+
+        // // Mengirim respon ke client
+        // return response()->json(['success' => true]);
     }
 
     public function myMethod(Request $request)
@@ -153,6 +210,7 @@ class PenilaianController extends Controller
         // $penilaian = Penilaian::where('indikator_id', $id)->whereYear('tanggal', $thn)->whereMonth('tanggal', $bln)->get();
         // return response()->json($penilaian);
     }
+
     public function chart(Request $request)
     {
         $id = $request->input('data1');
@@ -164,7 +222,7 @@ class PenilaianController extends Controller
                     ->where('indikator_id', $id)->whereYear('tanggal', $thn)->whereMonth('tanggal', $bln)
                     ->orderBy('tanggal','ASC')
                     ->pluck('hasil', 'tanggal');
-        
+
         $labels = $hasil->keys();
         $datas = $hasil->values();
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Master_indikator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,8 +20,8 @@ class Penilaian extends Model
         'hasil',
     ];
 
-    public function indikator()
+    public function indikators()
     {
-        // return $this->belongsTo(Master_indikator::class);
+        return $this->belongsTo(Master_indikator::class);
     }
 }

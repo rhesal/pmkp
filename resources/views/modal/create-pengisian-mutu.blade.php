@@ -77,7 +77,7 @@
                                             <i class="fas fa-calendar"></i>
                                         </div>
                                     </div>
-                                    <input name="tanggal" type="text" class="form-control datepicker align-top">
+                                    <input name="tanggal" id="tanggal" type="text" class="form-control datepicker align-top">
                                 </div>
                             </div>
                             <div class="form-row mx-0" style="max-width: 100%">
@@ -124,6 +124,7 @@
                             <div class="form-row mx-0" style="max-width: 100%">
                                 <div class="form-group col-11 mb-0 text-right">
                                     <button type="submit" class="btn btn-primary">Save</button>
+                                    {{-- <p onclick="simpan_penilaian()"  class="btn btn-primary">Save</p> --}}
                                 </div>
                             </div>
                         </div>

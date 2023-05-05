@@ -79,6 +79,24 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>10 Rata-Rata Tertinggi Pernilaian Mutu Per Unit</h4>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="pieTertinggi"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>10 Rata-Rata Terendah Pernilaian Mutu Per Unit</h4>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="pieTerendah"></canvas>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -138,11 +156,18 @@
 				                ],
                     columns: [
                         { data: 'id',name: 'id',width: '10%', orderable: false, searchable: false, className: "text-center"},
-                        { data: 'unit',name: 'unit',width: '15%', className: "text-left"},
+                        // { data: 'unit',name: 'unit',width: '15%', className: "text-left"},
+                        { render: function (data, type, row, meta) {
+                                    var persen = 25;
+                                    var html = '<a href="">'+row.unit+'</a>';
+                                    return html;
+                                }
+                        },
                         { data: 'nilai',name: 'nilai', width: '15%', orderable: false, searchable: false, className: "text-center" },
                         { data: 'progess',name: 'progess', width: '20%', orderable: false, searchable: false, className: "text-center" },
                     ],
-                    columnDefs: [{
+                    columnDefs: [
+                                {
                                     targets: 0,
                                     render: function (data, type, row, meta) {
                                         return meta.row + meta.settings._iDisplayStart + 1;
@@ -157,8 +182,9 @@
                                 {
                                     targets: 3,
                                     render: function (data, type, row, meta) {
+                                        var persen = 25;
                                         var html = '<div class="progress" data-height="2" data-toggle="tooltip" title="70%">'+
-                                                        '<div class="progress-bar bg-warning" role="progressbar" data-width="70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>'+
+                                                        '<div class="progress-bar bg-warning" role="progressbar" data-width="70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:'+persen+'%"></div>'+
                                                     '</div>';
                                         return html;
                                     }
