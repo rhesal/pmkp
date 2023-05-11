@@ -19,10 +19,12 @@
         <section class="section">
             <div class="section-header">
                 <h1>Daftar Indikator <br> RSUD Karsa Husada Batu</h1>
-                <div class="section-header-button">
-                    <a href="" data-toggle="modal" data-target="#ModalCreateIndikator" class="btn btn-primary"
-                        onclick="create()">{{ __('Add New') }}</a>
-                </div>
+                @if ( Auth::user()->role == "superadmin" || Auth::user()->role == "admin")
+                    <div class="section-header-button">
+                        <a href="" data-toggle="modal" data-target="#ModalCreateIndikator" class="btn btn-primary"
+                            onclick="create()">{{ __('Add New') }}</a>
+                    </div>
+                @endif
             </div>
             @if (Session::has('status'))
                 <div class="alert alert-success text-center" role="alert">
@@ -42,9 +44,13 @@
                                 <h4>Indikator Unit</h4>
                                 <select name="sel-unit" id="sel-unit" class="form-control" style="width: 300px; position: relative;
                                 cursor: pointer; !important;">
-                                @foreach ($unitList as $item)
-                                    <option value="{{ $item->id }}">{{ $item->unit }}</option>
-                                @endforeach
+                                @if ( Auth::user()->role == "superadmin" || Auth::user()->role == "admin")
+                                    @foreach ($unitList as $item)
+                                        <option id="val-id" value="{{ $item->id }}">{{ $item->unit }}</option>
+                                    @endforeach
+                                @else
+                                    <option id="val-id" value="{{ Auth::user()->unit_id }}">{{ Auth::user()->unit->unit }}</option>
+                                @endif
                                 </select>
                             </div>
                             <div class="card-body">
@@ -114,6 +120,50 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+            var id = document.getElementById('val-id').value;
+            console.log("unit_id : " + id);
+
+            $.ajax({
+                    url: 'indikatorbyunit/'+id,
+                    type: 'GET',
+                    dataType: 'JSON',
+                    success: function(data){
+                        console.log(data);
+                        var table = document.getElementById("tabIndikator");
+                        var html1 = "";
+                        for (let i = 0; i < data.length; i++) {
+                            var pengukuran = "";
+                            if(data[i].satuan_pengukuran=="%"){
+                                pengukuran = "Persentase(%)";
+                            }else{
+                                pengukuran = data[i].satuan_pengukuran;
+                            }
+                            html1 += `<tr>
+                                        <td>${i+1}</td>
+                                        <td>
+                                            <a href="javascript:void(0)" id="show-unit"
+                                                data-url1="indikator-show/${data[i].id}"
+                                                data-url2="penilaian-show/${data[i].id}"
+                                                data-toggle="modal" data-target="#ModalCreatePengisian"
+                                                data-backdrop="static">${data[i].indikator}
+                                            </a>
+                                        </td>
+                                        <td style="text-align:center">${data[i].jenis_indikator}</td>
+                                        <td style="text-align:center">${data[i].nilai_standar}</td>
+                                        <td style="text-align:center">${pengukuran}</td>
+                                        <td style="text-align:center"><div class="badge badge-success">${data[i].status}</div></td>
+                                    </tr>`;
+                        }
+                        table.getElementsByTagName('tbody')[0].innerHTML = html1;
+                    }
+                });
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
             var table = '';
             $('body').on('change', '#sel-unit', function() {
                 var id = $(this).val();

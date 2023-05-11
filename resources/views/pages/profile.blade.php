@@ -48,7 +48,7 @@
                                 </div>
                             </div>
                             <div class="profile-widget-description">
-                                <div class="profile-widget-name">{{ Auth::user()->name; }} 
+                                <div class="profile-widget-name">{{ Auth::user()->name; }}
                                 </div>
                                 {{ Auth::user()->bio }}
                             </div>
@@ -137,7 +137,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group col-md-7 col-12">
+                                        <div class="form-group col-md-4 col-12">
                                             <label>Email</label>
                                             <input type="email" class="form-control @error('email','updateProfileInformation') is-invalid @enderror" name="email" value="{{ Auth::user()->email }}">
                                             @error('email','updateProfileInformation')
@@ -146,10 +146,19 @@
                                                 </div>
                                             @enderror
                                         </div>
-                                        <div class="form-group col-md-5 col-12">
+                                        <div class="form-group col-md-4 col-12">
                                             <label>Phone</label>
                                             <input type="tel" class="form-control @error('phone','updateProfileInformation') is-invalid @enderror" name="phone" value="{{ Auth::user()->phone }}">
                                             @error('phone','updateProfileInformation')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group col-md-4 col-12">
+                                            <label>Unit</label>
+                                            <input type="unit_id" class="form-control @error('unit_id','updateProfileInformation') is-invalid @enderror" name="unit_id" value="{{ Auth::user()->unit->unit }}">
+                                            @error('unit_id','updateProfileInformation')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
                                                 </div>
@@ -168,7 +177,7 @@
                                 </div>
                             </form>
                         </div>
-                    </div>  
+                    </div>
                 </div>
         </div>
     </section>

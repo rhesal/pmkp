@@ -16,8 +16,11 @@ class AuthServiceProvider extends ServiceProvider
      */
 
     public static $permission = [
-        'pages' => ['superadmin','admin','user'],
-        'home' => ['user'],
+        // 'pages' => ['superadmin','admin','user'],
+        'home' => ['superadmin','admin','user','direktur'],
+        'indikators' => ['superadmin','admin','user'],
+        'units' => ['superadmin','admin'],
+        'users' => ['superadmin','admin'],
         'index-user' => ['superadmin','admin'],
         'show-user' => ['superadmin','admin'],
         'create-user' => ['superadmin'],
@@ -25,7 +28,7 @@ class AuthServiceProvider extends ServiceProvider
         'edit-user' => ['superadmin'],
         'update-user' => ['superadmin'],
         'destroy-user' => ['superadmin'],
-    ]; 
+    ];
 
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
@@ -44,7 +47,7 @@ class AuthServiceProvider extends ServiceProvider
                 return true;
         });
 
-        
+
 
         foreach (self::$permission as $action => $roles) {
             Gate::define($action,function(User $user) use ($roles){

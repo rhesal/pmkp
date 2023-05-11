@@ -1,7 +1,7 @@
 <div class="login-brand">
-    <img src="{{ asset('img/karsa700.png') }}"
+    <img src="{{ asset('img/siimut_logo_2(no bg).png') }}"
         alt="logo"
-        width="100"
+        width="500"
         class="shadow-light rounded-circle">
 </div>
 <div class="login-brand">

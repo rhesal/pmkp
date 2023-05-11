@@ -24,7 +24,7 @@ Route::get('/', function () {
 Route::middleware(['auth','verified'])->group(function (){
     Route::get('home', function (){
         return view('pages.home',['type_menu' => '']);
-    })->name('home')->middleware(['can:pages','can:home']);
+    })->name('home')->middleware(['can:home']);
 
     Route::get('edit-profile', function(){
         return view('pages.profile',['type_menu' => '']);
@@ -41,11 +41,11 @@ Route::middleware(['auth','verified'])->group(function (){
     Route::get('/unit-destroy/{id}', [MasterUnitController::class, 'destroy']);
     //Route::delete('/unit-destroy/{id}', [MasterUnitController::class, 'destroy'])->name('unit.delete');
 
-    Route::resource('indikator', MasterIndikatorController::class);
-    Route::post('/indikator-store', [MasterIndikatorController::class, 'store']);
-    Route::get('/indikator-destroy/{id}', [MasterIndikatorController::class, 'destroy']);
-    Route::get('indikator-show/{id}', [MasterIndikatorController::class, 'show']);
-    Route::get('indikatorbyunit/{id}', [MasterIndikatorController::class, 'indikatorByUnit']);
+    Route::resource('indikator', MasterIndikatorController::class)->middleware(['can:indikators']);
+    Route::post('/indikator-store', [MasterIndikatorController::class, 'store'])->middleware(['can:indikators']);
+    Route::get('/indikator-destroy/{id}', [MasterIndikatorController::class, 'destroy'])->middleware(['can:indikators']);
+    Route::get('indikator-show/{id}', [MasterIndikatorController::class, 'show'])->middleware(['can:indikators']);
+    Route::get('indikatorbyunit/{id}', [MasterIndikatorController::class, 'indikatorByUnit'])->middleware(['can:indikators']);
 
     Route::resource('penilaian', PenilaianController::class);
     //Route::get('penilaian-show/{id}', [PenilaianController::class, 'show'])->name('penilaian.show');

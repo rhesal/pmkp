@@ -113,14 +113,11 @@
     <script type="text/javascript">
         $(document).ready(function() {
           // Make an AJAX request to your server
-            console.log("TESS");
-
             nilai();
             gettabel();
         });
 
         function nilai(){
-
             $.ajax({
             url: "/homes", // Replace with your data URL
             type: "GET",
