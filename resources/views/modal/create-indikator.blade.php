@@ -4,7 +4,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="ModalLabel">{{ __("Create New Indikator") }}</h4>
+                    <h4 class="modal-title" id="ModalLabel"></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -32,7 +32,7 @@
                                         <select name="unit_id" id="unit_id" class="form-control selectric @error('unit_id') is-invalid @enderror" required>
                                             <option value="">Select One</option>
                                             @foreach ($unitList as $item)
-                                            <option value="{{ $item->id }}">{{ $item->unit }}</option>
+                                            <option id="val_unitId" value="{{ $item->id }}">{{ $item->unit }}</option>
                                             @endforeach
                                         </select>
                                         @error('unit_id')

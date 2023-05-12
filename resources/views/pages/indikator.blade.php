@@ -21,8 +21,7 @@
                 <h1>Daftar Indikator <br> RSUD Karsa Husada Batu</h1>
                 @if ( Auth::user()->role == "superadmin" || Auth::user()->role == "admin")
                     <div class="section-header-button">
-                        <a href="" data-toggle="modal" data-target="#ModalCreateIndikator" class="btn btn-primary"
-                            onclick="create()">{{ __('Add New') }}</a>
+                        <a href="javascript:void(0)" id="show-indikator" data-label="Create New Indikator" data-toggle="modal" data-target="#ModalCreateIndikator" data-backdrop="static" class="btn btn-primary">{{ __('Add New') }}</a>
                     </div>
                 @endif
             </div>
@@ -196,6 +195,16 @@
                                                 <div class="bullet"></div>
                                                 <a href="${data[i].id}">Edit</a>
                                                 <div class="bullet"></div>
+                                                <a href="javascript:void(0)" id="edit-indikator"
+                                                            data-label="Edit Indikator"
+                                                            data-indikator="${data[i].indikator}"
+                                                            data-unitId="${data[i].unit_id}"
+                                                            data-unit="TESS"
+                                                            data-satuan="${data[i].nilai_standar}"
+                                                            data-toggle="modal"
+                                                            data-target="#ModalCreateIndikator"
+                                                            data-backdrop="static">Edit</a>
+                                                <div class="bullet"></div>
                                                 <a href="#" type="button" class="text-danger">Delete</a>
                                             </div>
                                         </td>
@@ -251,6 +260,29 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
+            });
+
+            $('body').on('click', '#show-indikator', function() {
+                var label = $(this).data('label');
+                console.log(label);
+                $('#ModalLabel').text(label);
+            });
+
+            $('body').on('click', '#edit-indikator', function() {
+                var label = $(this).data('label');
+                var indikator = $(this).data('indikator');
+                var unitId = $(this).data('unitId');
+                var unit = $(this).data('unit');
+                var satuan = $(this).data('satuan');
+                console.log(unitId);
+                $('#ModalLabel').text(label);
+                $('#indikator').text(indikator);
+                $('#nilai_standar').val(satuan);
+                $('#val_unitId').empty();
+                $('#val_unitId').append($('<option>', {
+                                            value: unitId,
+                                            text: unit
+                                        }));
             });
 
             $('body').on('change', '#sel-bln', function() {

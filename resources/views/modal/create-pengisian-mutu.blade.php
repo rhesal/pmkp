@@ -161,7 +161,7 @@
                         <div class="col-12 col-md-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <canvas id="myChart"></canvas>
+                                    <canvas id="myChart" height="75"></canvas>
                                 </div>
                             </div>
                         </div>
