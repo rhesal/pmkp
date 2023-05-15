@@ -6,6 +6,7 @@ use App\Models\Master_unit;
 use Illuminate\Http\Request;
 use App\Models\Master_indikator;
 use Illuminate\Support\Facades\Session;
+use LDAP\Result;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class MasterIndikatorController extends Controller
@@ -62,9 +63,21 @@ class MasterIndikatorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Request $request)
     {
-        //
+        $id = $request->input('id');
+        // $id = "25";
+        $units = Master_unit::select('id','unit')->orderBy('unit','ASC')->get();
+        $indikators = Master_indikator::where('id', $id)->get();
+
+        $response = array(
+            "id" =>$id,
+            "units" => $units,
+            "indikators" => $indikators,
+        );
+
+        // dd($response);
+        return response()->json($response);
     }
 
     /**

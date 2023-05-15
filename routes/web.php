@@ -46,6 +46,7 @@ Route::middleware(['auth','verified'])->group(function (){
     Route::get('/indikator-destroy/{id}', [MasterIndikatorController::class, 'destroy'])->middleware(['can:indikators']);
     Route::get('indikator-show/{id}', [MasterIndikatorController::class, 'show'])->middleware(['can:indikators']);
     Route::get('indikatorbyunit/{id}', [MasterIndikatorController::class, 'indikatorByUnit'])->middleware(['can:indikators']);
+    Route::get('indikator-edit', [MasterIndikatorController::class, 'edit'])->middleware(['can:indikators']);
 
     Route::resource('penilaian', PenilaianController::class);
     //Route::get('penilaian-show/{id}', [PenilaianController::class, 'show'])->name('penilaian.show');

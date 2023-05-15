@@ -176,6 +176,7 @@
                         console.log(data);
                         var table = document.getElementById("tabIndikator");
                         var html1 = "";
+                        var unitID = id;
                         for (let i = 0; i < data.length; i++) {
                             var pengukuran = "";
                             if(data[i].satuan_pengukuran=="%"){
@@ -197,10 +198,10 @@
                                                 <div class="bullet"></div>
                                                 <a href="javascript:void(0)" id="edit-indikator"
                                                             data-label="Edit Indikator"
+                                                            data-idindikator="${data[i].id}"
                                                             data-indikator="${data[i].indikator}"
-                                                            data-unitId="${data[i].unit_id}"
-                                                            data-unit="TESS"
-                                                            data-satuan="${data[i].nilai_standar}"
+                                                            data-unitid="${unitID}"
+                                                            data-standar="${data[i].nilai_standar}"
                                                             data-toggle="modal"
                                                             data-target="#ModalCreateIndikator"
                                                             data-backdrop="static">Edit</a>
@@ -270,25 +271,21 @@
 
             $('body').on('click', '#edit-indikator', function() {
                 var label = $(this).data('label');
+                var idindikator = $(this).data('idindikator');
                 var indikator = $(this).data('indikator');
-                var unitId = $(this).data('unitId');
-                var unit = $(this).data('unit');
-                var satuan = $(this).data('satuan');
-                console.log(unitId);
+                var unitId = $(this).data('unitid');
+                var standar = $(this).data('standar');
+                console.log(idindikator);
                 $('#ModalLabel').text(label);
                 $('#indikator').text(indikator);
-                $('#nilai_standar').val(satuan);
-                $('#val_unitId').empty();
-                $('#val_unitId').append($('<option>', {
-                                            value: unitId,
-                                            text: unit
-                                        }));
+                $('#nilai_standar').val(standar);
+                getUnit(unitId,idindikator);
             });
 
             $('body').on('change', '#sel-bln', function() {
                 var bln = $(this).val();
-                gettabel(bln)
-                getChart(bln)
+                gettabel(bln);
+                getChart(bln);
             });
 
             function gettabel(bln){
@@ -404,34 +401,66 @@
             }
         });
 
-        // function simpan_penilaian() {
-        //     var data = {
-        //                 tanggal: $('#tanggal').val(),
-        //                 id: $('#indikator-id').val(),
-        //                 num: $('#num').val(),
-        //                 denum: $('#denum').val(),
-        //                 hasil: $('#hasil').val(),
-        //     };
-        //     console.log(data);
+        function getUnit(unit,id){
+            console.log("Fungsi getUnit : "+unit+" "+id);
 
-        //     $.ajaxSetup({
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         }
-        //     });
+            $.ajax({
+                url: 'indikator-edit',
+                method: "GET",
+                dataType: 'json',
+                data:{
+                        id: id
+                    },
+                success: function(data) {
+                    // console.log(data['units']);
+                    var html = '';
+                    var html1 = '';
+                    var html2 = '';
+                    var i;
+                    var select = "" ;
+                    for (i = 0; i < data['units'].length; i++) {
+                        // console.log(data['units'][i].id);
+                        if(unit==data['units'][i].id){
+                            select = "selected";
+                        }else{
+                            select="";
+                        }
+                        html +=
+                        '<option '+select+' value="'+data['units'][i].id+'">'+data['units'][i].unit+'</option>';
+                    }
 
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: '/penilaian-store',
-        //         data: data,
-        //         success: function(response) {
-        //             console.log('Data berhasil disimpan');
-        //         },
-        //         error: function(xhr, status, error) {
-        //             console.log('Error:', error);
-        //         }
-        //     });
-        // }
+                    console.log(data['indikators'][0].status);
+                    if (data['indikators'][0].satuan_pengukuran=="%") {
+                        select = "selected";
+                        html1 +='<option '+select+' value="%">Persentase (%)</option><option value="menit">Menit</option>';
+                    }else{
+                        select = "selected";
+                        html1 +='<option value="%">Persentase (%)</option><option '+select+' value="menit">Menit</option>';
+                    }
+
+                    if (data['indikators'][0].status=="Active") {
+                        select = "selected";
+                        html2 +='<option '+select+' value="Active">Active</option><option value="Non Active">Non Active</option>';
+                    }else{
+                        select = "selected";
+                        html2 +='<option value="Active">Active</option><option '+select+' value="Non Active">Non Active</option>';
+                    }
+
+                    $('#unit_id').html(html);
+                    $('#unit_id').selectric({
+                        maxHeight: 400
+                    });
+                    $('#satuan_pengukuran').html(html1);
+                    $('#satuan_pengukuran').selectric({
+                        maxHeight: 200
+                    });
+                    $('#status').html(html2);
+                    $('#status').selectric({
+                        maxHeight: 200
+                    });
+                }
+            });
+        }
 
         function clearInput() {
             // Reset the value of the input field
