@@ -194,10 +194,9 @@
                                                             data-toggle="modal" data-target="#ModalCreatePengisian"
                                                             data-backdrop="static">Penilaian</a>
                                                 <div class="bullet"></div>
-                                                <a href="${data[i].id}">Edit</a>
-                                                <div class="bullet"></div>
                                                 <a href="javascript:void(0)" id="edit-indikator"
                                                             data-label="Edit Indikator"
+                                                            data-tombol="Update"
                                                             data-idindikator="${data[i].id}"
                                                             data-indikator="${data[i].indikator}"
                                                             data-unitid="${unitID}"
@@ -271,12 +270,14 @@
 
             $('body').on('click', '#edit-indikator', function() {
                 var label = $(this).data('label');
+                var tombol = $(this).data('tombol');
                 var idindikator = $(this).data('idindikator');
                 var indikator = $(this).data('indikator');
                 var unitId = $(this).data('unitid');
                 var standar = $(this).data('standar');
                 console.log(idindikator);
                 $('#ModalLabel').text(label);
+                $('#simpan-indikator').text(tombol);
                 $('#indikator').text(indikator);
                 $('#nilai_standar').val(standar);
                 getUnit(unitId,idindikator);

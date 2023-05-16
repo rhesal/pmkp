@@ -48,14 +48,12 @@ Route::middleware(['auth','verified'])->group(function (){
     Route::get('indikatorbyunit/{id}', [MasterIndikatorController::class, 'indikatorByUnit'])->middleware(['can:indikators']);
     Route::get('indikator-edit', [MasterIndikatorController::class, 'edit'])->middleware(['can:indikators']);
 
-    Route::resource('penilaian', PenilaianController::class);
-    //Route::get('penilaian-show/{id}', [PenilaianController::class, 'show'])->name('penilaian.show');
-    Route::get('penilaian-show', [PenilaianController::class, 'show'])->name('penilaian.show');
-    Route::get('rekapitulasi', [PenilaianController::class, 'rekapitulasi'])->name('penilaian.rekapitulasi');
-    Route::get('chart', [PenilaianController::class, 'chart'])->name('chart');
-    //Route::post('/my-controller-method', [PenilaianController::class, 'myMethod']);
-    Route::post('/penilaian-store', [PenilaianController::class, 'store']);
+    Route::resource('penilaian', PenilaianController::class)->middleware(['can:home']);
+    Route::get('penilaian-show', [PenilaianController::class, 'show'])->name('penilaian.show')->middleware(['can:home']);
+    Route::get('rekapitulasi', [PenilaianController::class, 'rekapitulasi'])->name('penilaian.rekapitulasi')->middleware(['can:home']);
+    Route::get('chart', [PenilaianController::class, 'chart'])->name('chart')->middleware(['can:home']);
+    Route::post('/penilaian-store', [PenilaianController::class, 'store'])->middleware(['can:home']);
     //Route::post('/penilaian-store', 'App\Http\Controllers\PenilaianController@store');
-
-
+    //Route::post('/my-controller-method', [PenilaianController::class, 'myMethod']);
+    //Route::get('penilaian-show/{id}', [PenilaianController::class, 'show'])->name('penilaian.show');
 });

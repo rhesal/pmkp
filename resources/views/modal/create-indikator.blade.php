@@ -84,9 +84,9 @@
                             </div>
 
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-lg btn-block" onclick="">
+                                <a href="" type="submit" id="simpan-indikator" class="btn btn-primary btn-lg btn-block" onclick="">
                                     Save
-                                </button>
+                                </a>
                             </div>
                         </form>
                     </div>

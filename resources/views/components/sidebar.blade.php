@@ -16,13 +16,13 @@
             <a href="{{ route('home') }}" class="nav-link"><i class="fas fa-fire"></i><span>Dashboard</span></a>
         </li>
         @endcan
-        @can('indikators')
+        @can('home')
         <li class="">
             <a href="{{ route('penilaian.index') }}" class="nav-link"><i class="fas fa-clipboard-check"></i> <span>Penilaian Mutu</span></a>
         </li>
         @endcan
-        <li class="menu-header">Data Master</li>
         @can('indikators')
+        <li class="menu-header">Data Master</li>
         <li class="{{ Request::route('indikator.index') ? 'active' : '' }}">
             <a href="{{ route('indikator.index') }}" class="nav-link"><i class="fas fa-clipboard-list"></i> <span>Rekap Indikator</span></a>
         </li>
