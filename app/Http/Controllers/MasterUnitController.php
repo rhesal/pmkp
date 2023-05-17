@@ -160,7 +160,7 @@ class MasterUnitController extends Controller
             Session::flash('status','success');
             Session::flash('message','Add new unit success !!');
         }
-        return redirect('unit');
+        return response()->json($unit);
     }
 
     /**
@@ -174,9 +174,11 @@ class MasterUnitController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Request $request)
     {
-        //
+        $id = $request->input('id');
+        $unit = Master_unit::where('id', $id)->get();
+        return response()->json($unit);
     }
 
     /**
@@ -184,7 +186,16 @@ class MasterUnitController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = $request->all();
+        $unit = Master_unit::findOrFail($id);
+        $unit->update($data);
+        Alert::success('Berhasil','Data berhasil diupdate');
+        if($unit){
+            Session::flash('status','success');
+            Session::flash('message','Update unit success!');
+        }
+        return response()->json($unit);
+        // return response()->json(['message' => 'Data updated successfully']);
     }
 
     /**

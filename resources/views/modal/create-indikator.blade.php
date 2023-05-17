@@ -68,7 +68,23 @@
                             </div>
 
                             <div class="row">
-                                <div class="form-group col-12">
+                                <div class="form-group col-6">
+                                    <label for="kategori">Kategori</label>
+                                    <select name="kategori" id="kategori" class="form-control selectric @error('kategori') is-invalid @enderror" required>
+                                        <option value="">Select One</option>
+                                        <option value="INM">INM</option>
+                                        <option value="SKP">SKP</option>
+                                        <option value="Mutu Prioritas">Mutu Prioritas</option>
+                                        <option value="SPM">SPM</option>
+                                        <option value="Lainnya">Lainnya</option>
+                                    </select>
+                                    @error('kategori')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-6">
                                         <label for="status">Status</label>
                                         <select name="status" id="status" class="form-control selectric @error('status') is-invalid @enderror" required>
                                             <option value="">Select One</option>

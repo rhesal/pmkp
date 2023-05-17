@@ -1,7 +1,7 @@
 <aside id="sidebar-wrapper">
     <div class="sidebar-brand">
         {{-- <a href="{{ route('home') }}">SI-IMUT</a> --}}
-        <img src="{{ asset('img/siimut_logo_2(no bg).png') }}"
+        <img src="{{ asset('img/Logo_SIIMUT_V2(no_bg).png') }}"
         alt="logo"
         width="100"
         class="shadow-light rounded-circle">
