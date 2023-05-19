@@ -210,6 +210,7 @@ class MasterUnitController extends Controller
             Session::flash('status','success');
             Session::flash('message','Delete unit success!');
         }
-        return redirect('unit');
+        return response()->json($deleteUnit);
+        // return response()->json(['message' => 'Data deleted successfully']);
     }
 }

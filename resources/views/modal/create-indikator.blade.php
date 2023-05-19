@@ -66,25 +66,51 @@
                                     @enderror
                                 </div>
                             </div>
-
                             <div class="row">
-                                <div class="form-group col-6">
+                                <div class="form-group col-12 text-center">
                                     <label for="kategori">Kategori</label>
-                                    <select name="kategori" id="kategori" class="form-control selectric @error('kategori') is-invalid @enderror" required>
-                                        <option value="">Select One</option>
-                                        <option value="INM">INM</option>
-                                        <option value="SKP">SKP</option>
-                                        <option value="Mutu Prioritas">Mutu Prioritas</option>
-                                        <option value="SPM">SPM</option>
-                                        <option value="Lainnya">Lainnya</option>
-                                    </select>
-                                    @error('kategori')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
+                                    <div name="kategori" id="kategori" class="selectgroup selectgroup-pills">
+                                        <label class="selectgroup-item">
+                                            <input type="checkbox"
+                                                name="valuechecked"
+                                                value="INM"
+                                                class="selectgroup-input">
+                                            <span class="selectgroup-button">INM</span>
+                                        </label>
+                                        <label class="selectgroup-item">
+                                            <input type="checkbox"
+                                                name="valuechecked"
+                                                value="SKP"
+                                                class="selectgroup-input">
+                                            <span class="selectgroup-button">SKP</span>
+                                        </label>
+                                        <label class="selectgroup-item">
+                                            <input type="checkbox"
+                                                name="valuechecked"
+                                                value="Mutu Prioritas"
+                                                class="selectgroup-input">
+                                            <span class="selectgroup-button">Mutu Prioritas</span>
+                                        </label>
+                                        <label class="selectgroup-item">
+                                            <input type="checkbox"
+                                                name="valuechecked"
+                                                value="SPM"
+                                                class="selectgroup-input">
+                                            <span class="selectgroup-button">SPM</span>
+                                        </label>
+                                        <label class="selectgroup-item">
+                                            <input type="checkbox"
+                                                name="valuechecked"
+                                                value="Lainnya"
+                                                class="selectgroup-input">
+                                            <span class="selectgroup-button">Lainnya</span>
+                                        </label>
+                                        <span id="showSelectedBtn" class="btn btn-primary">TEST</span>
                                     </div>
-                                    @enderror
                                 </div>
-                                <div class="form-group col-6">
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-12">
                                         <label for="status">Status</label>
                                         <select name="status" id="status" class="form-control selectric @error('status') is-invalid @enderror" required>
                                             <option value="">Select One</option>
@@ -116,7 +142,7 @@
 {{-- <script>
     function getunit(it){
         $.ajax({
-			url: "<?php echo base_url(); ?>permintaan/unit",
+			url: "permintaan/unit",
 			method: "POST",
 			data: {
 				notindakanhd: notindakanhd

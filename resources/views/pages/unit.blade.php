@@ -57,7 +57,7 @@
                                     <th class="col-4">Status</th>
                                 </tr>
                                 @forelse ($unitList as $index => $data)
-                                    <tr>
+                                    <tr id="index_{{ $data->id }}">
                                         <td class="col-sm-1">{{ $index + $unitList -> firstItem() }}</td>
                                         {{-- <td class="col-sm-1">{{ $loop->iteration }}</td> --}}
                                         <td>{{ $data->unit }}
@@ -73,7 +73,7 @@
                                                     data-status="{{ $data->status }}"
                                                     data-toggle="modal" data-target="#ModalCreateUnit" data-backdrop="static">Edit</a>
                                                 <div class="bullet"></div>
-                                                <a href="" id="delete-unit" data-idunit="{{ $data->id }}" type="button" class="text-danger">Delete</a>
+                                                <a href="javascript:void(0)" id="delete-unit" data-id="{{ $data->id }}" type="button" class="text-danger">Delete</a>
                                             </div>
                                         </td>
                                         <td class="col-4">
@@ -124,19 +124,40 @@
             });
 
             $('body').on('click', '#delete-unit', function () {
-                var idunit = $(this).data('idunit');
-                var trObj = $(this);
-                if(confirm("Are you sure you want to remove this unit ?") == true){
-                    $.ajax({
-                        url: 'unit-destroy/'+idunit,
-                        type: 'DELETE',
-                        dataType: 'json',
-                        success: function(data) {
-                            alert(data.success);
-                            trObj.parents("tr").remove();
-                        }
-                    });
-                }
+                let unit_id = $(this).data('id');
+                let token   = $("meta[name='csrf-token']").attr("content");
+
+                Swal.fire({
+                    title: 'Apakah Kamu Yakin?',
+                    text: "ingin menghapus data ini!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: 'TIDAK',
+                    confirmButtonText: 'YA, HAPUS!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        console.log('test');
+                        //fetch to delete data
+                        $.ajax({
+                            url: `/unit-destroy/${unit_id}`,
+                            type: "DELETE",
+                            cache: false,
+                            data: {
+                                "_token": token
+                            },
+                            success: function(data) {
+                                console.log(data);
+                                $(`#index_${unit_id}`).remove();
+                                window.location.reload();
+                                // console.log(response.message);
+                            },
+                            error: function(xhr, status, error) {
+                                // Handle error response
+                                console.error(error);
+                            }
+                        });
+                    }
+                })
             });
 
             $('body').on('click', '#show-unit', function() {

@@ -225,6 +225,25 @@
                 });
             });
 
+            $('body').on('click', '#showSelectedBtn', function() {
+                console.log("Pilih kategori");
+                const checkboxes = document.getElementsByName('valuechecked');
+                const selectedItems = [];
+
+                checkboxes.forEach((checkbox) => {
+                    if (checkbox.checked) {
+                        selectedItems.push(checkbox.value);
+                    }
+                });
+
+                if (selectedItems.length > 0) {
+                    const kategori = 'Selected Items: ' + selectedItems.join(', ');
+                    alert(kategori);
+                } else {
+                    alert('No items selected.');
+                }
+            });
+
             $('body').on('click', '#show-unit', function() {
                 var unitURL = $(this).data('url1');
                 //var penilaianURL = $(this).data('url2');
@@ -263,6 +282,7 @@
             });
 
             $('body').on('click', '#show-indikator', function() {
+                clearInputNewIndikator()
                 var label = $(this).data('label');
                 console.log(label);
                 $('#ModalLabel').text(label);
@@ -402,6 +422,8 @@
             }
         });
 
+
+
         function getUnit(unit,id){
             console.log("Fungsi getUnit : "+unit+" "+id);
 
@@ -460,6 +482,16 @@
                         maxHeight: 200
                     });
                 }
+            });
+        }
+
+        function clearInputNewIndikator() {
+            document.getElementById("indikator").value = '';
+            document.getElementById("nilai_standar").value = '';
+
+            const checkboxes = document.getElementsByName('valuechecked');
+            Array.from(checkboxes).forEach((checkbox) => {
+                checkbox.checked = false;
             });
         }
 

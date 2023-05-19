@@ -38,10 +38,9 @@ Route::middleware(['auth','verified'])->group(function (){
     Route::get('/getUnit', [MasterUnitController::class, 'getUnit'])->name('getUnit');
     Route::get('/unit-create', [MasterUnitController::class, 'create']);
     Route::post('/unit-store', [MasterUnitController::class, 'store']);
-    Route::get('/unit-destroy/{id}', [MasterUnitController::class, 'destroy']);
+    Route::delete('/unit-destroy/{id}', [MasterUnitController::class, 'destroy'])->name('unit-destroy');
     Route::get('unit-edit', [MasterUnitController::class, 'edit']);
     Route::put('unit-update/{id}', [MasterUnitController::class, 'update']);
-    //Route::delete('/unit-destroy/{id}', [MasterUnitController::class, 'destroy'])->name('unit.delete');
 
     Route::resource('indikator', MasterIndikatorController::class)->middleware(['can:indikators']);
     Route::post('/indikator-store', [MasterIndikatorController::class, 'store'])->middleware(['can:indikators']);
