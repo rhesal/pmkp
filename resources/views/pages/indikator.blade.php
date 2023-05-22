@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('title', 'Indikator RS')
-
+@push('meta')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endpush
 @push('style')
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('library/bootstrap-daterangepicker/daterangepicker.css') }}">
@@ -107,6 +109,7 @@
     <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
     <script src="{{ asset('library/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
     {{-- <script src="{{ asset('library/jquery-ui-dist/jquery-ui.min.js') }}"></script> --}}
     {{-- <script src="{{ asset('library/prismjs/prism.js') }}"></script> --}}
     {{-- <script src="{{ asset('library/chart.js/dist/Chart.min.js') }}"></script> --}}
@@ -115,53 +118,54 @@
     <script src="{{ asset('js/page/forms-advanced-forms.js') }}"></script>
     <script src="{{ asset('js/page/bootstrap-modal.js') }}"></script>
     <script src="{{ asset('js/page/modules-datatables.js') }}"></script>
+    <script src="{{ asset('js/page/modules-sweetalert.js') }}"></script>
     {{-- <script src="{{ asset('js/page/modules-chartjs.js') }}"></script> --}}
 
     <script type="text/javascript">
         $(document).ready(function() {
             var id = document.getElementById('val-id').value;
-            console.log("unit_id : " + id);
+            console.log("idunit : " + id);
 
             $.ajax({
-                    url: 'indikatorbyunit/'+id,
-                    type: 'GET',
-                    dataType: 'JSON',
-                    success: function(data){
-                        console.log(data);
-                        var table = document.getElementById("tabIndikator");
-                        var html1 = "";
-                        for (let i = 0; i < data.length; i++) {
-                            var pengukuran = "";
-                            if(data[i].satuan_pengukuran=="%"){
-                                pengukuran = "Persentase(%)";
-                            }else{
-                                pengukuran = data[i].satuan_pengukuran;
-                            }
-                            html1 += `<tr>
-                                        <td>${i+1}</td>
-                                        <td>
-                                            <a href="javascript:void(0)" id="show-unit"
-                                                data-url1="indikator-show/${data[i].id}"
-                                                data-url2="penilaian-show/${data[i].id}"
-                                                data-toggle="modal" data-target="#ModalCreatePengisian"
-                                                data-backdrop="static">${data[i].indikator}
-                                            </a>
-                                        </td>
-                                        <td style="text-align:center">${data[i].jenis_indikator}</td>
-                                        <td style="text-align:center">${data[i].nilai_standar}</td>
-                                        <td style="text-align:center">${pengukuran}</td>
-                                        <td style="text-align:center"><div class="badge badge-success">${data[i].status}</div></td>
-                                    </tr>`;
+                url: 'indikatorbyunit/'+id,
+                type: 'GET',
+                dataType: 'JSON',
+                success: function(data){
+                    console.log(data);
+                    var table = document.getElementById("tabIndikator");
+                    var html1 = "";
+                    for (let i = 0; i < data.length; i++) {
+                        var pengukuran = "";
+                        if(data[i].satuan_pengukuran=="%"){
+                            pengukuran = "Persentase(%)";
+                        }else{
+                            pengukuran = data[i].satuan_pengukuran;
                         }
-                        table.getElementsByTagName('tbody')[0].innerHTML = html1;
+                        html1 += `<tr>
+                                    <td>${i+1}</td>
+                                    <td>
+                                        <a href="javascript:void(0)" id="show-unit"
+                                            data-url1="indikator-show/${data[i].id}"
+                                            data-url2="penilaian-show/${data[i].id}"
+                                            data-toggle="modal" data-target="#ModalCreatePengisian"
+                                            data-backdrop="static">${data[i].indikator}
+                                        </a>
+                                    </td>
+                                    <td style="text-align:center">${data[i].jenis_indikator}</td>
+                                    <td style="text-align:center">${data[i].nilai_standar}</td>
+                                    <td style="text-align:center">${pengukuran}</td>
+                                    <td style="text-align:center"><div class="badge badge-success">${data[i].status}</div></td>
+                                </tr>`;
                     }
-                });
+                    table.getElementsByTagName('tbody')[0].innerHTML = html1;
+                }
+            });
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
 
             var table = '';
             $('body').on('change', '#sel-unit', function() {
@@ -225,25 +229,6 @@
                 });
             });
 
-            $('body').on('click', '#showSelectedBtn', function() {
-                console.log("Pilih kategori");
-                const checkboxes = document.getElementsByName('valuechecked');
-                const selectedItems = [];
-
-                checkboxes.forEach((checkbox) => {
-                    if (checkbox.checked) {
-                        selectedItems.push(checkbox.value);
-                    }
-                });
-
-                if (selectedItems.length > 0) {
-                    const kategori = 'Selected Items: ' + selectedItems.join(', ');
-                    alert(kategori);
-                } else {
-                    alert('No items selected.');
-                }
-            });
-
             $('body').on('click', '#show-unit', function() {
                 var unitURL = $(this).data('url1');
                 //var penilaianURL = $(this).data('url2');
@@ -289,6 +274,7 @@
             });
 
             $('body').on('click', '#edit-indikator', function() {
+                clearInputNewIndikator()
                 var label = $(this).data('label');
                 var tombol = $(this).data('tombol');
                 var idindikator = $(this).data('idindikator');
@@ -298,10 +284,12 @@
                 console.log(idindikator);
                 $('#ModalLabel').text(label);
                 $('#simpan-indikator').text(tombol);
-                $('#indikator').text(indikator);
+                $('#indikator').val(indikator);
+                $('#idindikator').val(idindikator);
                 $('#nilai_standar').val(standar);
                 getUnit(unitId,idindikator);
             });
+
 
             $('body').on('change', '#sel-bln', function() {
                 var bln = $(this).val();
@@ -321,7 +309,7 @@
                     processing: true,
                     serverSide: true,
                     bDestroy: true,
-				    ordering: true,
+                    ordering: true,
                     ajax:{
                         type: "GET",
                         url: "{{route('penilaian.show')}}",
@@ -331,10 +319,10 @@
                             },
                     },
                     deferRender: true,
-				    aLengthMenu: [
+                    aLengthMenu: [
                                     [5, 25, 50, 100],
                                     [5, 25, 50, 100]
-				                ],
+                                ],
                     columns: [
                         { data: 'tanggal',width: '15%', className: "text-center"},
                         { data: 'numerator',width: '15%', className: "text-center" },
@@ -422,7 +410,116 @@
             }
         });
 
+        function clicksimpan(){
+            var btntext = document.getElementById("simpan-indikator").innerText;
+            var idindikator = document.getElementById("idindikator").value;
+            var indikator = document.getElementById("indikator").value;
+            var idunit = document.getElementById("idunit").value;
+            var nilai_standar = document.getElementById("nilai_standar").value;
+            var satuan_pengukuran = document.getElementById("satuan_pengukuran").value;
+            var status = document.getElementById("status").value;
+            var kategori = getkategori();
+            if(btntext == "Save"){
+                //Save/store
+                var data = {
+                    indikator: indikator,
+                    unit_id: idunit,
+                    nilai_standar: nilai_standar,
+                    satuan_pengukuran: satuan_pengukuran,
+                    kategori: kategori,
+                    status: status,
+                };
+                simpandata(data);
+            }else{
+                //update
+                var data = {
+                    indikator: indikator,
+                    unit_id: idunit,
+                    nilai_standar: nilai_standar,
+                    satuan_pengukuran: satuan_pengukuran,
+                    status: status,
+                };
+                // console.log(idunit);
+                updatedata(data, idindikator, idunit);
+            }
+        }
 
+        function getkategori () {
+            console.log("Pilih kategori");
+            const checkboxes = document.getElementsByName('valuechecked');
+            const selectedItems = [];
+            var kategori = "";
+
+            checkboxes.forEach((checkbox) => {
+                if (checkbox.checked) {
+                    selectedItems.push(checkbox.value);
+                }
+            });
+
+            if (selectedItems.length > 0) {
+                kategori = selectedItems.join(', ');
+                // alert(kategori);
+            } else {
+                // alert('No items selected.');
+                console.log('No items selected.');
+            }
+
+            return kategori;
+        }
+
+        function simpandata(data){
+            console.log("simpandata : "+JSON.stringify(data));
+
+            // $.ajax({
+            //     url: "/indikator-create",
+            //     method: "POST",
+            //     dataType: "JSON",
+            //     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            //     contentType: "application/json",
+            //     data: data,
+            //     success: function(response) {
+            //         // console.log(data);
+            //         console.log(response);
+            //     }
+            // });
+            // clearInputNewIndikator()
+        }
+
+        function updatedata(data, id, idunit){
+            console.log("updatedata : "+id+"-"+JSON.stringify(data));
+            $.ajax({
+                url: 'indikator-update/'+id,
+                method: "PUT",
+                dataType: 'json',
+                data: data,
+                success: function(data) {
+                    console.log(data);
+                    // console.log(response.message);
+                    // var table = document.getElementById('tabIndikator');
+                    // var url = 'indikatorbyunit/'+idunit; // Replace with your actual backend URL
+
+                    // var xhr = new XMLHttpRequest();
+                    // xhr.open('GET', url);
+                    // xhr.onreadystatechange = function() {
+                    //     if (xhr.readyState === XMLHttpRequest.DONE) {
+                    //         if (xhr.status === 200) {
+                    //             // Update the table with the new data
+                    //             table.innerHTML = xhr.responseText;
+                    //             console.log(JSON.parse(xhr.responseText));
+                    //         } else {
+                    //             console.error('Error: ' + xhr.status);
+                    //         }
+                    //     }
+                    // };
+                    // xhr.send();
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response
+                    console.error(error);
+                }
+            });
+            // clearInputNewIndikator()
+        }
 
         function getUnit(unit,id){
             console.log("Fungsi getUnit : "+unit+" "+id);
@@ -469,8 +566,8 @@
                         html2 +='<option value="Active">Active</option><option '+select+' value="Non Active">Non Active</option>';
                     }
 
-                    $('#unit_id').html(html);
-                    $('#unit_id').selectric({
+                    $('#idunit').html(html);
+                    $('#idunit').selectric({
                         maxHeight: 400
                     });
                     $('#satuan_pengukuran').html(html1);

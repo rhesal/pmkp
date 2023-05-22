@@ -14,6 +14,7 @@ class Master_indikator extends Model
     protected $fillable = [
         'indikator',
         'unit_id',
+        'kategori',
         'nilai_standar',
         'satuan_pengukuran',
         'status'

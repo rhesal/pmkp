@@ -1,4 +1,4 @@
-<form action="indikator-store" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="">
+<form action="" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="">
     @csrf
     <div class="modal fade text-left" id="ModalCreateIndikator" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -12,10 +12,11 @@
 
                 <div class="modal-body">
                     <div class="card-body" id="page">
-                        <form action="" method="POST">
-                            @csrf
+                        {{-- <form action="" method="POST"> --}}
+                            {{-- @csrf --}}
                             <div class="row">
                                 <div class="form-group col-12">
+                                    <input type="text" name="idindikator" id="idindikator" hidden>
                                     <label for="indikator">Judul Indikator</label>
                                     <textarea name="indikator" id="indikator" class="form-control summernote-simple @error('indikator') is-invalid @enderror" style="height: 100px" placeholder="Judul Indikator " required></textarea>
                                     @error('indikator')
@@ -28,14 +29,14 @@
 
                             <div class="row">
                                 <div class="form-group col-4">
-                                        <label for="unit_id">Unit</label>
-                                        <select name="unit_id" id="unit_id" class="form-control  @error('unit_id') is-invalid @enderror" required>
+                                        <label for="idunit">Unit</label>
+                                        <select name="idunit" id="idunit" class="form-control  @error('idunit') is-invalid @enderror" required>
                                             <option value="">Select One</option>
                                             @foreach ($unitList as $item)
                                             <option value="{{ $item->id }}">{{ $item->unit }}</option>
                                             @endforeach
                                         </select>
-                                        @error('unit_id')
+                                        @error('idunit')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>
@@ -105,7 +106,6 @@
                                                 class="selectgroup-input">
                                             <span class="selectgroup-button">Lainnya</span>
                                         </label>
-                                        <span id="showSelectedBtn" class="btn btn-primary">TEST</span>
                                     </div>
                                 </div>
                             </div>
@@ -126,11 +126,11 @@
                             </div>
 
                             <div class="form-group">
-                                <a href="" type="submit" id="simpan-indikator" class="btn btn-primary btn-lg btn-block" onclick="">
+                                <a href="" id="simpan-indikator" class="btn btn-primary btn-lg btn-block" onclick="clicksimpan()">
                                     Save
                                 </a>
                             </div>
-                        </form>
+                        {{-- </form> --}}
                     </div>
                 </div>
             </div>

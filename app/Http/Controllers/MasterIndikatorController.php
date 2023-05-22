@@ -6,7 +6,6 @@ use App\Models\Master_unit;
 use Illuminate\Http\Request;
 use App\Models\Master_indikator;
 use Illuminate\Support\Facades\Session;
-use LDAP\Result;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class MasterIndikatorController extends Controller
@@ -27,7 +26,7 @@ class MasterIndikatorController extends Controller
      */
     public function create()
     {
-
+dd("tess create");
     }
 
     /**
@@ -35,13 +34,15 @@ class MasterIndikatorController extends Controller
      */
     public function store(Request $request)
     {
-        $indikator = Master_indikator::create($request->all());
-        Alert::success('Berhasil','Data berhasil ditambahkan');
-        if ($indikator) {
-            Session::flash('status','success');
-            Session::flash('message','Add new indikator success !!');
-        }
-        return redirect('indikator');
+        dd("tess");
+        // $indikator = Master_indikator::create($request->all());
+        // Alert::success('Berhasil','Data berhasil ditambahkan');
+        // if ($indikator) {
+        //     Session::flash('status','success');
+        //     Session::flash('message','Add new indikator success !!');
+        // }
+        // // return redirect('indikator');
+        return response()->json();
     }
 
     /**
@@ -85,7 +86,15 @@ class MasterIndikatorController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = $request->all();
+        $unit = Master_indikator::findOrFail($id);
+        $unit->update($data);
+        Alert::success('Berhasil','Data berhasil diupdate');
+        if($unit){
+            Session::flash('status','success');
+            Session::flash('message','Update unit success!');
+        }
+        return response()->json($unit);
     }
 
     /**

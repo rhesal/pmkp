@@ -43,11 +43,12 @@ Route::middleware(['auth','verified'])->group(function (){
     Route::put('unit-update/{id}', [MasterUnitController::class, 'update']);
 
     Route::resource('indikator', MasterIndikatorController::class)->middleware(['can:indikators']);
-    Route::post('/indikator-store', [MasterIndikatorController::class, 'store'])->middleware(['can:indikators']);
     Route::get('/indikator-destroy/{id}', [MasterIndikatorController::class, 'destroy'])->middleware(['can:indikators']);
     Route::get('indikator-show/{id}', [MasterIndikatorController::class, 'show'])->middleware(['can:indikators']);
+    Route::post('indikator-store', [MasterIndikatorController::class, 'store'])->name('indikator.store')->middleware(['can:indikators']);
     Route::get('indikatorbyunit/{id}', [MasterIndikatorController::class, 'indikatorByUnit'])->middleware(['can:indikators']);
     Route::get('indikator-edit', [MasterIndikatorController::class, 'edit'])->middleware(['can:indikators']);
+    Route::put('indikator-update/{id}', [MasterIndikatorController::class, 'update'])->middleware(['can:indikators']);
 
     Route::resource('penilaian', PenilaianController::class)->middleware(['can:home']);
     Route::get('penilaian-show', [PenilaianController::class, 'show'])->name('penilaian.show')->middleware(['can:home']);
