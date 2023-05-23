@@ -73,7 +73,7 @@
                                         <thead style="text-align:center">
                                             <th>No</th>
                                             <th>Indikator</th>
-                                            <th>Jenis Indikator</th>
+                                            <th>Kategori</th>
                                             <th>Nilai Standar</th>
                                             <th>Satuan Pengukuran</th>
                                             <th>Status</th>
@@ -151,7 +151,7 @@
                                             data-backdrop="static">${data[i].indikator}
                                         </a>
                                     </td>
-                                    <td style="text-align:center">${data[i].jenis_indikator}</td>
+                                    <td style="text-align:center">${data[i].kategori}</td>
                                     <td style="text-align:center">${data[i].nilai_standar}</td>
                                     <td style="text-align:center">${pengukuran}</td>
                                     <td style="text-align:center"><div class="badge badge-success">${data[i].status}</div></td>
@@ -161,11 +161,11 @@
                 }
             });
 
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
+            // $.ajaxSetup({
+            //     headers: {
+            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //     }
+            // });
 
             var table = '';
             $('body').on('change', '#sel-unit', function() {
@@ -205,14 +205,15 @@
                                                             data-indikator="${data[i].indikator}"
                                                             data-unitid="${unitID}"
                                                             data-standar="${data[i].nilai_standar}"
+                                                            data-kategori="${data[i].kategori}"
                                                             data-toggle="modal"
                                                             data-target="#ModalCreateIndikator"
                                                             data-backdrop="static">Edit</a>
                                                 <div class="bullet"></div>
-                                                <a href="#" type="button" class="text-danger">Delete</a>
+                                                <a href="javascript:void(0)" id="delete-indikator" data-id="${data[i].id}" type="button" class="text-danger">Delete</a>
                                             </div>
                                         </td>
-                                        <td style="text-align:center">${data[i].jenis_indikator}</td>
+                                        <td style="text-align:center">${data[i].kategori}</td>
                                         <td style="text-align:center">${data[i].nilai_standar}</td>
                                         <td style="text-align:center">${pengukuran}</td>
                                         <td style="text-align:center"><div class="badge badge-success">${data[i].status}</div></td>
@@ -247,7 +248,7 @@
                     $('#ModalCreatePengisian').modal('show');
                     $('#unit-name').text(data.unit.unit)
                     $('#unit-indikator').text(data.indikator)
-                    $('#jenis-indikator').text(data.jenis_indikator)
+                    $('#kategori').text(data.kategori)
                     $('#nilai-standar').text(data.nilai_standar)
                     $('#satuan-pengukuran').text(data.satuan_pengukuran)
                     $('#penanggung-jawab').text(data.penanggung_jawab)
@@ -281,6 +282,7 @@
                 var indikator = $(this).data('indikator');
                 var unitId = $(this).data('unitid');
                 var standar = $(this).data('standar');
+                var kategori  = $(this).data('kategori');
                 console.log(idindikator);
                 $('#ModalLabel').text(label);
                 $('#simpan-indikator').text(tombol);
@@ -288,7 +290,50 @@
                 $('#idindikator').val(idindikator);
                 $('#nilai_standar').val(standar);
                 getUnit(unitId,idindikator);
+                getKategoriEdit(kategori);
             });
+
+            function getKategoriEdit(items){
+                const checkboxes = document.getElementsByName('valuechecked');
+                console.log("kategori "+items);
+                if  (items == null){
+                    return
+                }else{
+                    const kategori = items.split(", ");
+                    var txt = "";
+                    console.log(kategori);
+
+                    checkboxes.forEach((checkbox) => {
+                        // console.log(checkbox.value);
+                        for (let i = 0; i < kategori.length; i++) {
+                            switch(kategori[i]) {
+                                case "INM":
+                                    txt = "INM"
+                                    break;
+                                case "SKP":
+                                    txt = "SKP"
+                                    break;
+                                case "Mutu Prioritas":
+                                    txt = "Mutu Prioritas"
+                                    break;
+                                case "SPM":
+                                    txt = "SPM"
+                                    break;
+                                case "Lainnya":
+                                    txt = "Lainnya"
+                                    break;
+                                default:
+                                    txt = ""
+                            }
+                            // console.log(txt);
+                            if (checkbox.value == txt) {
+                                checkbox.checked = true;
+                            }
+                        }
+                    });
+                }
+                // return kategori;
+            }
 
 
             $('body').on('change', '#sel-bln', function() {
@@ -311,7 +356,7 @@
                     bDestroy: true,
                     ordering: true,
                     ajax:{
-                        type: "GET",
+                        type: 'GET',
                         url: "{{route('penilaian.show')}}",
                         data:{
                                 data1: id,
@@ -403,8 +448,6 @@
                             myChartDraw.destroy();
                         }
                         myChartDraw = new Chart(my_Chart, config);
-
-
                     }
                 });
             }
@@ -424,17 +467,19 @@
                 var data = {
                     indikator: indikator,
                     unit_id: idunit,
+                    kategori: kategori,
                     nilai_standar: nilai_standar,
                     satuan_pengukuran: satuan_pengukuran,
-                    kategori: kategori,
                     status: status,
                 };
-                simpandata(data);
+                // simpantes(data)
+                simpandata(data, idunit);
             }else{
                 //update
                 var data = {
                     indikator: indikator,
                     unit_id: idunit,
+                    kategori: kategori,
                     nilai_standar: nilai_standar,
                     satuan_pengukuran: satuan_pengukuran,
                     status: status,
@@ -444,8 +489,8 @@
             }
         }
 
-        function getkategori () {
-            console.log("Pilih kategori");
+        function getkategori() {
+            // console.log("Pilih kategori");
             const checkboxes = document.getElementsByName('valuechecked');
             const selectedItems = [];
             var kategori = "";
@@ -460,58 +505,82 @@
                 kategori = selectedItems.join(', ');
                 // alert(kategori);
             } else {
-                // alert('No items selected.');
                 console.log('No items selected.');
             }
 
             return kategori;
         }
 
-        function simpandata(data){
-            console.log("simpandata : "+JSON.stringify(data));
-
-            // $.ajax({
-            //     url: "/indikator-create",
-            //     method: "POST",
-            //     dataType: "JSON",
-            //     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            //     contentType: "application/json",
-            //     data: data,
-            //     success: function(response) {
-            //         // console.log(data);
-            //         console.log(response);
-            //     }
-            // });
-            // clearInputNewIndikator()
-        }
-
         function updatedata(data, id, idunit){
             console.log("updatedata : "+id+"-"+JSON.stringify(data));
             $.ajax({
                 url: 'indikator-update/'+id,
-                method: "PUT",
+                method: 'PUT',
                 dataType: 'json',
                 data: data,
                 success: function(data) {
-                    console.log(data);
-                    // console.log(response.message);
-                    // var table = document.getElementById('tabIndikator');
-                    // var url = 'indikatorbyunit/'+idunit; // Replace with your actual backend URL
+                    var table = document.getElementById('tabIndikator');
+                    var url = 'indikatorbyunit/'+idunit; // Replace with your actual backend URL
 
-                    // var xhr = new XMLHttpRequest();
-                    // xhr.open('GET', url);
-                    // xhr.onreadystatechange = function() {
-                    //     if (xhr.readyState === XMLHttpRequest.DONE) {
-                    //         if (xhr.status === 200) {
-                    //             // Update the table with the new data
-                    //             table.innerHTML = xhr.responseText;
-                    //             console.log(JSON.parse(xhr.responseText));
-                    //         } else {
-                    //             console.error('Error: ' + xhr.status);
-                    //         }
-                    //     }
-                    // };
-                    // xhr.send();
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', url);
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                                // Update the table with the new data
+                                var items = JSON.parse(xhr.responseText);
+                                var html = "";
+                                var unitID = idunit;
+                                console.log("total data : "+items.length);
+                                for (let i = 0; i < items.length; i++) {
+                                    var pengukuran = "";
+                                    if(items[i].satuan_pengukuran=="%"){
+                                        pengukuran = "Persentase(%)";
+                                    }else{
+                                        pengukuran = items[i].satuan_pengukuran;
+                                    }
+                                    html += `<tr>
+                                                <td>${i+1}</td>
+                                                <td>${items[i].indikator}
+                                                    <div class="table-links">
+                                                        <a href="javascript:void(0)" id="show-unit"
+                                                                    data-url1="indikator-show/${items[i].id}"
+                                                                    data-url2="penilaian-show/${items[i].id}"
+                                                                    data-toggle="modal" data-target="#ModalCreatePengisian"
+                                                                    data-backdrop="static">Penilaian</a>
+                                                        <div class="bullet"></div>
+                                                        <a href="javascript:void(0)" id="edit-indikator"
+                                                                    data-label="Edit Indikator"
+                                                                    data-tombol="Update"
+                                                                    data-idindikator="${items[i].id}"
+                                                                    data-indikator="${items[i].indikator}"
+                                                                    data-unitid="${unitID}"
+                                                                    data-standar="${items[i].nilai_standar}"
+                                                                    data-kategori="${items[i].kategori}"
+                                                                    data-toggle="modal"
+                                                                    data-target="#ModalCreateIndikator"
+                                                                    data-backdrop="static">Edit</a>
+                                                        <div class="bullet"></div>
+                                                        <a href="javascript:void(0)" id="delete-indikator" data-id="${items[i].id}" type="button" class="text-danger">Delete</a>
+                                                    </div>
+                                                </td>
+                                                <td style="text-align:center">${items[i].kategori}</td>
+                                                <td style="text-align:center">${items[i].nilai_standar}</td>
+                                                <td style="text-align:center">${pengukuran}</td>
+                                                <td style="text-align:center"><div class="badge badge-success">${items[i].status}</div></td>
+                                            </tr>`;
+
+                                }
+                                table.getElementsByTagName('tbody')[0].innerHTML = html;
+                                Swal.fire('Good job!','Data update successfully!','success')
+                                // console.log(tes[0].indikator);
+                            } else {
+                                console.error('Error: ' + xhr.status);
+                                Swal.fire('Oopss!',xhr.status,'error')
+                            }
+                        }
+                    };
+                    xhr.send();
                 },
                 error: function(xhr, status, error) {
                     // Handle error response
@@ -521,12 +590,127 @@
             // clearInputNewIndikator()
         }
 
-        function getUnit(unit,id){
-            console.log("Fungsi getUnit : "+unit+" "+id);
+        function simpandata(data, idunit){
+            console.log("simpandata : "+JSON.stringify(data));
+            $.ajax({
+                url: '/indikator-store',
+                method: 'GET',
+                dataType: 'json',
+                // data: data,
+                data: data,
+                success: function(data) {
+                    var table = document.getElementById('tabIndikator');
+                    var url = 'indikatorbyunit/'+idunit; // Replace with your actual backend URL
 
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', url);
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                                // Update the table with the new data
+                                var items = JSON.parse(xhr.responseText);
+                                var html = "";
+                                var unitID = idunit;
+                                console.log("total data : "+items.length);
+                                for (let i = 0; i < items.length; i++) {
+                                    var pengukuran = "";
+                                    if(items[i].satuan_pengukuran=="%"){
+                                        pengukuran = "Persentase(%)";
+                                    }else{
+                                        pengukuran = items[i].satuan_pengukuran;
+                                    }
+                                    html += `<tr>
+                                                <td>${i+1}</td>
+                                                <td>${items[i].indikator}
+                                                    <div class="table-links">
+                                                        <a href="javascript:void(0)" id="show-unit"
+                                                                    data-url1="indikator-show/${items[i].id}"
+                                                                    data-url2="penilaian-show/${items[i].id}"
+                                                                    data-toggle="modal" data-target="#ModalCreatePengisian"
+                                                                    data-backdrop="static">Penilaian</a>
+                                                        <div class="bullet"></div>
+                                                        <a href="javascript:void(0)" id="edit-indikator"
+                                                                    data-label="Edit Indikator"
+                                                                    data-tombol="Update"
+                                                                    data-idindikator="${items[i].id}"
+                                                                    data-indikator="${items[i].indikator}"
+                                                                    data-unitid="${unitID}"
+                                                                    data-standar="${items[i].nilai_standar}"
+                                                                    data-kategori="${items[i].kategori}"
+                                                                    data-toggle="modal"
+                                                                    data-target="#ModalCreateIndikator"
+                                                                    data-backdrop="static">Edit</a>
+                                                        <div class="bullet"></div>
+                                                        <a href="javascript:void(0)" id="delete-indikator" data-id="${items[i].id}" type="button" class="text-danger">Delete</a>
+                                                    </div>
+                                                </td>
+                                                <td style="text-align:center">${items[i].kategori}</td>
+                                                <td style="text-align:center">${items[i].nilai_standar}</td>
+                                                <td style="text-align:center">${pengukuran}</td>
+                                                <td style="text-align:center"><div class="badge badge-success">${items[i].status}</div></td>
+                                            </tr>`;
+
+                                }
+                                table.getElementsByTagName('tbody')[0].innerHTML = html;
+                                Swal.fire('Good job!','Data successfully added!','success')
+                                // console.log(tes[0].indikator);
+                            } else {
+                                console.error('Error: ' + xhr.status);
+                                Swal.fire('Oopss!',xhr.status,'error')
+                            }
+                        }
+                    };
+                    xhr.send();
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response
+                    console.error(error);
+                }
+            });
+        }
+
+        $('body').on('click', '#delete-indikator', function () {
+            let idindikator = $(this).data('id');
+            let token   = $("meta[name='csrf-token']").attr("content");
+
+            Swal.fire({
+                title: 'Apakah Kamu Yakin?',
+                text: "ingin menghapus data ini!",
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'TIDAK',
+                confirmButtonText: 'YA, HAPUS!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    console.log('test');
+                    //fetch to delete data
+                    $.ajax({
+                        url: `/indikator-destroy/${idindikator}`,
+                        type: "DELETE",
+                        cache: false,
+                        data: {
+                            "_token": token
+                        },
+                        success: function(data) {
+                            console.log(data);
+                            $(`#index_${idindikator}`).remove();
+                            window.location.reload();
+                            // console.log(response.message);
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle error response
+                            console.error(error);
+                        }
+                    });
+                }
+            })
+        });
+
+        function getUnit(unit,id){
+            // console.log("Fungsi getUnit : "+unit+" "+id);
             $.ajax({
                 url: 'indikator-edit',
-                method: "GET",
+                method: 'GET',
                 dataType: 'json',
                 data:{
                         id: id

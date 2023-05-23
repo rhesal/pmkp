@@ -18,39 +18,44 @@
             <form method="POST">
                 @csrf
                 <div class="row">
-                    <div class="form-group col-12">
+                    <div class="form-group col-6">
                         <label for="name">Nama</label>
                         <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" autofocus>
                         @error('name')
                             <div class="invalid-feedback">
                                 {{ $message }}
-                            </div>    
+                            </div>
                         @enderror
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="form-group col-12">
+                    <div class="form-group col-6">
                         <label for="username">Username</label>
                         <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username">
                         @error('username')
                             <div class="invalid-feedback">
                                 {{ $message }}
-                            </div>    
+                            </div>
                         @enderror
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email">
-                    @error('email')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                    @enderror
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label for="unit">Unit</label>
+                        <select name="unit" id="unit" class="form-control " required>
+                            @foreach ($units as $item)
+                            <option value="{{ $item->id }}">{{ $item->unit }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="email">Email</label>
+                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email">
+                        @error('email')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
                 </div>
-
                 <div class="row">
                     <div class="form-group col-6">
                         <label for="password" class="d-block">Password</label>
@@ -93,4 +98,9 @@
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/auth-register.js') }}"></script>
+    <script type="text/javascript">
+        $('body').on('click', '#tes', function () {
+            console.log(document.getElementById("unit").value);
+        })
+    </script>
 @endpush

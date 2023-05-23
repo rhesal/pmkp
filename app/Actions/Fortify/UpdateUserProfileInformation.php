@@ -20,7 +20,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255'],
-
+            'unit_id' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
                 'string',
@@ -37,6 +37,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $user->forceFill([
                 'name' => $input['name'],
                 'username' => $input['username'],
+                'unit_id' => $input['unit_id'],
                 'email' => $input['email'],
             ])->save();
         }

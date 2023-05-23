@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\MasterUnitController;
 use App\Http\Controllers\MasterIndikatorController;
@@ -30,22 +31,21 @@ Route::middleware(['auth','verified'])->group(function (){
         return view('pages.profile',['type_menu' => '']);
     })->name('profile.edit');
 
-    Route::get('/homes', [MasterUnitController::class, 'home']);
-    Route::get('/list-homes', [MasterUnitController::class, 'listHome'])->name('unit.listHome');
-
     Route::resource('user', UserController::class);
     Route::resource('unit', MasterUnitController::class);
+    Route::get('/homes', [MasterUnitController::class, 'home']);
+    Route::get('/list-homes', [MasterUnitController::class, 'listHome'])->name('unit.listHome');
     Route::get('/getUnit', [MasterUnitController::class, 'getUnit'])->name('getUnit');
-    Route::get('/unit-create', [MasterUnitController::class, 'create']);
+    Route::post('/unit-create', [MasterUnitController::class, 'create']);
     Route::post('/unit-store', [MasterUnitController::class, 'store']);
-    Route::delete('/unit-destroy/{id}', [MasterUnitController::class, 'destroy'])->name('unit-destroy');
-    Route::get('unit-edit', [MasterUnitController::class, 'edit']);
-    Route::put('unit-update/{id}', [MasterUnitController::class, 'update']);
+    Route::get('/unit-destroy/{id}', [MasterUnitController::class, 'destroy']);
+    //Route::delete('/unit-destroy/{id}', [MasterUnitController::class, 'destroy'])->name('unit.delete');
 
     Route::resource('indikator', MasterIndikatorController::class)->middleware(['can:indikators']);
-    Route::get('/indikator-destroy/{id}', [MasterIndikatorController::class, 'destroy'])->middleware(['can:indikators']);
+    Route::get('/indikator-store', [MasterIndikatorController::class, 'store'])->middleware(['can:indikators']);
+    Route::get('/indikator-create', [MasterIndikatorController::class, 'create'])->middleware(['can:indikators']);
+    Route::delete('/indikator-destroy/{id}', [MasterIndikatorController::class, 'destroy'])->middleware(['can:indikators']);
     Route::get('indikator-show/{id}', [MasterIndikatorController::class, 'show'])->middleware(['can:indikators']);
-    Route::post('indikator-store', [MasterIndikatorController::class, 'store'])->name('indikator.store')->middleware(['can:indikators']);
     Route::get('indikatorbyunit/{id}', [MasterIndikatorController::class, 'indikatorByUnit'])->middleware(['can:indikators']);
     Route::get('indikator-edit', [MasterIndikatorController::class, 'edit'])->middleware(['can:indikators']);
     Route::put('indikator-update/{id}', [MasterIndikatorController::class, 'update'])->middleware(['can:indikators']);

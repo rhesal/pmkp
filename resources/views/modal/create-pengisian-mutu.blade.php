@@ -28,7 +28,7 @@
                                     <label class="align-top">:</label>
                                 </div>
                                 <div class="form-group col-9 mb-0">
-                                    <label class="align-top font-weight-bold"><span id="jenis-indikator"></span></label>
+                                    <label class="align-top font-weight-bold"><span id="kategori"></span></label>
                                 </div>
                             </div>
                             <div class="form-row mx-0" style="max-width: 100%">

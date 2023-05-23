@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Master_unit;
-use Illuminate\Http\Request;
 use App\Models\Master_indikator;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -24,9 +24,10 @@ class MasterIndikatorController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-dd("tess create");
+        $data = $request->input('indikator');
+        dd($request->all());
     }
 
     /**
@@ -34,15 +35,15 @@ dd("tess create");
      */
     public function store(Request $request)
     {
-        dd("tess");
-        // $indikator = Master_indikator::create($request->all());
-        // Alert::success('Berhasil','Data berhasil ditambahkan');
-        // if ($indikator) {
-        //     Session::flash('status','success');
-        //     Session::flash('message','Add new indikator success !!');
-        // }
-        // // return redirect('indikator');
-        return response()->json();
+        // dd($request->all());
+        $indikator = Master_indikator::create($request->all());
+        Alert::success('Berhasil','Data berhasil ditambahkan');
+        if ($indikator) {
+            Session::flash('status','success');
+            Session::flash('message','Add new indikator success !!');
+        }
+        // return redirect('indikator');
+        return response()->json($indikator);
     }
 
     /**
@@ -87,14 +88,14 @@ dd("tess create");
     public function update(Request $request, string $id)
     {
         $data = $request->all();
-        $unit = Master_indikator::findOrFail($id);
-        $unit->update($data);
+        $indikator = Master_indikator::findOrFail($id);
+        $indikator->update($data);
         Alert::success('Berhasil','Data berhasil diupdate');
-        if($unit){
+        if($indikator){
             Session::flash('status','success');
-            Session::flash('message','Update unit success!');
+            Session::flash('message','Update unit success!');         
         }
-        return response()->json($unit);
+        return response()->json($indikator);
     }
 
     /**
@@ -109,6 +110,6 @@ dd("tess create");
             Session::flash('status','success');
             Session::flash('message','Delete unit success!');
         }
-        return redirect('indikator');
+        return response()->json($deleteIndikator);
     }
 }
