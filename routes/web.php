@@ -59,6 +59,7 @@ Route::middleware(['auth','verified'])->group(function (){
     Route::get('rekapitulasi', [PenilaianController::class, 'rekapitulasi'])->name('penilaian.rekapitulasi')->middleware(['can:home']);
     Route::get('chart', [PenilaianController::class, 'chart'])->name('chart')->middleware(['can:home']);
     Route::post('/penilaian-store', [PenilaianController::class, 'store'])->middleware(['can:home']);
+    Route::put('/penilaian-update/{id}', [PenilaianController::class, 'update'])->middleware(['can:home']);
     Route::delete('/penilaian-destroy/{id}', [PenilaianController::class, 'destroy'])->middleware(['can:home']);
     //Route::post('/penilaian-store', 'App\Http\Controllers\PenilaianController@store');
     //Route::post('/my-controller-method', [PenilaianController::class, 'myMethod']);

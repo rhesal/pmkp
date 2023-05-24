@@ -27,7 +27,15 @@
         href="{{ asset('css/style.css') }}">
     <link rel="stylesheet"
         href="{{ asset('css/components.css') }}">
-
+    <style>
+        .warning {
+            border: 1px solid red;
+            color: red;
+        }
+        #warningMessage {
+            color: red;
+        }
+    </style>
     <!-- Start GA -->
     {{-- <script async
         src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script> --}}

@@ -65,16 +65,23 @@
                 <div class="col-8">
                         <div class="card">
                             <div class="card-body">
-                                <canvas id="myChart" height="75"></canvas>
+                                <canvas id="myChart" height="175"></canvas>
                             </div>
                         </div>
                 </div>
                 <div class="col-4">
+                    <div class="">
                         <div class="card">
                             <div class="card-body">
-
                             </div>
                         </div>
+                    </div>
+                    <div class="">
+                        <div class="card">
+                            <div class="card-body">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -93,7 +100,7 @@
         $(document).ready(function() {
           // Make an AJAX request to your server
             nilai();
-            gettabel();
+            getchart();
         });
 
         function nilai(){
@@ -114,55 +121,53 @@
         }
 
         function getchart(){
-            const DATA_COUNT = 13;
-            const NUMBER_CFG = {count: DATA_COUNT, min: 0, max: 100};
-
-            const labels = {1,2,3,4,5,6,7,8,9,10,11,12,13};
+            const labels = ['1','2','3','4','5','6','7','8','9','10','11','12','13'];
             const data = {
-            labels: labels,
-            datasets: [
-                {
-                label: 'Nilai Standar',
-                data: Utils.numbers(NUMBER_CFG),
-                borderColor: Utils.CHART_COLORS.red,
-                backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),
-                },
-                {
-                label: 'hasil',
-                data: Utils.numbers(NUMBER_CFG),
-                borderColor: Utils.CHART_COLORS.blue,
-                backgroundColor: Utils.transparentize(Utils.CHART_COLORS.blue, 0.5),
-                }
-            ]
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Nilai Standar',
+                        backgroundColor: 'rgb(255, 99, 132, 0.2)',
+                        borderColor: 'rgb(2255, 99, 132)',
+                        borderWidth: 1,
+                        barThickness: 18,
+                        data: [85, 100, 100, 80, 80, 5, 80, 100, 80, 80, 100, 80, 76],
+                    },
+                    {
+                        label: 'Hasil',
+                        backgroundColor: 'rgb(54, 162, 235, 0.2)',
+                        borderColor: 'rgb(54, 162, 235)',
+                        borderWidth: 1,
+                        barThickness: 18,
+                        data: [90, 100, 80, 90, 80, 3, 80, 97, 85, 93, 99, 75, 80],
+                    }]
             };
-
-            const actions = [
-            {
-                name: 'Randomize',
-                handler(chart) {
-                chart.data.datasets.forEach(dataset => {
-                    dataset.data = Utils.numbers({count: chart.data.labels.length, min: 0, max: 100});
-                });
-                chart.update();
-                }
-            }];
 
             const config = {
                 type: 'bar',
                 data: data,
                 options: {
+                    indexAxis: 'x',
                     responsive: true,
-                    plugins: {
-                    legend: {
-                        position: 'top',
+                    interaction: {
+                            mode: 'index',
                     },
-                    title: {
-                        display: true,
-                        text: 'Capaian Indikator Nasional Mutu'
-                    }
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Capaian Indikator Nasional Mutu'
+                        }
                     }
                 },
             };
+
+            new Chart(
+                document.getElementById('myChart'),
+                config
+            );
         }
     </script>
     <!-- Page Specific JS File -->

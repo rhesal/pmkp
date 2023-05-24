@@ -75,34 +75,8 @@ class PenilaianController extends Controller
      */
     public function store(Request $request)
     {
-        $indikator = Penilaian::create($request->all());
-        Alert::success('Berhasil','Data berhasil ditambahkan');
-        if ($indikator) {
-            Session::flash('status','success');
-            Session::flash('message','Add new indikator success !!');
-        }
-        return redirect('indikator');
-
-        // $validatedData = $request->validate([
-        //     'tanggal' => 'required',
-        //     'id' => 'required',
-        //     'num' => 'required',
-        //     'denum' => 'required',
-        //     'hasil' => 'required',
-        // ]);
-
-        // // Simpan data ke database
-        // $data = new Penilaian;
-        // $data->tanggal = $validatedData['tanggal'];
-        // $data->id = $validatedData['id'];
-        // $data->num = $validatedData['num'];
-        // $data->denum = $validatedData['denum'];
-        // $data->hasil = $validatedData['id'];
-
-        // $data->save();
-
-        // // Mengirim respon ke client
-        // return response()->json(['success' => true]);
+        $penilaian = Penilaian::create($request->all());
+        return response()->json($penilaian);
     }
 
     public function myMethod(Request $request)
@@ -248,7 +222,10 @@ class PenilaianController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = $request->all();
+        $penilaian = Penilaian::findOrFail($id);
+        $penilaian->update($data);
+        return response()->json($penilaian);
     }
 
     /**

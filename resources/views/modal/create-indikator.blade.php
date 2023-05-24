@@ -48,9 +48,6 @@
                             <div class="row">
                                 <div class="form-group col-12 text-center">
                                     <label for="kategori">Kategori</label>
-                                    <div name="kategori" id="kategori-edit" class="selectgroup selectgroup-pills">
-
-                                    </div>
                                     <div name="kategori" id="kategori" class="selectgroup selectgroup-pills">
                                         <label class="selectgroup-item">
                                             <input type="checkbox"

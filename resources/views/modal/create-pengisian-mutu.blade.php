@@ -1,4 +1,4 @@
-<form action="penilaian-store" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="">
+<form action="" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="">
     @csrf
     <div class="modal fade px-4"
         tabindex="-1"
@@ -22,7 +22,7 @@
                         <div class="form-group col-6 ">
                             <div class="form-row mx-0" style="max-width: 100%">
                                 <div class="form-group col-md-2 mb-0">
-                                    <label class="align-top font-weight-bold">Jenis Indikator</label>
+                                    <label class="align-top font-weight-bold">Kategori</label>
                                 </div>
                                 <div class="form-group mb-0">
                                     <label class="align-top">:</label>
@@ -89,7 +89,13 @@
                                 </div>
                                 <div class="form-group col-9 mb-0">
                                     <label class="align-top font-weight-bold"><span id="numerator"></span></label>
-                                    <input name="numerator" id="num" type="number" class="form-control" placeholder="Nilai Numerator" onkeyup="percentage()">
+                                    <input name="numerator" id="num" type="number" class="form-control @error('num') is-invalid @enderror" placeholder="Nilai Numerator" onkeyup="percentage()" autofocus>
+                                    <p id="warningMessage"></p>
+                                    @error('num')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="form-row mx-0" style="max-width: 100%">
@@ -101,7 +107,13 @@
                                 </div>
                                 <div class="form-group col-9 mb-0">
                                     <label class="align-top font-weight-bold"><span id="denumerator"></span></label>
-                                    <input name="denumerator" id="denum" type="number" class="form-control" placeholder="Nilai denumerator" onkeyup="percentage()">
+                                    <input name="denumerator" id="denum" type="number" class="form-control @error('denum') is-invalid @enderror" placeholder="Nilai denumerator" onkeyup="percentage()" autofocus>
+                                    <p id="warningMessage"></p>
+                                    @error('denum')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="form-row mx-0" style="max-width: 100%" hidden>
@@ -112,8 +124,15 @@
                                     <label class="align-top">:</label>
                                 </div>
                                 <div class="form-group col-9 mb-0">
-                                    <input name="indikator_id" id="indikator-id" type="text" class="form-control">
-                                    <input name="hasil" id="hasil" type="text" class="form-control">
+                                    <input name="nilai-id" id="nilai-id" type="text" class="form-control">
+                                    <input name="indikator-id" id="indikator-id" type="text" class="form-control">
+                                    <input name="hasil" id="hasil" type="text" class="form-control @error('denum') is-invalid @enderror" autofocus>
+                                    <p id="warningMessage"></p>
+                                    @error('hasil')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="form-row mx-0" style="max-width: 100%">
@@ -123,7 +142,7 @@
                             </div>
                             <div class="form-row mx-0" style="max-width: 100%">
                                 <div class="form-group col-11 mb-0 text-right">
-                                    <button type="submit" id="simpan-penilaian" class="btn btn-primary">Save</button>
+                                    <span type="submit" id="simpan-penilaian" class="btn btn-primary" onclick="simpan_penilaian()">Save</span>
                                     {{-- <p onclick="simpan_penilaian()"  class="btn btn-primary">Save</p> --}}
                                 </div>
                             </div>

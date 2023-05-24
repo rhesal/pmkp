@@ -144,7 +144,7 @@
                         html1 += `<tr>
                                     <td>${i+1}</td>
                                     <td>
-                                        <a href="javascript:void(0)" id="show-unit"
+                                        <a href="javascript:void(0)" id="show-penilaian"
                                             data-url1="indikator-show/${data[i].id}"
                                             data-url2="penilaian-show/${data[i].id}"
                                             data-toggle="modal" data-target="#ModalCreatePengisian"
@@ -192,7 +192,7 @@
                                         <td>${i+1}</td>
                                         <td>${data[i].indikator}
                                             <div class="table-links">
-                                                <a href="javascript:void(0)" id="show-unit"
+                                                <a href="javascript:void(0)" id="show-penilaian"
                                                             data-url1="indikator-show/${data[i].id}"
                                                             data-url2="penilaian-show/${data[i].id}"
                                                             data-toggle="modal" data-target="#ModalCreatePengisian"
@@ -222,43 +222,6 @@
                         table.getElementsByTagName('tbody')[0].innerHTML = html1;
                     }
                 });
-
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-            });
-
-            $('body').on('click', '#show-unit', function() {
-                var unitURL = $(this).data('url1');
-                //var penilaianURL = $(this).data('url2');
-
-                //console.log(unitURL);
-                //console.log(penilaianURL);
-                $.get(unitURL, function(data) {
-                    const date = new Date();
-
-                    let day = date.getDate();
-                    let month = ("0" + (date.getMonth() + 1)).slice(-2);
-                    let year = date.getFullYear();
-                    let currentDate = `${year}-${month}`;
-
-                    $('#sel-bln').val(currentDate)
-                    $('#ModalCreatePengisian').modal('show');
-                    $('#unit-name').text(data.unit.unit)
-                    $('#unit-indikator').text(data.indikator)
-                    $('#kategori').text(data.kategori)
-                    $('#nilai-standar').text(data.nilai_standar)
-                    $('#satuan-pengukuran').text(data.satuan_pengukuran)
-                    $('#penanggung-jawab').text(data.penanggung_jawab)
-                    $('#numerator').text(data.numerator)
-                    $('#denumerator').text(data.denumerator)
-
-                    document.getElementById('indikator-id').value = data.id
-                    gettabel(currentDate)
-                    getChart(currentDate)
-                })
 
                 $.ajaxSetup({
                     headers: {
@@ -334,131 +297,7 @@
                 }
                 // return kategori;
             }
-
-
-            $('body').on('change', '#sel-bln', function() {
-                var bln = $(this).val();
-                gettabel(bln);
-                getChart(bln);
-            });
-
-            function gettabel(bln){
-                // var bln = $(this).val();
-                var id = document.getElementById('indikator-id').value;
-                console.log(id);
-                console.log(bln);
-                console.log('penilaian-show/' + document.getElementById('indikator-id').value);
-
-                // DataTable
-                $('#mytab1').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    bDestroy: true,
-                    ordering: true,
-                    ajax:{
-                        type: 'GET',
-                        url: "{{route('penilaian.show')}}",
-                        data:{
-                                data1: id,
-                                data2: bln
-                            },
-                    },
-                    deferRender: true,
-                    aLengthMenu: [
-                                    [5, 25, 50, 100],
-                                    [5, 25, 50, 100]
-                                ],
-                    columns: [
-                        { data: 'tanggal',width: '15%', className: "text-center"},
-                        { data: 'numerator',width: '15%', className: "text-center" },
-                        { data: 'denumerator',width: '15%', className: "text-center" },
-                        { data: 'hasil',width: '15%', className: "text-center" },
-                        { data: 'keterangan',width: '15%', className: "text-center" },
-                        { data: 'action', name: 'action', orderable: false, searchable: false, className: "text-center" },
-                    ],
-                    columnDefs: [{
-                                    targets: 5, // kolom ke-4 (kolom action)
-                                    render: function(data, type, row, meta) {
-                                        var html =
-                                            '<a href="javascript:void(0)"'+
-                                                'data-id="'+ row.id +'"'+
-                                                'data-tanggal="'+ row.tanggal +'"'+
-                                                'data-num="'+ row.numerator +'"'+
-                                                'data-denum="'+ row.denumerator +'"'+
-                                                'id="edit-penilaian"'+
-                                                'class="btn btn-info fa fa-pen"></a>' +
-                                            '<span id="nilai_id_' + row.id + '">&nbsp;</span>'+
-                                            '<a href="javascript:void(0)" data-id="'+ row.id +'" id="delete-penilaian" class="btn btn-danger fa fa-trash"></a>';
-                                    return html;
-                                    }
-                                }]
-                });
-            }
         });
-
-        function getChart(bln){
-            var id = document.getElementById('indikator-id').value;
-
-            const date = new Date();
-            let day = date.getDate();
-            var bln1 = new Date(bln+'-'+day);
-            const nameBln = bln1.toLocaleString('id-ID', { month: 'long' });
-            console.log(nameBln);
-
-            $.ajax({
-                url: "{{route('chart')}}",
-                type: 'GET',
-                processing: true,
-                serverSide: true,
-                bDestroy: true,
-                ordering: true,
-                dataType: 'JSON',
-                data:{
-                    data1: id,
-                    data2: bln
-                },
-                success: function(item){
-                    console.log(item)
-                    const labels =  item.labels;
-                    const datas =  item.datas;
-                    console.log(labels)
-
-                    const hasil = {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Hasil',
-                            data: datas,
-                            fill: true,
-                            backgroundColor: 'rgb(255, 99, 132, 0.1)',
-                            borderColor: 'rgb(255, 99, 132)',
-                        }]
-                    };
-
-                    const config = {
-                        type: 'line',
-                        data: hasil,
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                legend: {
-                                    position: 'top',
-                                },
-                                title: {
-                                    display: true,
-                                    text: 'Grafik Penilaian Unit Bulan '+nameBln,
-                                }
-                            }
-                        }
-                    };
-
-                    var my_Chart = $('#myChart').get(0).getContext('2d');
-                    if (typeof myChartDraw != 'undefined') {
-                        myChartDraw.destroy();
-                    }
-                    myChartDraw = new Chart(my_Chart, config);
-                }
-            });
-        }
 
         function clicksimpan(){
             var btntext = document.getElementById("simpan-indikator").innerText;
@@ -550,7 +389,7 @@
                                                 <td>${i+1}</td>
                                                 <td>${items[i].indikator}
                                                     <div class="table-links">
-                                                        <a href="javascript:void(0)" id="show-unit"
+                                                        <a href="javascript:void(0)" id="show-penilaian"
                                                                     data-url1="indikator-show/${items[i].id}"
                                                                     data-url2="penilaian-show/${items[i].id}"
                                                                     data-toggle="modal" data-target="#ModalCreatePengisian"
@@ -630,7 +469,7 @@
                                                 <td>${i+1}</td>
                                                 <td>${items[i].indikator}
                                                     <div class="table-links">
-                                                        <a href="javascript:void(0)" id="show-unit"
+                                                        <a href="javascript:void(0)" id="show-penilaian"
                                                                     data-url1="indikator-show/${items[i].id}"
                                                                     data-url2="penilaian-show/${items[i].id}"
                                                                     data-toggle="modal" data-target="#ModalCreatePengisian"
@@ -813,37 +652,287 @@
             }
         }
 
+        $('body').on('change', '#sel-bln', function() {
+                var bln = $(this).val();
+                gettabel(bln);
+                getChart(bln);
+            });
+
+        function gettabel(bln){
+            // var bln = $(this).val();
+            var id = document.getElementById('indikator-id').value;
+            console.log(id);
+            console.log(bln);
+            console.log('penilaian-show/' + document.getElementById('indikator-id').value);
+
+            // DataTable
+            $('#mytab1').DataTable({
+                processing: true,
+                serverSide: true,
+                bDestroy: true,
+                ordering: true,
+                ajax:{
+                    type: 'GET',
+                    url: "{{route('penilaian.show')}}",
+                    data:{
+                            data1: id,
+                            data2: bln
+                        },
+                },
+                deferRender: true,
+                aLengthMenu: [
+                                [5, 25, 50, 100],
+                                [5, 25, 50, 100]
+                            ],
+                columns: [
+                    { data: 'tanggal',width: '15%', className: "text-center"},
+                    { data: 'numerator',width: '15%', className: "text-center" },
+                    { data: 'denumerator',width: '15%', className: "text-center" },
+                    { data: 'hasil',width: '15%', className: "text-center" },
+                    { data: 'keterangan',width: '15%', className: "text-center" },
+                    { data: 'action', name: 'action', orderable: false, searchable: false, className: "text-center" },
+                ],
+                columnDefs: [{
+                                targets: 5, // kolom ke-4 (kolom action)
+                                render: function(data, type, row, meta) {
+                                    var html =
+                                        '<a href="javascript:void(0)"'+
+                                            'data-id="'+ row.id +'"'+
+                                            'data-tanggal="'+ row.tanggal +'"'+
+                                            'data-num="'+ row.numerator +'"'+
+                                            'data-denum="'+ row.denumerator +'"'+
+                                            'id="edit-penilaian"'+
+                                            'class="btn btn-info fa fa-pen"></a>' +
+                                        '<span id="nilai_id_' + row.id + '">&nbsp;</span>'+
+                                        '<a href="javascript:void(0)" data-id="'+ row.id +'" id="delete-penilaian" class="btn btn-danger fa fa-trash"></a>';
+                                return html;
+                                }
+                            }]
+            });
+        }
+
+        function getChart(bln){
+            var id = document.getElementById('indikator-id').value;
+
+            const date = new Date();
+            let day = date.getDate();
+            var bln1 = new Date(bln+'-'+day);
+            const nameBln = bln1.toLocaleString('id-ID', { month: 'long' });
+            console.log(nameBln);
+
+            $.ajax({
+                url: "{{route('chart')}}",
+                type: 'GET',
+                processing: true,
+                serverSide: true,
+                bDestroy: true,
+                ordering: true,
+                dataType: 'JSON',
+                data:{
+                    data1: id,
+                    data2: bln
+                },
+                success: function(item){
+                    console.log(item)
+                    const labels =  item.labels;
+                    const datas =  item.datas;
+                    console.log(labels)
+
+                    const hasil = {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Hasil',
+                            data: datas,
+                            fill: true,
+                            backgroundColor: 'rgb(255, 99, 132, 0.1)',
+                            borderColor: 'rgb(255, 99, 132)',
+                        }]
+                    };
+
+                    const config = {
+                        type: 'line',
+                        data: hasil,
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Grafik Penilaian Unit Bulan '+nameBln,
+                                }
+                            }
+                        }
+                    };
+
+                    var my_Chart = $('#myChart').get(0).getContext('2d');
+                    if (typeof myChartDraw != 'undefined') {
+                        myChartDraw.destroy();
+                    }
+                    myChartDraw = new Chart(my_Chart, config);
+                }
+            });
+        }
+
+        function validateInputs() {
+            var num = document.getElementById('num');
+            var denum = document.getElementById('denum');
+            var hasil = document.getElementById('hasil');
+
+            if (num.value.trim() === '') {
+                num.classList.add('warning');
+                document.getElementById('warningMessage').innerText = 'Input cannot be null';
+            } else {
+                num.classList.remove('warning');
+                document.getElementById('warningMessage').innerText = '';
+            }
+
+            if (denum.value.trim() === '') {
+                denum.classList.add('warning');
+                document.getElementById('warningMessage').innerText = 'Input cannot be null';
+            } else {
+                denum.classList.remove('warning');
+                document.getElementById('warningMessage').innerText = '';
+            }
+
+            if (hasil.value.trim() === '') {
+                hasil.classList.add('warning');
+                document.getElementById('warningMessage').innerText = 'Input cannot be null';
+            } else {
+                hasil.classList.remove('warning');
+                document.getElementById('warningMessage').innerText = '';
+            }
+        }
+
+        $('body').on('click', '#show-penilaian', function() {
+            var unitURL = $(this).data('url1');
+            //var penilaianURL = $(this).data('url2');
+
+            //console.log(unitURL);
+            //console.log(penilaianURL);
+            $.get(unitURL, function(data) {
+                const date = new Date();
+
+                let day = date.getDate();
+                let month = ("0" + (date.getMonth() + 1)).slice(-2);
+                let year = date.getFullYear();
+                let currentDate = `${year}-${month}`;
+
+                $('#sel-bln').val(currentDate)
+                $('#ModalCreatePengisian').modal('show');
+                $('#simpan-penilaian').text('Save');
+                $('#unit-name').text(data.unit.unit)
+                $('#unit-indikator').text(data.indikator)
+                $('#kategori').text(data.kategori)
+                $('#nilai-standar').text(data.nilai_standar)
+                $('#satuan-pengukuran').text(data.satuan_pengukuran)
+                $('#penanggung-jawab').text(data.penanggung_jawab)
+                $('#numerator').text(data.numerator)
+                $('#denumerator').text(data.denumerator)
+
+                document.getElementById('indikator-id').value = data.id
+                gettabel(currentDate)
+                getChart(currentDate)
+            })
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        });
+
         $('body').on('click', '#edit-penilaian', function () {
-            var btntext = document.getElementById("simpan-penilaian").innerText;
             var idnilai = $(this).data('id');
             var tanggal = $(this).data('tanggal');
             var num = $(this).data('num');
             var denum = $(this).data('denum');
             console.log(tanggal+" "+num+" "+denum);
             $('#simpan-penilaian').text("Update");
+            $('#nilai-id').val(idnilai);
             $('#tanggal').val(tanggal);
             $('#num').val(num);
             $('#denum').val(denum);
 
-            if(btntext == "Save"){
-                //Save/store
-                var data = {
-
-                };
-                // simpantes(data)
-                // simpannilai(data, idunit);
-            }else{
-                //update
-                var data = {
-                    tanggal: indikator,
-                    numerator: idunit,
-                    denumerator: kategori,
-                    hasil: nilai_standar,
-                };
-                console.log(idnilai+"<br>"+data);
-                // updatenilai(data, idnilai, idunit);
+            var result = (parseInt(num) / parseInt(denum)) * 100 / 100;
+            if (!isNaN(result)) {
+                if(!isFinite(result)){
+                    $('#hasil').val("0%");
+                }else{
+                    $('#hasil').val(result.toFixed(2) + "%");
+                }
             }
         });
+
+        function simpan_penilaian(){
+            validateInputs()
+            var btntext = document.getElementById("simpan-penilaian").innerText;
+            var idnilai = document.getElementById("nilai-id").value;
+            if(btntext == "Save"){
+                var data = {
+                    indikator_id: document.getElementById("indikator-id").value,
+                    tanggal: document.getElementById("tanggal").value,
+                    numerator: document.getElementById("num").value,
+                    denumerator: document.getElementById("denum").value,
+                    hasil: document.getElementById("hasil").value,
+                };
+                simpannilai(data);
+            }else{
+                var data = {
+                    tanggal: document.getElementById("tanggal").value,
+                    numerator: document.getElementById("num").value,
+                    denumerator: document.getElementById("denum").value,
+                    hasil: document.getElementById("hasil").value,
+                };
+                updatenilai(data,idnilai);
+            }
+        }
+
+        function simpannilai(data){
+            console.log("simpannilai : "+JSON.stringify(data));
+            $.ajax({
+                url: 'penilaian-store',
+                method: 'POST',
+                dataType: 'json',
+                data: data,
+                success: function(data) {
+                    console.log(data);
+                    $('#mytab1').DataTable().ajax.reload();
+                    getChart(document.getElementById('sel-bln').value);
+                    Swal.fire('Stored!', data.message, 'success');
+                    // window.location.reload();
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response
+                    console.error(status);
+                    Swal.fire('Error!', 'An error occurred while storing the data.', 'error');
+                }
+            });
+        }
+
+        function updatenilai(data, id){
+            console.log("updatenilai : "+id+"-"+JSON.stringify(data));
+            $.ajax({
+                url: 'penilaian-update/'+id,
+                method: 'PUT',
+                dataType: 'json',
+                data: data,
+                success: function(data) {
+                    console.log(data);
+                    $('#mytab1').DataTable().ajax.reload();
+                    $('#simpan-penilaian').text("Save");
+                    getChart(document.getElementById('sel-bln').value);
+                    Swal.fire('Updated!', data.message, 'success');
+                    // window.location.reload();
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response
+                    // console.error(error);
+                    Swal.fire('Error!', 'An error occurred while updating the data.', 'error');
+                }
+            });
+        }
 
         $('body').on('click', '#delete-penilaian', function () {
             console.log(document.getElementById('sel-bln').value);
