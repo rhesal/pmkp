@@ -11,30 +11,39 @@
     </div>
     <ul class="sidebar-menu">
         @can('home')
-        <li class="menu-header" style="font-size: 12px">Dashboard</li>
+        <li class="menu-header">Dashboard</li>
         <li class="nav-item dropdown {{ $type_menu === 'dashboard' ? 'active' : '' }}">
-            <a href="{{ route('home') }}" class="nav-link"><i class="fas fa-fire"></i><span style="font-size: 18px">Dashboard</span></a>
+            <a href="#"
+                class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Dashboard</span></a>
+            <ul class="dropdown-menu">
+                <li class='{{ Request::is('dashboard') ? 'active' : '' }}'>
+                    <a class="nav-link" href="{{ route('dashboard') }}">General Dashboard</a>
+                </li>
+                <li class="{{ Request::is('home') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('home') }}"">Progres Penilaian</a>
+                </li>
+            </ul>
         </li>
         @endcan
         @can('home')
         <li class="">
-            <a href="{{ route('penilaian.index') }}" class="nav-link"><i class="fas fa-clipboard-check"></i><span style="font-size: 18px">Penilaian Mutu</span></a>
+            <a href="{{ route('penilaian.index') }}" class="nav-link"><i class="fas fa-clipboard-check"></i><span>Penilaian Mutu</span></a>
         </li>
         @endcan
         @can('indikators')
-        <li class="menu-header" style="font-size: 12px">Data Master</li>
-        <li class="{{ Request::route('indikator.index') ? 'active' : '' }}">
-            <a href="{{ route('indikator.index') }}" class="nav-link"><i class="fas fa-clipboard-list"></i><span style="font-size: 18px">Rekap Indikator</span></a>
+        <li class="menu-header">Data Master</li>
+        <li class="{{ Request::is('indikator') ? 'active' : '' }}">
+            <a href="{{ route('indikator.index') }}" class="nav-link"><i class="fas fa-clipboard-list"></i><span>Rekap Indikator</span></a>
         </li>
         @endcan
         @can('units')
-        <li class="nav-item">
-            <a href="{{ route('unit.index') }}" class="nav-link"><i class="fas fa-boxes-stacked"></i><span style="font-size: 18px">Units</span></a>
+        <li class="{{ Request::is('unit') ? 'active' : '' }}">
+            <a href="{{ route('unit.index') }}" class="nav-link"><i class="fas fa-boxes-stacked"></i><span>Units</span></a>
         </li>
         @endcan
         @can('users')
-        <li class="nav-item">
-            <a href="{{ route('user.index') }}" class="nav-link"><i class="fas fa-users"></i><span style="font-size: 18px">User List</span></a>
+        <li class="{{ Request::is('user') ? 'active' : '' }}">
+            <a href="{{ route('user.index') }}" class="nav-link"><i class="fas fa-users"></i><span>User List</span></a>
         </li>
         @endcan
     </ul>

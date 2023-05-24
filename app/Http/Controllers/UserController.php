@@ -25,7 +25,7 @@ class UserController extends Controller
             $query->where('name','LIKE','%'.$search.'%')
                 ->orWhere('email','LIKE','%'.$search.'%');
         })
-        ->paginate(5);
+        ->paginate(10);
         return view('pages.user-list',compact('user'),['type_menu' => '']);
     }
 

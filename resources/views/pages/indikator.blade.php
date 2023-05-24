@@ -188,7 +188,7 @@
                             }else{
                                 pengukuran = data[i].satuan_pengukuran;
                             }
-                            html1 += `<tr>
+                            html1 += `<tr id="index_${data[i].id}">
                                         <td>${i+1}</td>
                                         <td>${data[i].indikator}
                                             <div class="table-links">
@@ -234,7 +234,7 @@
                 var unitURL = $(this).data('url1');
                 //var penilaianURL = $(this).data('url2');
 
-                console.log(unitURL);
+                //console.log(unitURL);
                 //console.log(penilaianURL);
                 $.get(unitURL, function(data) {
                     const date = new Date();
@@ -380,78 +380,85 @@
                                     targets: 5, // kolom ke-4 (kolom action)
                                     render: function(data, type, row, meta) {
                                         var html =
-                                            '<a href="url/to/edit/page/' + row.id + '" class="btn btn-info fa fa-pen"></a>' +
-                                            '<span>&nbsp;</span>'+
-                                            '<a href="url/to/delete/' + row.id + '" class="btn btn-danger fa fa-trash"></a>';
+                                            '<a href="javascript:void(0)"'+
+                                                'data-id="'+ row.id +'"'+
+                                                'data-tanggal="'+ row.tanggal +'"'+
+                                                'data-num="'+ row.numerator +'"'+
+                                                'data-denum="'+ row.denumerator +'"'+
+                                                'id="edit-penilaian"'+
+                                                'class="btn btn-info fa fa-pen"></a>' +
+                                            '<span id="nilai_id_' + row.id + '">&nbsp;</span>'+
+                                            '<a href="javascript:void(0)" data-id="'+ row.id +'" id="delete-penilaian" class="btn btn-danger fa fa-trash"></a>';
                                     return html;
                                     }
                                 }]
                 });
             }
+        });
 
-            function getChart(bln){
-                var id = document.getElementById('indikator-id').value;
+        function getChart(bln){
+            var id = document.getElementById('indikator-id').value;
 
-                const date = new Date();
-                let day = date.getDate();
-                var bln1 = new Date(bln+'-'+day);
-                const nameBln = bln1.toLocaleString('id-ID', { month: 'long' });
-                console.log(nameBln);
+            const date = new Date();
+            let day = date.getDate();
+            var bln1 = new Date(bln+'-'+day);
+            const nameBln = bln1.toLocaleString('id-ID', { month: 'long' });
+            console.log(nameBln);
 
-                $.ajax({
-                    url: "{{route('chart')}}",
-                    type: 'GET',
-                    processing: true,
-                    serverSide: true,
-                    bDestroy: true,
-                    ordering: true,
-                    dataType: 'JSON',
-                    data:{
-                        data1: id,
-                        data2: bln
-                    },
-                    success: function(item){
-                        console.log(item)
-                        const labels =  item.labels;
-                        const datas =  item.datas;
-                        console.log(labels)
+            $.ajax({
+                url: "{{route('chart')}}",
+                type: 'GET',
+                processing: true,
+                serverSide: true,
+                bDestroy: true,
+                ordering: true,
+                dataType: 'JSON',
+                data:{
+                    data1: id,
+                    data2: bln
+                },
+                success: function(item){
+                    console.log(item)
+                    const labels =  item.labels;
+                    const datas =  item.datas;
+                    console.log(labels)
 
-                        const hasil = {
-                            labels: labels,
-                            datasets: [{
-                                label: 'Hasil',
-                                data: datas,
-                                backgroundColor: 'rgb(255, 99, 132)',
-                                borderColor: 'rgb(255, 99, 132)',
-                            }]
-                        };
+                    const hasil = {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Hasil',
+                            data: datas,
+                            fill: true,
+                            backgroundColor: 'rgb(255, 99, 132, 0.1)',
+                            borderColor: 'rgb(255, 99, 132)',
+                        }]
+                    };
 
-                        const config = {
-                            type: 'line',
-                            data: hasil,
-                            options: {
-                                responsive: true,
-                                plugins: {
-                                    legend: {
-                                        position: 'top',
-                                    },
-                                    title: {
-                                        display: true,
-                                        text: 'Grafik Penilaian Unit Bulan '+nameBln,
-                                    }
+                    const config = {
+                        type: 'line',
+                        data: hasil,
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Grafik Penilaian Unit Bulan '+nameBln,
                                 }
                             }
-                        };
-
-                        var my_Chart = $('#myChart').get(0).getContext('2d');
-                        if (typeof myChartDraw != 'undefined') {
-                            myChartDraw.destroy();
                         }
-                        myChartDraw = new Chart(my_Chart, config);
+                    };
+
+                    var my_Chart = $('#myChart').get(0).getContext('2d');
+                    if (typeof myChartDraw != 'undefined') {
+                        myChartDraw.destroy();
                     }
-                });
-            }
-        });
+                    myChartDraw = new Chart(my_Chart, config);
+                }
+            });
+        }
 
         function clicksimpan(){
             var btntext = document.getElementById("simpan-indikator").innerText;
@@ -539,7 +546,7 @@
                                     }else{
                                         pengukuran = items[i].satuan_pengukuran;
                                     }
-                                    html += `<tr>
+                                    html += `<tr id="index_${items[i].id}">
                                                 <td>${i+1}</td>
                                                 <td>${items[i].indikator}
                                                     <div class="table-links">
@@ -619,7 +626,7 @@
                                     }else{
                                         pengukuran = items[i].satuan_pengukuran;
                                     }
-                                    html += `<tr>
+                                    html += `<tr id="index_${items[i].id}">
                                                 <td>${i+1}</td>
                                                 <td>${items[i].indikator}
                                                     <div class="table-links">
@@ -682,7 +689,6 @@
                 confirmButtonText: 'YA, HAPUS!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    console.log('test');
                     //fetch to delete data
                     $.ajax({
                         url: `/indikator-destroy/${idindikator}`,
@@ -694,12 +700,13 @@
                         success: function(data) {
                             console.log(data);
                             $(`#index_${idindikator}`).remove();
-                            window.location.reload();
-                            // console.log(response.message);
+                            // window.location.reload();
+                            Swal.fire('Deleted!', data.message, 'success');
                         },
                         error: function(xhr, status, error) {
                             // Handle error response
-                            console.error(error);
+                            // console.error(error);
+                            Swal.fire('Error!', 'An error occurred while deleting the data.', 'error');
                         }
                     });
                 }
@@ -805,5 +812,77 @@
                 }
             }
         }
+
+        $('body').on('click', '#edit-penilaian', function () {
+            var btntext = document.getElementById("simpan-penilaian").innerText;
+            var idnilai = $(this).data('id');
+            var tanggal = $(this).data('tanggal');
+            var num = $(this).data('num');
+            var denum = $(this).data('denum');
+            console.log(tanggal+" "+num+" "+denum);
+            $('#simpan-penilaian').text("Update");
+            $('#tanggal').val(tanggal);
+            $('#num').val(num);
+            $('#denum').val(denum);
+
+            if(btntext == "Save"){
+                //Save/store
+                var data = {
+
+                };
+                // simpantes(data)
+                // simpannilai(data, idunit);
+            }else{
+                //update
+                var data = {
+                    tanggal: indikator,
+                    numerator: idunit,
+                    denumerator: kategori,
+                    hasil: nilai_standar,
+                };
+                console.log(idnilai+"<br>"+data);
+                // updatenilai(data, idnilai, idunit);
+            }
+        });
+
+        $('body').on('click', '#delete-penilaian', function () {
+            console.log(document.getElementById('sel-bln').value);
+            let idnilai = $(this).data('id');
+            let token   = $("meta[name='csrf-token']").attr("content");
+            // console.log(idindikator);
+            Swal.fire({
+                title: 'Apakah Kamu Yakin?',
+                text: "ingin menghapus data ini!",
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'TIDAK',
+                confirmButtonText: 'YA, HAPUS!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    console.log('test');
+                    //fetch to delete data
+                    $.ajax({
+                        url: `/penilaian-destroy/${idnilai}`,
+                        type: "DELETE",
+                        cache: false,
+                        data: {
+                            "_token": token
+                        },
+                        success: function(data) {
+                            console.log(data);
+                            $('#mytab1').DataTable().ajax.reload();
+                            getChart(document.getElementById('sel-bln').value);
+                            Swal.fire('Deleted!', data.message, 'success');
+                            // window.location.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle error response
+                            // console.error(error);
+                            Swal.fire('Error!', 'An error occurred while deleting the data.', 'error');
+                        }
+                    });
+                }
+            })
+        });
     </script>
 @endpush

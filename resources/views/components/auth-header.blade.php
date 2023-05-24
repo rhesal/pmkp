@@ -5,9 +5,9 @@
         class="shadow-light rounded-circle">
 </div>
 <div class="login-brand">
-    <p>
+    {{-- <p>
         SISTEM INFORMASI <br>
         INDIKATOR MUTU <br>
         (SI-IMUT)
-    </p>
+    </p> --}}
 </div>

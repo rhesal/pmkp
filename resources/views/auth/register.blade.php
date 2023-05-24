@@ -37,10 +37,11 @@
                         @enderror
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="form-group col-6">
-                        <label for="unit">Unit</label>
-                        <select name="unit" id="unit" class="form-control " required>
+                        <label for="unit_id">Unit</label>
+                        <select name="unit_id" id="unit_id" class="form-control " required>
                             @foreach ($units as $item)
                             <option value="{{ $item->id }}">{{ $item->unit }}</option>
                             @endforeach
@@ -56,6 +57,7 @@
                         @enderror
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="form-group col-6">
                         <label for="password" class="d-block">Password</label>
@@ -98,9 +100,4 @@
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/auth-register.js') }}"></script>
-    <script type="text/javascript">
-        $('body').on('click', '#tes', function () {
-            console.log(document.getElementById("unit").value);
-        })
-    </script>
 @endpush

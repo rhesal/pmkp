@@ -93,7 +93,7 @@ class MasterIndikatorController extends Controller
         Alert::success('Berhasil','Data berhasil diupdate');
         if($indikator){
             Session::flash('status','success');
-            Session::flash('message','Update unit success!');         
+            Session::flash('message','Update unit success!');
         }
         return response()->json($indikator);
     }
@@ -105,11 +105,16 @@ class MasterIndikatorController extends Controller
     {
         $deleteIndikator = Master_indikator::findOrFail($id);
         $deleteIndikator->delete();
-        Alert::success('Berhasil','Data berhasil dihapus');
-        if($deleteIndikator){
-            Session::flash('status','success');
-            Session::flash('message','Delete unit success!');
-        }
-        return response()->json($deleteIndikator);
+        // Alert::success('Berhasil','Data berhasil dihapus');
+        // Alert::error('Ooppss!','Data gagal dihapus');
+        // if($deleteIndikator){
+        //     Session::flash('status','success');
+        //     Session::flash('message','Delete unit success!');
+        // }else{
+        //     Session::flash('status','error');
+        //     Session::flash('message','Delete unit failed!');
+        // }
+        // return response()->json($deleteIndikator);
+        return response()->json(['message' => 'Data deleted successfully']);
     }
 }

@@ -193,7 +193,8 @@ class PenilaianController extends Controller
                 "numerator" => $numerator,
                 "denumerator" => $denumerator,
                 "hasil" => $hasil,
-                "keterangan" => $keterangan
+                "keterangan" => $keterangan,
+                "id" => $id,
             );
         }
 
@@ -255,6 +256,8 @@ class PenilaianController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $penilaian = Penilaian::findOrFail($id);
+        $penilaian->delete();
+        return response()->json(['message' => 'Data deleted successfully']);
     }
 }

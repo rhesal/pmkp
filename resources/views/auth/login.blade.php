@@ -25,7 +25,7 @@
                             {{ $message }}
                         </div>
                     @enderror
-                    
+
                 </div>
 
                 <div class="form-group">
@@ -52,7 +52,7 @@
                         Login
                     </button>
                 </div>
-            </form>  
+            </form>
         </div>
     </div>
     <div class="text-muted mt-5 text-center">

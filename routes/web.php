@@ -23,8 +23,12 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth','verified'])->group(function (){
+    Route::get('dashboard', function (){
+        return view('pages.dashboard',['type_menu' => 'dashboard']);
+    })->name('dashboard')->middleware(['can:home']);
+
     Route::get('home', function (){
-        return view('pages.home',['type_menu' => '']);
+        return view('pages.home',['type_menu' => 'dashboard']);
     })->name('home')->middleware(['can:home']);
 
     Route::get('edit-profile', function(){
@@ -55,6 +59,7 @@ Route::middleware(['auth','verified'])->group(function (){
     Route::get('rekapitulasi', [PenilaianController::class, 'rekapitulasi'])->name('penilaian.rekapitulasi')->middleware(['can:home']);
     Route::get('chart', [PenilaianController::class, 'chart'])->name('chart')->middleware(['can:home']);
     Route::post('/penilaian-store', [PenilaianController::class, 'store'])->middleware(['can:home']);
+    Route::delete('/penilaian-destroy/{id}', [PenilaianController::class, 'destroy'])->middleware(['can:home']);
     //Route::post('/penilaian-store', 'App\Http\Controllers\PenilaianController@store');
     //Route::post('/my-controller-method', [PenilaianController::class, 'myMethod']);
     //Route::get('penilaian-show/{id}', [PenilaianController::class, 'show'])->name('penilaian.show');
