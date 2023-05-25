@@ -156,7 +156,8 @@
                         // { data: 'unit',name: 'unit',width: '15%', className: "text-left"},
                         { render: function (data, type, row, meta) {
                                     var persen = 25;
-                                    var html = '<a href="">'+row.unit+'</a>';
+                                    var url = 'penilaian';
+                                    var html = '<a href="'+ url +'">'+row.unit+'</a>';
                                     return html;
                                 }
                         },
