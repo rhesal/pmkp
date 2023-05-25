@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                 <div class="card card-statistic-1">
-                    <div class="card-icon bg-primary">
+                    <div class="card-icon bg-dash-1">
                         <i class="far fa-user"></i>
                     </div>
                     <div class="card-wrap">
@@ -31,7 +31,7 @@
             </div>
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                 <div class="card card-statistic-1">
-                    <div class="card-icon bg-danger">
+                    <div class="card-icon bg-dash-2">
                         <i class="far fa-newspaper"></i>
                     </div>
                     <div class="card-wrap">
@@ -46,7 +46,7 @@
             </div>
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                 <div class="card card-statistic-1">
-                    <div class="card-icon bg-warning">
+                    <div class="card-icon bg-dash-3">
                         <i class="far fa-file"></i>
                     </div>
                     <div class="card-wrap">
@@ -152,12 +152,13 @@
                                     [15, 25, 50, 100]
 				                ],
                     columns: [
-                        { data: 'id',name: 'id',width: '10%', orderable: false, searchable: false, className: "text-center"},
+                        {
+                            data: 'id',name: 'id',width: '10%', orderable: false, searchable: false, className: "text-center"},
                         // { data: 'unit',name: 'unit',width: '15%', className: "text-left"},
                         { render: function (data, type, row, meta) {
                                     var persen = 25;
-                                    var url = 'penilaian';
-                                    var html = '<a href="'+ url +'">'+row.unit+'</a>';
+                                    var url = 'penilaian/'+row.id;
+                                    var html = '<a href="'+ url +'" class="a-datatable">'+row.unit+'</a>';
                                     return html;
                                 }
                         },
@@ -168,21 +169,26 @@
                                 {
                                     targets: 0,
                                     render: function (data, type, row, meta) {
-                                        return meta.row + meta.settings._iDisplayStart + 1;
+                                        var no = meta.row + meta.settings._iDisplayStart + 1;
+                                        return '<p class="a-datatable">'+ no +'</p>';
                                     }
                                 },
                                 {
                                     targets: 2,
                                     render: function (data, type, row, meta) {
-                                        return 0;
+                                        // var max= 100;
+                                        // var min= 75;
+                                        // var result = Math.floor(Math.random() * (max - min + 1) ) + min;
+
+                                        return '<p class="a-datatable">'+row.random+'</p>';
                                     }
                                 },
                                 {
                                     targets: 3,
                                     render: function (data, type, row, meta) {
                                         var persen = 25;
-                                        var html = '<div class="progress" data-height="2" data-toggle="tooltip" title="70%">'+
-                                                        '<div class="progress-bar bg-warning" role="progressbar" data-width="70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:'+persen+'%"></div>'+
+                                        var html = '<div class="progress" data-height="2" data-toggle="tooltip" title="'+row.random+'%">'+
+                                                        '<div class="progress-bar bg-dash-3" role="progressbar" data-width="'+row.random+'%" aria-valuenow="'+row.random+'" aria-valuemin="0" aria-valuemax="100" style="width:'+row.random+'%"></div>'+
                                                     '</div>';
                                         return html;
                                     }

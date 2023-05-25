@@ -26,6 +26,14 @@ class PenilaianController extends Controller
         return view('pages.hasil-penilaian-mutu',['unitList' => $unit],['type_menu' => '']);
     }
 
+    public function tampil(string $id)
+    {
+        //$penilaian = Penilaian::with('indikator')->get();
+        // $penilaian = Master_indikator::with('nilai_mutu','nilai_mutu.tanggal')->get();
+        $unit = Master_unit::select('id','unit')->orderBy('unit','ASC')->get();
+        return view('pages.hasil-penilaian-mutu',['unitList' => $unit,'id'=>$id],['type_menu' => '']);
+    }
+
     public function rekapitulasi(Request $request)
     {
         $id = $request->input('data1');
@@ -42,13 +50,13 @@ class PenilaianController extends Controller
         foreach($records as $record){
             //$id = $record->id;
             $indikator = $record->indikator;
-            $jenis = $record->jenis_indikator;
+            $kategori = $record->kategori;
             $standar = $record->nilai_standar;
 
             $data_arr[] = array(
                 "indikator" => $indikator,
-                "jenis_indikator" => $jenis,
-                "nilai_standar" => $standar
+                "kategori" => $kategori,
+                "nilai_standar" => $standar,
             );
         }
 

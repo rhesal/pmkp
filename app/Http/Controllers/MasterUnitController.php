@@ -125,8 +125,9 @@ class MasterUnitController extends Controller
             $unit = $record->unit;
 
             $data_arr[] = array(
-                // "id" => $id,
-                "unit" => $unit
+                "id" => $id,
+                "unit" => $unit,
+                "random" => rand(75,100),
             );
         }
 

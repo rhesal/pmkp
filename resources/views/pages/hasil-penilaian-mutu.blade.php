@@ -24,10 +24,20 @@
         <div class="section-body">
             <h2 class="section-title">
                 Penilaian Mutu Unit
+                <span></span>
                 <select name="sel-unit" id="sel-unit" class="@error('unit_id') is-invalid @enderror" style="width: 15%; border: none; border-color: transparent; background: transparent;">
                     <option value="">....</option>
                     @foreach ($unitList as $item)
-                        <option value="{{ $item->id }}">{{ $item->unit }}</option>
+                    @php
+                        $select = "";
+                        if($item->id==$id){
+                            $select="selected";
+                        }else{
+                            $select="";
+                        }
+                    @endphp
+
+                        <option {{ $select }} value="{{ $item->id }}">{{ $item->unit }}</option>
                     @endforeach
                 </select>
             </h2>
@@ -76,7 +86,7 @@
                                 <thead>
                                     <th>#</th>
                                     <th>Indikator</th>
-                                    <th>Jenis</th>
+                                    <th>Kategori</th>
                                     <th>Standar</th>
                                     @php
                                         $start_date = new DateTime('2023-03-01');
@@ -119,7 +129,7 @@
         $(document).ready(function() {
         // Get the data you want to send to the controller
             var myData = { name: 'John', email: 'john@example.com' };
-            console.log(myData);
+            console.log({{ $id }});
             // Send an AJAX request to the controller
             // $.ajax({
             //     type: 'POST',
@@ -129,6 +139,8 @@
             //         // Tangani respons dari kontroler
             //     }
             // });
+
+            gettabel({{ $id }});
 
             $('body').on('change', '#sel-bln', function() {
                 var unit = document.getElementById('sel-unit').value;
@@ -160,15 +172,23 @@
 
                     ],
                     columnDefs: [
-                                {
-                                    targets: 1, data: 'indikator',
-                                    render: function (data, type, row, meta) {
-                                        var html = '<a href="">'+data+'</a>';
-                                        return html;
-                                    }
-                                },
-                                {targets: 2, data: 'jenis_indikator', width: '15%', className: "text-center"},
-                                {targets: 3, data: 'nilai_standar', width: '15%', className: "text-center"},
+                                    {
+                                        targets: 0,
+                                        render: function (data, type, row, meta) {
+                                            var no = meta.row + meta.settings._iDisplayStart + 1;
+                                            var html = '<p>'+no+'</p>';
+                                            return html;
+                                        }
+                                    },
+                                    {
+                                        targets: 1, data: 'indikator',
+                                        render: function (data, type, row, meta) {
+                                            var html = '<a href="">'+data+'</a>';
+                                            return html;
+                                        }
+                                    },
+                                    {targets: 2, data: 'kategori', width: '15%', className: "text-center"},
+                                    {targets: 3, data: 'nilai_standar', width: '15%', className: "text-center"},
                                 ]
                 });
             }

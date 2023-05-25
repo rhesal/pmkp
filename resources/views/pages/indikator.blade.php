@@ -693,6 +693,41 @@
                     { data: 'action', name: 'action', orderable: false, searchable: false, className: "text-center" },
                 ],
                 columnDefs: [{
+                                targets: 0, // kolom ke-4 (kolom action)
+                                render: function(data, type, row, meta) {
+                                    var html = '<p style="font-size: 14px;font-weight: 800;">'+ row.tanggal +'</p>';
+                                return html;
+                                }
+                            },
+                            {
+                                targets: 1, // kolom ke-4 (kolom action)
+                                render: function(data, type, row, meta) {
+                                    var html = '<p style="font-size: 14px;font-weight: 800;">'+ row.numerator +'</p>';
+                                return html;
+                                }
+                            },
+                            {
+                                targets: 2, // kolom ke-4 (kolom action)
+                                render: function(data, type, row, meta) {
+                                    var html = '<p style="font-size: 14px;font-weight: 800;">'+ row.denumerator +'</p>';
+                                return html;
+                                }
+                            },
+                            {
+                                targets: 3, // kolom ke-4 (kolom action)
+                                render: function(data, type, row, meta) {
+                                    var html = '<p style="font-size: 14px;font-weight: 800;">'+ row.hasil +'</p>';
+                                return html;
+                                }
+                            },
+                            {
+                                targets: 4, // kolom ke-4 (kolom action)
+                                render: function(data, type, row, meta) {
+                                    var html = '<p style="font-size: 14px;font-weight: 800;">'+ row.keterangan +'</p>';
+                                return html;
+                                }
+                            },
+                            {
                                 targets: 5, // kolom ke-4 (kolom action)
                                 render: function(data, type, row, meta) {
                                     var html =
@@ -744,7 +779,7 @@
                             label: 'Hasil',
                             data: datas,
                             fill: true,
-                            backgroundColor: 'rgb(255, 99, 132, 0.1)',
+                            backgroundColor: 'rgb(255, 99, 132, 0.7)',
                             borderColor: 'rgb(255, 99, 132)',
                         }]
                     };

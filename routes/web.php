@@ -56,6 +56,7 @@ Route::middleware(['auth','verified'])->group(function (){
 
     // Route::resource('penilaian', PenilaianController::class)->middleware(['can:home']);
     Route::get('penilaian', function(){ return view('pages.hasil-penilaian-mutu',['type_menu' => '']);})->name('penilaian.index')->middleware(['can:home']);
+    Route::get('penilaian/{id}', [PenilaianController::class, 'tampil'])->name('penilaian.tampil')->middleware(['can:home']);
     Route::get('penilaian-show', [PenilaianController::class, 'show'])->name('penilaian.show')->middleware(['can:home']);
     Route::get('rekapitulasi', [PenilaianController::class, 'rekapitulasi'])->name('penilaian.rekapitulasi')->middleware(['can:home']);
     Route::get('chart', [PenilaianController::class, 'chart'])->name('chart')->middleware(['can:home']);

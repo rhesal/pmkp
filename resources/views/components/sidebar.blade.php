@@ -25,11 +25,6 @@
             </ul>
         </li>
         @endcan
-        @can('home')
-        <li class="">
-            <a href="{{ route('penilaian.index') }}" class="nav-link"><i class="fas fa-clipboard-check"></i><span>Penilaian Mutu</span></a>
-        </li>
-        @endcan
         @can('indikators')
         <li class="menu-header">Data Master</li>
         <li class="{{ Request::is('indikator') ? 'active' : '' }}">
