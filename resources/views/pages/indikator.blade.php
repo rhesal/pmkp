@@ -233,7 +233,6 @@
             $('body').on('click', '#show-indikator', function() {
                 clearInputNewIndikator()
                 var label = $(this).data('label');
-                console.log(label);
                 $('#ModalLabel').text(label);
             });
 
@@ -615,6 +614,10 @@
         function clearInputNewIndikator() {
             document.getElementById("indikator").value = '';
             document.getElementById("nilai_standar").value = '';
+            document.getElementById("idunit").selectedIndex = -1;
+            document.getElementById("satuan_pengukuran").selectedIndex = -1;
+            document.getElementById("status").selectedIndex = -1;
+            document.getElementById("simpan-indikator").text = 'Save';
 
             const checkboxes = document.getElementsByName('valuechecked');
             Array.from(checkboxes).forEach((checkbox) => {
@@ -859,7 +862,7 @@
                 $('#simpan-penilaian').text('Save');
                 $('#unit-name').text(data.unit.unit)
                 $('#unit-indikator').text(data.indikator)
-                $('#kategori').text(data.kategori)
+                $('#kategoriModal').text(data.kategori)
                 $('#nilai-standar').text(data.nilai_standar)
                 $('#satuan-pengukuran').text(data.satuan_pengukuran)
                 $('#penanggung-jawab').text(data.penanggung_jawab)

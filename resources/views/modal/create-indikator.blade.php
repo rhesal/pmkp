@@ -5,7 +5,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="ModalLabel"></h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="clearInputNewIndikator()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -42,6 +42,7 @@
                                         <option value="">Select One</option>
                                         <option value="%">Persentase (%)</option>
                                         <option value="menit">Menit</option>
+                                        <option value="Jumlah Kejadian">Jumlah Kejadian</option>
                                     </select>
                                 </div>
                             </div>

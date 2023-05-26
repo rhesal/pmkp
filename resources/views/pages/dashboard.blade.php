@@ -76,7 +76,7 @@
                     <div class="">
                         <div class="card">
                             <div class="card-body">
-                                <canvas id="myChart2" height="170"></canvas>
+                                <canvas id="myChart2" height="125"></canvas>
                             </div>
                         </div>
                     </div>
@@ -165,7 +165,7 @@
                         borderColor: 'rgb(54, 162, 235)',
                         borderWidth: 1,
                         barThickness: 18,
-                        data: [90, 100, 80, 90, 80, 3, 80, 97, 85, 93, 99, 75, 80],
+                        data: [90, 100, 80, 90, 80, 3, 80, 97, 85, 93, 99, 75, 95],
                     },
                 ]
             };

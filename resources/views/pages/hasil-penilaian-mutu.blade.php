@@ -64,24 +64,6 @@
                         <div class="clearfix mb-3"></div>
 
                         <div class="table-responsive">
-                            {{-- <table class="table table-striped">
-                                <tr>
-                                    <th class="col-sm-1">No</th>
-                                    <th>Indikator</th>
-                                    <th>Jenis</th>
-                                    <th>Standar</th>
-                                    @php
-                                        $start_date = new DateTime('2023-03-01');
-                                        $end_date = new DateTime('2023-04-01');
-                                        $interval = DateInterval::createFromDateString('1 day');
-                                        $period = new DatePeriod($start_date, $interval, $end_date);
-                                    @endphp
-                                    @foreach ($period as $date)
-                                    <th>{{$date->format('d')}}</th>
-                                    @endforeach
-                                </tr>
-                            </table> --}}
-
                             <table class="table-striped table" id="mytab1" width='100%' style='border-collapse: collapse;'>
                                 <thead>
                                     <th>#</th>
@@ -108,6 +90,11 @@
                                 </ul> --}}
                             </nav>
                         </div>
+                        <div>
+                            <div class="input-group-append float-right" style=": 50px">
+                                <button class="btn btn-primary">Print</button>
+                            </div>
+                        </div>
                     </div>
                     </div>
                 </div>
@@ -127,19 +114,14 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-        // Get the data you want to send to the controller
-            var myData = { name: 'John', email: 'john@example.com' };
-            console.log({{ $id }});
-            // Send an AJAX request to the controller
-            // $.ajax({
-            //     type: 'POST',
-            //     url: 'penilaian.myMethod',
-            //     data: myData,
-            //     success: function(response) {
-            //         // Tangani respons dari kontroler
-            //     }
-            // });
-
+            const date = new Date();
+            let day = date.getDate();
+            let month = ("0" + (date.getMonth() + 1)).slice(-2);
+            let year = date.getFullYear();
+            let currentDate = `${year}-${month}`;
+            $('#sel-bln').val(currentDate);
+            console.log(currentDate);
+            getJmlHari();
             gettabel({{ $id }});
 
             $('body').on('change', '#sel-bln', function() {
@@ -147,6 +129,14 @@
                 //var bln = $(this).val();
                 gettabel(unit)
             });
+
+            function getJmlHari(){
+                var tanggal = new Date(document.getElementById('sel-bln').value);
+                var tahun = tanggal.getFullYear();
+                var bulan = tanggal.getMonth() + 1;
+                var jmlHari = new Date(tahun, bulan, 0).getDate();
+                return jmlHari;
+            }
 
             function gettabel(unit){
                 //alert("No_ID : "+unit+" Periode :"+bln);
@@ -193,7 +183,5 @@
                 });
             }
         });
-
-
     </script>
 @endpush
