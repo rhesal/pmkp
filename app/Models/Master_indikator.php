@@ -17,6 +17,9 @@ class Master_indikator extends Model
         'kategori',
         'nilai_standar',
         'satuan_pengukuran',
+        'numerator',
+        'denumerator',
+        'penanggung_jawab',
         'status'
     ];
 

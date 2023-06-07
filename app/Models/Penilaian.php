@@ -18,6 +18,7 @@ class Penilaian extends Model
         'numerator',
         'denumerator',
         'hasil',
+        'visitor',
     ];
 
     public function indikators()

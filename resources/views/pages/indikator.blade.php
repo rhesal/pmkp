@@ -177,12 +177,12 @@
                     type: 'GET',
                     dataType: 'JSON',
                     success: function(data){
-                        console.log(data);
                         var table = document.getElementById("tabIndikator");
                         var html1 = "";
                         var unitID = id;
                         for (let i = 0; i < data.length; i++) {
                             var pengukuran = "";
+                            // console.log("Show data : "+data[i].numerator);
                             if(data[i].satuan_pengukuran=="%"){
                                 pengukuran = "Persentase(%)";
                             }else{
@@ -205,6 +205,9 @@
                                                             data-indikator="${data[i].indikator}"
                                                             data-unitid="${unitID}"
                                                             data-standar="${data[i].nilai_standar}"
+                                                            data-numerator="${data[i].numerator}"
+                                                            data-denumerator="${data[i].denumerator}"
+                                                            data-penanggung_jawab="${data[i].penanggung_jawab}"
                                                             data-kategori="${data[i].kategori}"
                                                             data-toggle="modal"
                                                             data-target="#ModalCreateIndikator"
@@ -242,6 +245,9 @@
                 var tombol = $(this).data('tombol');
                 var idindikator = $(this).data('idindikator');
                 var indikator = $(this).data('indikator');
+                var numerator = $(this).data('numerator');
+                var denumerator = $(this).data('denumerator');
+                var penanggung_jawab = $(this).data('penanggung_jawab');
                 var unitId = $(this).data('unitid');
                 var standar = $(this).data('standar');
                 var kategori  = $(this).data('kategori');
@@ -249,6 +255,9 @@
                 $('#ModalLabel').text(label);
                 $('#simpan-indikator').text(tombol);
                 $('#indikator').val(indikator);
+                $('#numerator').val(numerator);
+                $('#denumerator').val(denumerator);
+                $('#penanggung_jawab').val(penanggung_jawab);
                 $('#idindikator').val(idindikator);
                 $('#nilai_standar').val(standar);
                 getUnit(unitId,idindikator);
@@ -305,6 +314,9 @@
             var idunit = document.getElementById("idunit").value;
             var nilai_standar = document.getElementById("nilai_standar").value;
             var satuan_pengukuran = document.getElementById("satuan_pengukuran").value;
+            var numerator = document.getElementById("numerator").value;
+            var denumerator = document.getElementById("denumerator").value;
+            var penanggung_jawab = document.getElementById("penanggung_jawab").value;
             var status = document.getElementById("status").value;
             var kategori = getkategori();
             if(btntext == "Save"){
@@ -315,6 +327,9 @@
                     kategori: kategori,
                     nilai_standar: nilai_standar,
                     satuan_pengukuran: satuan_pengukuran,
+                    numerator: numerator,
+                    denumerator: denumerator,
+                    penanggung_jawab: penanggung_jawab,
                     status: status,
                 };
                 // simpantes(data)
@@ -327,6 +342,9 @@
                     kategori: kategori,
                     nilai_standar: nilai_standar,
                     satuan_pengukuran: satuan_pengukuran,
+                    numerator: numerator,
+                    denumerator: denumerator,
+                    penanggung_jawab: penanggung_jawab,
                     status: status,
                 };
                 // console.log(idunit);
@@ -402,6 +420,9 @@
                                                                     data-unitid="${unitID}"
                                                                     data-standar="${items[i].nilai_standar}"
                                                                     data-kategori="${items[i].kategori}"
+                                                                    data-numerator="${items[i].numerator}"
+                                                                    data-denumerator="${items[i].denumerator}"
+                                                                    data-penanggung_jawab="${items[i].penanggung_jawab}"
                                                                     data-toggle="modal"
                                                                     data-target="#ModalCreateIndikator"
                                                                     data-backdrop="static">Edit</a>
@@ -482,6 +503,9 @@
                                                                     data-unitid="${unitID}"
                                                                     data-standar="${items[i].nilai_standar}"
                                                                     data-kategori="${items[i].kategori}"
+                                                                    data-numerator="${items[i].numerator}"
+                                                                    data-denumerator="${items[i].denumerator}"
+                                                                    data-penanggung_jawab="${items[i].penanggung_jawab}"
                                                                     data-toggle="modal"
                                                                     data-target="#ModalCreateIndikator"
                                                                     data-backdrop="static">Edit</a>
@@ -544,7 +568,7 @@
                         error: function(xhr, status, error) {
                             // Handle error response
                             // console.error(error);
-                            Swal.fire('Error!', 'An error occurred while deleting the data.', 'error');
+                            Swal.fire('Error!', 'Mungkin masih ada data penilaian diindikator tsb.<br> Harap hapus terlebih dahulu penilaiannya', 'error');
                         }
                     });
                 }
@@ -616,6 +640,9 @@
             document.getElementById("nilai_standar").value = '';
             document.getElementById("idunit").selectedIndex = -1;
             document.getElementById("satuan_pengukuran").selectedIndex = -1;
+            document.getElementById("numerator").value = '';
+            document.getElementById("denumerator").value = '';
+            document.getElementById("penanggung_jawab").selectedIndex = -1;
             document.getElementById("status").selectedIndex = -1;
             document.getElementById("simpan-indikator").text = 'Save';
 
@@ -846,8 +873,7 @@
         $('body').on('click', '#show-penilaian', function() {
             var unitURL = $(this).data('url1');
             //var penilaianURL = $(this).data('url2');
-
-            //console.log(unitURL);
+            console.log(unitURL);
             //console.log(penilaianURL);
             $.get(unitURL, function(data) {
                 const date = new Date();
@@ -857,6 +883,7 @@
                 let year = date.getFullYear();
                 let currentDate = `${year}-${month}`;
 
+                console.log("Detail Indikator"+data);
                 $('#sel-bln').val(currentDate)
                 $('#ModalCreatePengisian').modal('show');
                 $('#simpan-penilaian').text('Save');
@@ -866,8 +893,8 @@
                 $('#nilai-standar').text(data.nilai_standar)
                 $('#satuan-pengukuran').text(data.satuan_pengukuran)
                 $('#penanggung-jawab').text(data.penanggung_jawab)
-                $('#numerator').text(data.numerator)
-                $('#denumerator').text(data.denumerator)
+                $('#ketnumerator').text(data.numerator)
+                $('#ketdenumerator').text(data.denumerator)
 
                 document.getElementById('indikator-id').value = data.id
                 gettabel(currentDate)
@@ -907,28 +934,40 @@
             validateInputs()
             var btntext = document.getElementById("simpan-penilaian").innerText;
             var idnilai = document.getElementById("nilai-id").value;
+            var username = '{{ Auth::user()->name }}';
+            // console.log(username);
             if(btntext == "Save"){
-                var data = {
-                    indikator_id: document.getElementById("indikator-id").value,
-                    tanggal: document.getElementById("tanggal").value,
-                    numerator: document.getElementById("num").value,
-                    denumerator: document.getElementById("denum").value,
-                    hasil: document.getElementById("hasil").value,
-                };
-                simpannilai(data);
+                if(document.getElementById("num").value !== '' && document.getElementById("denum").value !== '' && document.getElementById("hasil").value !== ''){
+                    var data = {
+                        indikator_id: document.getElementById("indikator-id").value,
+                        tanggal: document.getElementById("tanggal").value,
+                        numerator: document.getElementById("num").value,
+                        denumerator: document.getElementById("denum").value,
+                        hasil: document.getElementById("hasil").value,
+                        visitor: username,
+                    };
+                    simpannilai(data);
+                }else{
+                    return
+                }
             }else{
-                var data = {
-                    tanggal: document.getElementById("tanggal").value,
-                    numerator: document.getElementById("num").value,
-                    denumerator: document.getElementById("denum").value,
-                    hasil: document.getElementById("hasil").value,
-                };
-                updatenilai(data,idnilai);
+                if(document.getElementById("num").value !== '' && document.getElementById("denum").value !== '' && document.getElementById("hasil").value !== ''){
+                    var data = {
+                        tanggal: document.getElementById("tanggal").value,
+                        numerator: document.getElementById("num").value,
+                        denumerator: document.getElementById("denum").value,
+                        hasil: document.getElementById("hasil").value,
+                        visitor: username,
+                    };
+                    updatenilai(data,idnilai);
+                }else{
+                    return
+                }
             }
         }
 
         function simpannilai(data){
-            console.log("simpannilai : "+JSON.stringify(data));
+            //console.log("simpannilai : "+JSON.stringify(data));
             $.ajax({
                 url: 'penilaian-store',
                 method: 'POST',
@@ -950,7 +989,7 @@
         }
 
         function updatenilai(data, id){
-            console.log("updatenilai : "+id+"-"+JSON.stringify(data));
+            //console.log("updatenilai : "+id+"-"+JSON.stringify(data));
             $.ajax({
                 url: 'penilaian-update/'+id,
                 method: 'PUT',
@@ -986,7 +1025,7 @@
                 confirmButtonText: 'YA, HAPUS!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    console.log('test');
+                    // console.log('test');
                     //fetch to delete data
                     $.ajax({
                         url: `/penilaian-destroy/${idnilai}`,

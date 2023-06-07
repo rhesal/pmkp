@@ -19,11 +19,22 @@
                                     <textarea name="indikator" id="indikator" class="form-control summernote-simple" style="height: 100px" placeholder="Judul Indikator " required></textarea>
                                 </div>
                             </div>
-
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="numerator">Ket. Numerator</label>
+                                    <textarea name="numerator" id="numerator" class="form-control summernote-simple" style="height: 50px" placeholder="Keterangan " required></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="denumerator">Ket. Denumerator</label>
+                                    <textarea name="denumerator" id="denumerator" class="form-control summernote-simple" style="height: 50px" placeholder="Keterangan " required></textarea>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="form-group col-4">
                                         <label for="idunit">Unit</label>
-                                        <select name="idunit" id="idunit" class="form-control " required>
+                                        <select name="idunit" id="idunit" class="form-control selectric" required>
                                             <option value="">Select One</option>
                                             @foreach ($unitList as $item)
                                             <option value="{{ $item->id }}">{{ $item->unit }}</option>
@@ -38,7 +49,7 @@
 
                                 <div class="form-group col-4">
                                     <label for="satuan_pengukuran">Satuan Pengukuran</label>
-                                    <select name="satuan_pengukuran" id="satuan_pengukuran" class="form-control" required>
+                                    <select name="satuan_pengukuran" id="satuan_pengukuran" class="form-control selectric" required>
                                         <option value="">Select One</option>
                                         <option value="%">Persentase (%)</option>
                                         <option value="menit">Menit</option>
@@ -89,7 +100,25 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-12">
+                                <div class="form-group col-6">
+                                    <label for="penanggung_jawab">Penanggung Jawab</label>
+                                    <select name="penanggung_jawab" id="penanggung_jawab" class="form-control selectric" required>
+                                        <option value="">Select One</option>
+                                        <option value="Kepala Unit Farmasi">Kepala Unit Farmasi</option>
+                                        <option value="Kepala Unit IGD">Kepala Unit IGD</option>
+                                        <option value="Kepala Unit Kamar Bersalin">Kepala Unit Kamar Bersalin</option>
+                                        <option value="Kepala Unit Kamar Operasi">Kepala Unit Kamar Operasi</option>
+                                        <option value="Kepala Unit Laboratorium">Kepala Unit Laboratorium</option>
+                                        <option value="Kepala Unit Pelayanan">Kepala Unit Pelayanan</option>
+                                        <option value="Kepala Unit Radiologi">Kepala Unit Radiologi</option>
+                                        <option value="Kepala Unit Rawat Inap">Kepala Unit Rawat Inap</option>
+                                        <option value="Kepala Unit Rawat Jalan">Kepala Unit Rawat Jalan</option>
+                                        <option value="Kepala Bidang Humas">Kepala Bidang Humas</option>
+                                        <option value="Komite PPI">Komite PPI</option>
+                                        <option value="MPP">MPP</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-6">
                                         <label for="status">Status</label>
                                         <select name="status" id="status" class="form-control selectric" required>
                                             <option value="">Select One</option>
@@ -104,7 +133,6 @@
                                     Save
                                 </a>
                             </div>
-                        {{-- </form> --}}
                     </div>
                 </div>
             </div>

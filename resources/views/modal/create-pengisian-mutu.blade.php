@@ -50,7 +50,7 @@
                                     <label class="align-top">:</label>
                                 </div>
                                 <div class="form-group col-9 mb-0">
-                                    <label class="align-top font-weight-bold"><span id="nilai-standar"></span><span id="satuan-pengukuran"></span></label>
+                                    <label class="align-top font-weight-bold"><span id="nilai-standar"></span>&nbsp;<span id="satuan-pengukuran"></span></label>
                                 </div>
                             </div>
                             <div class="form-row mx-0" style="max-width: 100%">
@@ -88,8 +88,8 @@
                                     <label class="align-top">:</label>
                                 </div>
                                 <div class="form-group col-9 mb-0">
-                                    <label class="align-top font-weight-bold"><span id="numerator"></span></label>
-                                    <input name="numerator" id="num" type="number" class="form-control @error('num') is-invalid @enderror" placeholder="Nilai Numerator" onkeyup="percentage()" autofocus>
+                                    <label class="align-top font-weight-bold"><span id="ketnumerator"></span></label>
+                                    <input name="num" id="num" type="number" class="form-control @error('num') is-invalid @enderror" placeholder="Nilai Numerator" onkeyup="percentage()" autofocus>
                                     <p id="warningMessage"></p>
                                     @error('num')
                                         <div class="invalid-feedback">
@@ -106,8 +106,8 @@
                                     <label class="align-top">:</label>
                                 </div>
                                 <div class="form-group col-9 mb-0">
-                                    <label class="align-top font-weight-bold"><span id="denumerator"></span></label>
-                                    <input name="denumerator" id="denum" type="number" class="form-control @error('denum') is-invalid @enderror" placeholder="Nilai denumerator" onkeyup="percentage()" autofocus>
+                                    <label class="align-top font-weight-bold"><span id="ketdenumerator"></span></label>
+                                    <input name="denum" id="denum" type="number" class="form-control @error('denum') is-invalid @enderror" placeholder="Nilai denumerator" onkeyup="percentage()" autofocus>
                                     <p id="warningMessage"></p>
                                     @error('denum')
                                         <div class="invalid-feedback">

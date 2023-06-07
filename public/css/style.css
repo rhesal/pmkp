@@ -274,7 +274,7 @@ select.form-control:not([size]):not([multiple]) {
 .form-group > label {
     font-weight: 800;
     color: #34395e;
-    font-size: 20px;
+    font-size: 12px;
     letter-spacing: 0.5px;
 }
 .form-group.floating-addon {
@@ -1153,7 +1153,7 @@ select.form-control:not([size]):not([multiple]) {
   padding: 0 25px;
   height: 60px;
   vertical-align: middle;
-  font-size: 20px;
+  font-size: 16px;
 }
 .table:not(.table-sm) thead th {
   border-bottom: none;
