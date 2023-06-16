@@ -37,6 +37,7 @@ Route::middleware(['auth','verified'])->group(function (){
 
     Route::resource('user', UserController::class);
     Route::resource('unit', MasterUnitController::class);
+
     Route::get('/homes', [MasterUnitController::class, 'home']);
     Route::get('/list-homes', [MasterUnitController::class, 'listHome'])->name('unit.listHome');
     Route::get('/getUnit', [MasterUnitController::class, 'getUnit'])->name('getUnit');
@@ -59,7 +60,8 @@ Route::middleware(['auth','verified'])->group(function (){
     Route::get('penilaian', function(){ return view('pages.hasil-penilaian-mutu',['type_menu' => '']);})->name('penilaian.index')->middleware(['can:home']);
     Route::get('penilaian/{id}', [PenilaianController::class, 'tampil'])->name('penilaian.tampil')->middleware(['can:home']);
     Route::get('penilaian-show', [PenilaianController::class, 'show'])->name('penilaian.show')->middleware(['can:home']);
-    Route::get('rekapitulasi', [PenilaianController::class, 'rekapitulasi'])->name('penilaian.rekapitulasi')->middleware(['can:home']);
+    Route::post('rekap', [PenilaianController::class, 'rekap'])->name('penilaian.rekap')->middleware(['can:home']);
+    Route::post('rekapitulasi/{id}', [PenilaianController::class, 'rekapitulasi'])->name('penilaian.rekapitulasi')->middleware(['can:home']);
     Route::get('chart', [PenilaianController::class, 'chart'])->name('chart')->middleware(['can:home']);
     Route::post('/penilaian-store', [PenilaianController::class, 'store'])->middleware(['can:home']);
     Route::put('/penilaian-update/{id}', [PenilaianController::class, 'update'])->middleware(['can:home']);

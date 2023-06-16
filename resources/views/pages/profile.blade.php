@@ -4,23 +4,20 @@
 
 @push('style')
     <!-- CSS Libraries -->
-    <link rel="stylesheet"
-        href="{{ asset('library/summernote/dist/summernote-bs4.css') }}">
-    <link rel="stylesheet"
-        href="{{ asset('library/bootstrap-social/assets/css/bootstrap.css') }}">
-    <link rel="stylesheet"
-        href="{{ asset('library/bootstrap-social/assets/css/font-awesome.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/summernote/dist/summernote-bs4.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/bootstrap-social/assets/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/bootstrap-social/assets/css/font-awesome.css') }}">
 @endpush
 
 @section('main')
-<div class="main-content">
-    <section class="section">
-        <div class="section-header">
-            <h1>Profile</h1>
-        </div>
+    <div class="main-content">
+        <section class="section">
+            <div class="section-header">
+                <h1>Profile</h1>
+            </div>
 
-        <div class="section-body">
-            <h2 class="section-title">Hi, {{ Auth::user()->name; }}!</h2>
+            <div class="section-body">
+                <h2 class="section-title">Hi, {{ Auth::user()->name }}!</h2>
                 <p class="section-lead">
                     Change information about yourself on this page.
                 </p>
@@ -29,8 +26,7 @@
                     <div class="col-12 col-md-12 col-lg-5">
                         <div class="card profile-widget">
                             <div class="profile-widget-header">
-                                <img alt="image"
-                                    src="{{ asset('img/avatar/avatar-1.png') }}"
+                                <img alt="image" src="{{ asset('img/avatar/avatar-1.png') }}"
                                     class="rounded-circle profile-widget-picture">
                                 <div class="profile-widget-items">
                                     <div class="profile-widget-item">
@@ -48,32 +44,29 @@
                                 </div>
                             </div>
                             <div class="profile-widget-description">
-                                <div class="profile-widget-name">{{ Auth::user()->name; }}
+                                <div class="profile-widget-name">{{ Auth::user()->name }}
                                 </div>
                                 {{ Auth::user()->bio }}
                             </div>
                             <div class="card-footer text-center">
-                                <div class="font-weight-bold mb-2">Follow {{ Auth::user()->name; }} On</div>
-                                <a href="#"
-                                    class="btn btn-social-icon btn-facebook mr-1">
+                                <div class="font-weight-bold mb-2">Follow {{ Auth::user()->name }} On</div>
+                                <a href="#" class="btn btn-social-icon btn-facebook mr-1">
                                     <i class="fab fa-facebook-f"></i>
                                 </a>
-                                <a href="#"
-                                    class="btn btn-social-icon btn-twitter mr-1">
+                                <a href="#" class="btn btn-social-icon btn-twitter mr-1">
                                     <i class="fab fa-twitter"></i>
                                 </a>
-                                <a href="#"
-                                    class="btn btn-social-icon btn-github mr-1">
+                                <a href="#" class="btn btn-social-icon btn-github mr-1">
                                     <i class="fab fa-github"></i>
                                 </a>
-                                <a href="#"
-                                    class="btn btn-social-icon btn-instagram">
+                                <a href="#" class="btn btn-social-icon btn-instagram">
                                     <i class="fab fa-instagram"></i>
                                 </a>
                             </div>
                         </div>
                         <div class="card">
-                            <form method="POST" action="{{ route('user-password.update') }}" class="needs-validation" novalidate="">
+                            <form method="POST" action="{{ route('user-password.update') }}" class="needs-validation"
+                                novalidate="">
                                 @csrf
                                 @method('PUT')
                                 <div class="card-header">
@@ -83,8 +76,10 @@
                                     <div class="row">
                                         <div class="form-group col-md-6 col-6">
                                             <label for="current_password">Current Password</label>
-                                            <input id="current_password" type="password" class="form-control @error('current_password','updatePassword') is-invalid @enderror" name="current_password">
-                                            @error('current_password','updatePassword')
+                                            <input id="current_password" type="password"
+                                                class="form-control @error('current_password', 'updatePassword') is-invalid @enderror"
+                                                name="current_password">
+                                            @error('current_password', 'updatePassword')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
                                                 </div>
@@ -94,8 +89,10 @@
                                     <div class="row">
                                         <div class="form-group col-md-6 col-6">
                                             <label for="password">New Password</label>
-                                            <input id="password" type="password" class="form-control @error('newpassword','updatePassword') is-invalid @enderror" name="password">
-                                            @error('password','updatePassword')
+                                            <input id="password" type="password"
+                                                class="form-control @error('newpassword', 'updatePassword') is-invalid @enderror"
+                                                name="password">
+                                            @error('password', 'updatePassword')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
                                                 </div>
@@ -103,8 +100,10 @@
                                         </div>
                                         <div class="form-group col-md-6 col-6">
                                             <label for="password_confirmation">Password Confirmation</label>
-                                            <input id="password_confirmation" type="password" class="form-control @error('password_confirmation','updatePassword') is-invalid @enderror" name="password_confirmation">
-                                            @error('password_confirmation','updatePassword')
+                                            <input id="password_confirmation" type="password"
+                                                class="form-control @error('password_confirmation', 'updatePassword') is-invalid @enderror"
+                                                name="password_confirmation">
+                                            @error('password_confirmation', 'updatePassword')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
                                                 </div>
@@ -120,7 +119,8 @@
                     </div>
                     <div class="col-12 col-md-12 col-lg-7">
                         <div class="card">
-                            <form method="POST" action="{{ route('user-profile-information.update') }}" class="needs-validation" novalidate="">
+                            <form method="POST" action="{{ route('user-profile-information.update') }}"
+                                class="needs-validation" novalidate="">
                                 @csrf
                                 @method('PUT')
                                 <div class="card-header">
@@ -130,7 +130,8 @@
                                     <div class="row">
                                         <div class="form-group col-md-12 col-12">
                                             <label>Name</label>
-                                            <input type="text" class="form-control" name="name" value="{{ Auth::user()->name }}">
+                                            <input type="text" class="form-control" name="name"
+                                                value="{{ Auth::user()->name }}">
                                             <div class="invalid-feedback">
                                                 Please fill in the first name
                                             </div>
@@ -139,8 +140,10 @@
                                     <div class="row">
                                         <div class="form-group col-md-4 col-12">
                                             <label>Email</label>
-                                            <input type="email" class="form-control @error('email','updateProfileInformation') is-invalid @enderror" name="email" value="{{ Auth::user()->email }}">
-                                            @error('email','updateProfileInformation')
+                                            <input type="email"
+                                                class="form-control @error('email', 'updateProfileInformation') is-invalid @enderror"
+                                                name="email" value="{{ Auth::user()->email }}">
+                                            @error('email', 'updateProfileInformation')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
                                                 </div>
@@ -148,8 +151,10 @@
                                         </div>
                                         <div class="form-group col-md-4 col-12">
                                             <label>Phone</label>
-                                            <input type="tel" class="form-control @error('phone','updateProfileInformation') is-invalid @enderror" name="phone" value="{{ Auth::user()->phone }}">
-                                            @error('phone','updateProfileInformation')
+                                            <input type="tel"
+                                                class="form-control @error('phone', 'updateProfileInformation') is-invalid @enderror"
+                                                name="phone" value="{{ Auth::user()->phone }}">
+                                            @error('phone', 'updateProfileInformation')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
                                                 </div>
@@ -157,8 +162,10 @@
                                         </div>
                                         <div class="form-group col-md-4 col-12">
                                             <label>Unit</label>
-                                            <input type="unit_id" class="form-control @error('unit_id','updateProfileInformation') is-invalid @enderror" name="unit_id" value="{{ Auth::user()->unit->unit }}">
-                                            @error('unit_id','updateProfileInformation')
+                                            <input type="unit_id"
+                                                class="form-control @error('unit_id', 'updateProfileInformation') is-invalid @enderror"
+                                                name="unit_id" value="{{ Auth::user()->unit->unit }}">
+                                            @error('unit_id', 'updateProfileInformation')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
                                                 </div>
@@ -179,9 +186,9 @@
                         </div>
                     </div>
                 </div>
-        </div>
-    </section>
-</div>
+            </div>
+        </section>
+    </div>
 @endsection
 
 @push('scripts')

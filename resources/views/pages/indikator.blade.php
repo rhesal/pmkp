@@ -670,7 +670,7 @@
                 if(txtNumValue==0 && txtDenumValue==0){
                     document.getElementById('hasil').value = "0%";
                 }else{
-                    var result = (parseInt(txtNumValue) / parseInt(txtDenumValue)) * 100 / 100;
+                    var result = (parseInt(txtNumValue) / parseInt(txtDenumValue)) * 100;
                     if (!isNaN(result)) {
                         if(!isFinite(result)){
                             document.getElementById('hasil').value = "0%";
@@ -920,7 +920,7 @@
             $('#num').val(num);
             $('#denum').val(denum);
 
-            var result = (parseInt(num) / parseInt(denum)) * 100 / 100;
+            var result = (parseInt(num) / parseInt(denum)) * 100;
             if (!isNaN(result)) {
                 if(!isFinite(result)){
                     $('#hasil').val("0%");

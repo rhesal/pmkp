@@ -116,7 +116,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="form-row mx-0" style="max-width: 100%" hidden>
+                            <div class="form-row mx-0" style="max-width: 100%">
                                 <div class="form-group col-md-2 mb-0">
                                     <label class="align-top font-weight-bold">Hasil</label>
                                 </div>

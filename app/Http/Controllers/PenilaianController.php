@@ -2,18 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\Penilaian;
-use App\Models\Master_unit;
 use App\Models\Master_indikator;
-
+use App\Models\Master_unit;
+use App\Models\Penilaian;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use RealRashid\SweetAlert\Facades\Alert;
-use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\TableExport;
 
 class PenilaianController extends Controller
 {
@@ -24,52 +17,38 @@ class PenilaianController extends Controller
     {
         //$penilaian = Penilaian::with('indikator')->get();
         // $penilaian = Master_indikator::with('nilai_mutu','nilai_mutu.tanggal')->get();
-        $unit = Master_unit::select('id','unit')->orderBy('unit','ASC')->get();
-        return view('pages.hasil-penilaian-mutu',['unitList' => $unit],['type_menu' => '']);
+        // $unit = Master_unit::select('id', 'unit')->orderBy('unit', 'ASC')->get();
+        // return view('pages.hasil-penilaian-mutu', ['unitList' => $unit], ['type_menu' => '']);
     }
 
     public function tampil(string $id)
     {
-        //$penilaian = Penilaian::with('indikator')->get();
-        // $penilaian = Master_indikator::with('nilai_mutu','nilai_mutu.tanggal')->get();
-        $unit = Master_unit::select('id','unit')->orderBy('unit','ASC')->get();
-        return view('pages.hasil-penilaian-mutu',['unitList' => $unit,'id'=>$id],['type_menu' => '']);
+        $unit = Master_unit::select('id', 'unit')->orderBy('unit', 'ASC')->get();
+        $indikators = Master_indikator::where('unit_id', $id)->get();
+        // dd($indikators);
+        return view('pages.hasil-penilaian-mutu', ['unitList' => $unit, 'id' => $id, 'indikators' => $indikators], ['type_menu' => '']);
     }
 
-    public function rekapitulasi(Request $request)
+    public function rekap(Request $request)
     {
-        $id = $request->input('data1');
+        $bln = $request->input('sel-bln');
+        dd($bln);
+        // return view('pages.hasil-penilaian-mutu')->with('indikators', $indikators);
+    }
+
+    public function rekapitulasi(Request $request, string $id)
+    {
+        $unit = $request->input('sel-unit');
+        $bln = $request->input('sel-bln');
         // $periode = explode("-",$request->input('data2'));
         // $thn = $periode[0];
         // $bln = $periode[1];
-        //dd($id);
-        //dd($id." | ".$bln."-".$thn);
+        // dd($id);
+        // dd($id." | ".$bln);
 
-        //$unit = Master_indikator::with(['unit'])->findOrFail($id);
-        $records = Master_indikator::where('unit_id',$id)->get();
-        //dd($unit);
-
-        foreach($records as $record){
-            //$id = $record->id;
-            $indikator = $record->indikator;
-            $kategori = $record->kategori;
-            $standar = $record->nilai_standar;
-
-            $data_arr[] = array(
-                "indikator" => $indikator,
-                "kategori" => $kategori,
-                "nilai_standar" => $standar,
-            );
-        }
-
-        $response = array(
-            // "draw" => intval($draw),
-            // "iTotalRecords" => $totalRecords,
-            // "iTotalDisplayRecords" => $totalRecordswithFilter,
-            "aaData" => $data_arr
-        );
-
-        return response()->json($response);
+        $unit = Master_unit::select('id', 'unit')->orderBy('unit', 'ASC')->get();
+        $indikators = Master_indikator::where('unit_id', $id)->get();
+        return view('pages.hasil-penilaian-mutu', ['unitList' => $unit, 'id' => $id, 'indikators' => $indikators], ['type_menu' => '']);
     }
 
     /**
@@ -97,7 +76,7 @@ class PenilaianController extends Controller
 
         // Lakukan sesuatu dengan data
 
-        Alert::success('Berhasil','Data berhasil dihapus');
+        Alert::success('Berhasil', 'Data berhasil dihapus');
         //return response()->json(['success' => true]);
         //return redirect('penilaian');
     }
@@ -108,7 +87,7 @@ class PenilaianController extends Controller
     public function show(Request $request)
     {
         $id = $request->input('data1');
-        $periode = explode("-",$request->input('data2'));
+        $periode = explode("-", $request->input('data2'));
         $thn = $periode[0];
         $bln = $periode[1];
 
@@ -130,33 +109,33 @@ class PenilaianController extends Controller
 
         // Total records
         $totalRecords = Penilaian::select('count(*) as allcount')
-                                    ->where('indikator_id', $id)->whereYear('tanggal', $thn)->whereMonth('tanggal', $bln)
-                                    ->count();
+            ->where('indikator_id', $id)->whereYear('tanggal', $thn)->whereMonth('tanggal', $bln)
+            ->count();
         $totalRecordswithFilter = Penilaian::select('count(*) as allcount')
-                                            ->where('indikator_id', $id)->whereYear('tanggal', $thn)->whereMonth('tanggal', $bln)
-                                            ->where('tanggal', 'like', '%' .$searchValue . '%')
-                                            ->count();
+            ->where('indikator_id', $id)->whereYear('tanggal', $thn)->whereMonth('tanggal', $bln)
+            ->where('tanggal', 'like', '%' . $searchValue . '%')
+            ->count();
 
         // Fetch records
-        $records = Penilaian::orderBy($columnName,$columnSortOrder)
-                ->where('nilai_mutu.tanggal', 'like', '%' .$searchValue . '%')
-                ->where('indikator_id', $id)->whereYear('tanggal', $thn)->whereMonth('tanggal', $bln)
-                ->skip($start)
-                ->take($rowperpage)
-                ->get();
+        $records = Penilaian::orderBy($columnName, $columnSortOrder)
+            ->where('nilai_mutu.tanggal', 'like', '%' . $searchValue . '%')
+            ->where('indikator_id', $id)->whereYear('tanggal', $thn)->whereMonth('tanggal', $bln)
+            ->skip($start)
+            ->take($rowperpage)
+            ->get();
 
-        $compare = Master_indikator::where('id',$id)->get();
+        $compare = Master_indikator::where('id', $id)->get();
 
         $data_arr = array();
 
         $keterangan = "";
         $standar = "";
 
-        foreach($records as $record){
+        foreach ($records as $record) {
             $standar = $record->nilai_standar;
         }
 
-        foreach($records as $record){
+        foreach ($records as $record) {
             $id = $record->id;
             $tanggal = $record->tanggal;
             $numerator = $record->numerator;
@@ -182,12 +161,11 @@ class PenilaianController extends Controller
             );
         }
 
-
         $response = array(
             "draw" => intval($draw),
             "iTotalRecords" => $totalRecords,
             "iTotalDisplayRecords" => $totalRecordswithFilter,
-            "aaData" => $data_arr
+            "aaData" => $data_arr,
         );
 
         return response()->json($response);
@@ -199,21 +177,21 @@ class PenilaianController extends Controller
     public function chart(Request $request)
     {
         $id = $request->input('data1');
-        $periode = explode("-",$request->input('data2'));
+        $periode = explode("-", $request->input('data2'));
         $thn = $periode[0];
         $bln = $periode[1];
 
         $hasil = Penilaian::select('tanggal')->selectRaw("REPLACE(hasil, '%', '') as hasil")
-                    ->where('indikator_id', $id)->whereYear('tanggal', $thn)->whereMonth('tanggal', $bln)
-                    ->orderBy('tanggal','ASC')
-                    ->pluck('hasil', 'tanggal');
+            ->where('indikator_id', $id)->whereYear('tanggal', $thn)->whereMonth('tanggal', $bln)
+            ->orderBy('tanggal', 'ASC')
+            ->pluck('hasil', 'tanggal');
 
         $labels = $hasil->keys();
         $datas = $hasil->values();
 
         $response = array(
             "labels" => $labels,
-            "datas" => $datas
+            "datas" => $datas,
         );
 
         return response()->json($response);

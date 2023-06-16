@@ -13,7 +13,7 @@
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1>Penilaian Mutu</h1>
+            <h1>Rekapitulasi Penilaian Mutu</h1>
         </div>
         @if (Session::has('status'))
                 <div class="alert alert-success text-center" role="alert">
@@ -23,29 +23,47 @@
 
         <div class="section-body">
             <h2 class="section-title">
-                Penilaian Mutu Unit
-                <span></span>
-                <select name="sel-unit" id="sel-unit" class="@error('unit_id') is-invalid @enderror" style="width: 15%; border: none; border-color: transparent; background: transparent;">
-                    <option value="">....</option>
-                    @foreach ($unitList as $item)
-                    @php
-                        $select = "";
-                        if($item->id==$id){
-                            $select="selected";
-                        }else{
-                            $select="";
-                        }
-                    @endphp
-
-                        <option {{ $select }} value="{{ $item->id }}">{{ $item->unit }}</option>
-                    @endforeach
-                </select>
+                <form action="" id="rekap" method="POST" class="form-horizontal">
+                    @csrf
+                    <div class="row mt-4">
+                        <div class="col-4">
+                            <p>Unit :</p>
+                            <select name="sel-unit" id="sel-unit" class="@error('unit_id') is-invalid @enderror selectric" style="width: 50%; border: none; border-color: transparent; background: transparent;">
+                            <option value="">Pilih Unit</option>
+                            @foreach ($unitList as $item)
+                            @php
+                                $select = "";
+                                if($item->id==$id){
+                                    $select="selected";
+                                }else{
+                                    $select="";
+                                }
+                            @endphp
+                                <option {{ $select }} value="{{ $item->id }}">{{ $item->unit }}</option>
+                            @endforeach
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <p>Periode :</p>
+                            <div class="form-group input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-calendar"></i>
+                                    </div>
+                                </div>
+                                <input name="sel-bln" id="sel-bln" type="month" class="form-control datepicker align-top">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <p>&nbsp;</p>
+                            <div class="form-actions">
+                                <button type="submit" name="caripenilaian" class="btn btn-success">Rekap</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </h2>
-            <p class="section-lead">
-                Periode :
-                <input type="month" style="border: none; border-color: transparent; background: transparent;" id="sel-bln" name="sel-bln">
-                {{-- <a href="" type="button" id="my-button" class="btn btn-primary">Klik saya</a> --}}
-            </p>
+
             <div class="row mt-4">
                 <div class="col-12">
                     <div class="card">
@@ -62,38 +80,38 @@
                         </div>
 
                         <div class="clearfix mb-3"></div>
-
-                        <div class="table-responsive">
-                            <table class="table-striped table" id="mytab1" width='100%' style='border-collapse: collapse;'>
-                                <thead>
-                                    <th>#</th>
-                                    <th>Indikator</th>
-                                    <th>Kategori</th>
-                                    <th>Standar</th>
-                                    @php
-                                        $start_date = new DateTime('2023-03-01');
-                                        $end_date = new DateTime('2023-04-01');
-                                        $interval = DateInterval::createFromDateString('1 day');
-                                        $period = new DatePeriod($start_date, $interval, $end_date);
-                                    @endphp
-                                    @foreach ($period as $date)
-                                    <th>{{$date->format('d')}}</th>
+                        <form action="" method="POST">
+                            <div class="table-responsive">
+                                <table class="table-striped table" style='border-collapse: collapse; width:100%'>
+                                    <thead>
+                                        <th>#</th>
+                                        <th style="width:70%">Indikator</th>
+                                        <th>Kategori</th>
+                                        <th>Standar</th>
+                                        @for ($tanggal_table = 1; $tanggal_table <= 31; $tanggal_table++)
+                                            <th>{{$tanggal_table}}</th>
+                                        @endfor
+                                    </thead>
+                                    <tbody>
+                                    @foreach ($indikators as $index => $data)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $data->indikator }}</td>
+                                            <td>{{ $data->kategori }}</td>
+                                            <td>{{ $data->nilai_standar }}</td>
+                                        </tr>
                                     @endforeach
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+
                         <div class="float-right">
                             <nav>
                                 {{-- <ul class="pagination">
                                     {{ $unitList->withQueryString()->links() }}
                                 </ul> --}}
                             </nav>
-                        </div>
-                        <div>
-                            <div class="input-group-append float-right" style=": 50px">
-                                <button class="btn btn-primary">Print</button>
-                            </div>
                         </div>
                     </div>
                     </div>
@@ -122,12 +140,20 @@
             $('#sel-bln').val(currentDate);
             console.log(currentDate);
             getJmlHari();
-            gettabel({{ $id }});
 
             $('body').on('change', '#sel-bln', function() {
                 var unit = document.getElementById('sel-unit').value;
                 //var bln = $(this).val();
-                gettabel(unit)
+                getJmlHari();
+                // gettabel(unit)
+            });
+
+            $('body').on('change', '#sel-unit', function() {
+                var id = document.getElementById('sel-unit').value;
+                var routeUrl = "{{ route('penilaian.rekapitulasi', 'id') }}";
+                var formAction = routeUrl.replace('id', id);
+                console.log(formAction);
+                document.getElementById('rekap').action = formAction;
             });
 
             function getJmlHari(){
@@ -135,52 +161,7 @@
                 var tahun = tanggal.getFullYear();
                 var bulan = tanggal.getMonth() + 1;
                 var jmlHari = new Date(tahun, bulan, 0).getDate();
-                return jmlHari;
-            }
-
-            function gettabel(unit){
-                //alert("No_ID : "+unit+" Periode :"+bln);
-
-                $('#mytab1').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    bDestroy: true,
-				    ordering: true,
-                    ajax:{
-                        type: "GET",
-                        url: "{{route('penilaian.rekapitulasi')}}",
-                        data:{
-                                data1: unit
-                            },
-                    },
-                    deferRender: true,
-				    aLengthMenu: [
-                                    [5, 25, 50, 100],
-                                    [5, 25, 50, 100]
-				                ],
-                    columns: [
-
-                    ],
-                    columnDefs: [
-                                    {
-                                        targets: 0,
-                                        render: function (data, type, row, meta) {
-                                            var no = meta.row + meta.settings._iDisplayStart + 1;
-                                            var html = '<p>'+no+'</p>';
-                                            return html;
-                                        }
-                                    },
-                                    {
-                                        targets: 1, data: 'indikator',
-                                        render: function (data, type, row, meta) {
-                                            var html = '<a href="">'+data+'</a>';
-                                            return html;
-                                        }
-                                    },
-                                    {targets: 2, data: 'kategori', width: '15%', className: "text-center"},
-                                    {targets: 3, data: 'nilai_standar', width: '15%', className: "text-center"},
-                                ]
-                });
+                console.log(jmlHari);
             }
         });
     </script>
