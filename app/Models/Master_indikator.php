@@ -30,6 +30,6 @@ class Master_indikator extends Model
 
     public function nilai_mutu()
     {
-        return $this->hasMany(Penilaian::class);
+        return $this->belongsToMany(Penilaian::class,'indikator_id');
     }
 }

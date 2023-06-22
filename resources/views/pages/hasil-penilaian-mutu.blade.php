@@ -99,6 +99,36 @@
                                             <td>{{ $data->indikator }}</td>
                                             <td>{{ $data->kategori }}</td>
                                             <td>{{ $data->nilai_standar }}</td>
+
+                                                @php
+                                                $hasil=0;
+                                                $arr_tgl[][] = array();
+                                                $arr_val[][] = array();
+                                                for ($j=0; $j <count($nilais[$index]) ; $j++) {
+
+                                                    $tanggal=$nilais[$index][$j]['tanggal'];
+
+                                                    $ambil_tgl = explode("-", $tanggal);
+                                                    $ambil_tgl[2] = (int)$ambil_tgl[2];
+
+                                                    $nomor2 = $ambil_tgl[2] + 1;
+                                                    $sisa_td = 31 - $nomor2;
+                                                    $hasil = $nilais[$index][$j]->hasil;
+
+                                                    $arr_tgl[$index][$ambil_tgl[2]] = $ambil_tgl[2];
+                                                    $arr_val[$index][$ambil_tgl[2]] = $hasil;
+                                                }
+                                                @endphp
+                                                @for ($tanggal_tables = 1; $tanggal_tables < 31; $tanggal_tables++)
+                                                @php
+                                                    if (array_key_exists($tanggal_tables,$arr_tgl[$index])){
+                                                        echo '<td>'.$arr_val[$index][$tanggal_tables].'</td>';
+                                                    }else{
+                                                        echo '<td>-</td>';
+                                                    }
+                                                @endphp
+
+                                            @endfor
                                         </tr>
                                     @endforeach
                                     </tbody>

@@ -25,8 +25,29 @@ class PenilaianController extends Controller
     {
         $unit = Master_unit::select('id', 'unit')->orderBy('unit', 'ASC')->get();
         $indikators = Master_indikator::where('unit_id', $id)->get();
+
+        $thn = date('Y');
+        $bln = date('m');
+
+        $data_arr = array();
+
+        foreach ($indikators as $indikator) {
+            $indikator_id = $indikator->id;
+            $data_arr[] = array(
+                "id" => $indikator_id,
+            );
+        }
+
+        for ($i=0; $i < count($data_arr); $i++) {
+            $nilais[] = Penilaian::where('indikator_id', $data_arr[$i])
+                            ->where('tanggal', 'like', '%' .$bln. '%')
+                            ->orderBy('tanggal','ASC')
+                            ->get();
+        }
+
+        //dd($thn." | ".$bln);
         // dd($indikators);
-        return view('pages.hasil-penilaian-mutu', ['unitList' => $unit, 'id' => $id, 'indikators' => $indikators], ['type_menu' => '']);
+        return view('pages.hasil-penilaian-mutu', ['unitList' => $unit, 'id' => $id, 'indikators' => $indikators, 'nilais' => $nilais], ['type_menu' => '']);
     }
 
     public function rekap(Request $request)
@@ -40,15 +61,34 @@ class PenilaianController extends Controller
     {
         $unit = $request->input('sel-unit');
         $bln = $request->input('sel-bln');
-        // $periode = explode("-",$request->input('data2'));
-        // $thn = $periode[0];
-        // $bln = $periode[1];
-        // dd($id);
-        // dd($id." | ".$bln);
 
-        $unit = Master_unit::select('id', 'unit')->orderBy('unit', 'ASC')->get();
-        $indikators = Master_indikator::where('unit_id', $id)->get();
-        return view('pages.hasil-penilaian-mutu', ['unitList' => $unit, 'id' => $id, 'indikators' => $indikators], ['type_menu' => '']);
+        $units = Master_unit::select('id', 'unit')->orderBy('unit', 'ASC')->get();
+        $indikators = Master_indikator::where('unit_id', $unit)
+        ->where('status', 'Active')
+        ->get();
+
+        $data_arr = array();
+
+        foreach ($indikators as $indikator) {
+            $indikator_id = $indikator->id;
+            $data_arr[] = array(
+                "id" => $indikator_id,
+            );
+
+
+        }
+
+        for ($i=0; $i < count($data_arr); $i++) {
+            $nilais[] = Penilaian::where('indikator_id', $data_arr[$i])
+                            ->where('tanggal', 'like', '%' .$bln. '%')
+                            ->orderBy('tanggal','ASC')
+                            ->get();
+        }
+        // dd($nilais);
+        return view('pages.hasil-penilaian-mutu', ['unitList' => $units,
+                                                    'id' => $id,
+                                                    'indikators' => $indikators,
+                                                    'nilais' => $nilais], ['type_menu' => '']);
     }
 
     /**
